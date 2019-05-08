@@ -10,15 +10,28 @@
     }
 
     .article {
-        /* padding-bottom: 15px; */
+        padding: 0;
+        padding-bottom: 15px;
         margin-bottom: 10px;
-        /* border-bottom: 1px solid #EEEEEE; */
+        border-bottom: 1px solid #EEEEEE;
     }
 
-    /* .article:last-child {
+    .article:last-child {
         border-bottom: none;
         padding-bottom: 0;
-    } */
+    }
+
+    #register-user {
+        width: 70%;
+    }
+
+    .row {
+        margin: 0;
+    }
+
+    .xs-no-padding {
+        padding: 0;
+    }
 }
 
 @media screen and (max-width: 600px) {

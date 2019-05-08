@@ -20,10 +20,6 @@ html, body {
 }
 
 /* HEADER */
-.no-border {
-    border: none;
-}
-
 #header-info nav {
     height: 30px;
     background-color: white !important;
@@ -37,10 +33,10 @@ html, body {
     margin-bottom: 5px;
 }
 
-#header-info span {
+/* #header-info span {
     font-size: 17px;
     width: 30px;
-}
+} */
 
 #header-info a {
     color: #000;
@@ -51,12 +47,24 @@ html, body {
     z-index: 9999;
 }
 
-#user-action span {
+/* #user-action span {
     font-size: 15px;
+} */
+
+/* #user-action .nav-link i {
+    font-size: 14px;
+    margin-top: 3px;
+} */
+
+#user-action a {
+    margin: 0 10px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
-#user-action ul li {
-    margin: 0 5px;
+#user-action a:hover {
+    color: #cc0000;
+    text-shadow: 1px 1px 50px #ff1a1a;
 }
 
 #header-search-box button {
@@ -70,9 +78,8 @@ html, body {
 }
 
 #header-search-box {
-    padding: 4px;
+    padding: 4px 0;
     margin-left: 5px;
-    border-radius: 20px;
     width: 210px;
     border: 1px solid black;
     background-color: white;

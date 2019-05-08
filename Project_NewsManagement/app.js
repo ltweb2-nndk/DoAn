@@ -1,30 +1,25 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
 var Handlebars = require('handlebars');
-var hbsIntl = require('handlebars-intl');
 var morgan = require('morgan');
 var createError = require('http-errors');
+var expValidator = require('express-validator');
+var expSession = require('express-session');
 var categoryModel = require('./models/category.model');
 var subcategoriesModel = require('./models/subcategories.model');
 var app = express();
 
 app.use(morgan('dev'));
-
-// app.engine('hbs', exphbs({
-//     defaultLayout: 'main.hbs'
-// }));
-// app.set('view engine', 'hbs');
 var hbs = exphbs.create({
     defaultLayout: 'main.hbs',
-    helpers : {
+    helpers: {
         calculation: value => {
             return value + 5;
         },
-        ifeq : (firstEle, secondEle, options) => {
+        ifeq: (firstEle, secondEle, options) => {
             if (firstEle == secondEle) {
                 return options.fn(this);
-            }
-            else {
+            } else {
                 return options.inverse(this);
             }
         }
@@ -32,26 +27,33 @@ var hbs = exphbs.create({
 });
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
-
+app.use(expValidator({
+    customValidators: {
+        lt0: (entity) => {
+            return entity <= 0;
+        },
+        containsSpecialCharacters: (entity) => {
+            return !(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(entity));
+        }
+    },
+    customSanitizers: {
+        
+    }
+}));
 // Đặt đường dẫn là bắt đầu từ public
 app.use(express.static('public'));
-
 app.use(express.urlencoded({
     extended: true
 }));
 app.use(express.json());
-
 app.use(require('./middlewares/category.mdw'));
 app.use(require('./middlewares/subcategories.mdw'));
-
-app.get('/', (req, res) => {
-    categoryModel.all()
-        .then(rows => {
-            res.render('home', {
-                category: rows
-            });
-        });
-});
+app.use(expSession({
+    secret: 'max',
+    saveUninitialized: false,
+    resave: false
+}));
+app.use('/', require('./routes/home'));
 
 var port = 4000;
 app.listen(port, () => {

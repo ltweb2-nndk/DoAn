@@ -1,4 +1,4 @@
-var db = require('../ultils/db');
+var db = require('../utils/db');
 
 module.exports = {
     all: () => {

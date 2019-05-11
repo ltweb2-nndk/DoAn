@@ -5,6 +5,7 @@ var morgan = require('morgan');
 var createError = require('http-errors');
 var expValidator = require('express-validator');
 var expSession = require('express-session');
+var passportSetup = require('./config/passport-setup');
 var categoryModel = require('./models/category.model');
 var subcategoriesModel = require('./models/subcategories.model');
 var app = express();
@@ -49,11 +50,13 @@ app.use(express.json());
 app.use(require('./middlewares/category.mdw'));
 app.use(require('./middlewares/subcategories.mdw'));
 app.use(expSession({
-    secret: 'max',
-    saveUninitialized: false,
+    secret: 'i do not know',
+    saveUninitialized: true,
     resave: false
+    // cookie : {maxAge: 1000 * 15}
 }));
 app.use('/', require('./routes/home'));
+app.use('/user', require('./routes/user'));
 
 var port = 4000;
 app.listen(port, () => {

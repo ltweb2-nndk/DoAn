@@ -1,0 +1,67 @@
+{{#if success}}
+    <div class="alert register-alert" role="alert">
+        Đăng ký thành công! Kiểm tra gmail lấy mã xác nhận kích hoạt tài khoản nhé!
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    </div>
+{{/if}}
+    <div id="register-user" class="mx-auto mt-4">
+        <span class="register-title mr-3">Tạo tài khoản</span>
+        <span class="register-subtitle font-italic">
+            Bạn đã có tài khoản? <a href="/login">Đăng nhập</a> ngay!
+        </span>
+    
+        <form id="register-form" name="registerForm" method="POST">
+            {{#each subErrors}}
+            <p class="input-errors">{{err}}</p>
+            {{/each}}
+            {{#if errors}}
+                {{#each errors}}
+                <p class="input-errors">{{msg}}</p>
+                {{/each}}
+            {{/if}}
+            <label>Địa chỉ email:</label>
+            <input class="input-form" name="Username" type="text" placeholder="Địa chỉ email">
+            <label>Tên hiển thị:</label>
+            <input class="input-form" name="Fullname" type="text" placeholder="Tên hiển thị">
+            <label>Mật khẩu:</label>
+            <input class="input-form" name="Password" type="password" placeholder="Mật khẩu (6-20 kí tự)">
+            <label>Xác nhận mật khẩu:</label>
+            <input class="input-form" name="ConfirmPassword" type="password" placeholder="Xác nhận mật khẩu">
+            <label>Ngày sinh:</label>
+            <br>
+            <select name="Day" class="select-form">
+                <option disabled selected>Ngày</option>
+                {{#each day}}
+                <option value="{{value}}">{{value}}</option>
+                {{/each}}
+            </select>
+            <select name="Month" class="select-form">
+                <option disabled selected>Tháng</option>
+                {{#each month}}
+                <option value="{{value}}">{{value}}</option>
+                {{/each}}
+            </select>
+            <select name="Year" class="select-form">
+                <option disabled selected>Năm</option>
+                {{#each year}}
+                <option value="{{value}}">{{value}}</option>
+                {{/each}}
+            </select>
+            <button class="button-form">Đăng ký</button>
+        </form>
+    
+        <hr class="hr-text" data-content="Hoặc đăng ký với">
+
+        <form>
+            {{!-- bỏ formaction="/login/google" --}}
+            <button class="subregister-button google-register">
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+                Google
+            </button>
+        </form>
+        
+        <button class="subregister-button facebook-register">
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+            Facebook
+        </button>
+    </div>

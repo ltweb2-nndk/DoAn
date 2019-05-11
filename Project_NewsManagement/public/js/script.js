@@ -16,10 +16,10 @@ $(document).ready(() => {
     $('.input-form, .dob-form').click(function() {
         $('.input-errors').hide();
     });
-    // Ẩn các lỗi khi đăng ký sau 5 giây
+    // Ẩn các lỗi khi đăng ký sau 4 giây
     setTimeout(() => {
         $('.input-errors').hide();
-    }, 5000);
+    }, 4000);
     // Ẩn thông báo đăng ký thành công sau 10 giây
     // $('.register-alert').fadeOut(10000);
 });

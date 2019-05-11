@@ -6,12 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Newsweek</title>
-    <meta name="google-signin-client_id" content="623248920253-q1svab2n78l7mc59r1t6uvd1mj7c4ab5.apps.googleusercontent.com">
+    {{!-- <meta name="google-signin-client_id" content="623248920253-q1svab2n78l7mc59r1t6uvd1mj7c4ab5.apps.googleusercontent.com"> --}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/register-login.css">
+    <link rel="stylesheet" href="/css/article.css">
+    <link rel="stylesheet" href="/css/user.css">
     <link rel="stylesheet" href="/css/media.css">
     <script src="/js/custom.js"></script>
     <link rel="icon" href="/img/newsweek-icon.png">
@@ -25,34 +27,56 @@
             <div id="header-info">
                 <nav class="navbar navbar-expand-md navbar-light bg-light">
                     <div class="container-fluid h-100">
-                        <a href="/" class="navbar-brand h-100">
-                            <img src="/img/newsweek-logo.jpeg" title="Newsweek" height="25">
+                        <a href="/" class="navbar-brand">
+                            <img id="header-logo" src="/img/newsweek-logo.jpeg" title="Newsweek" height="25">
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#user-action"> 
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div id="user-action" class="collapse navbar-collapse">
                             <ul class="navbar-nav ml-auto">
+                                {{#if userExistence}}
+                                {{#with user}}
+                                <li class="nav-item">
+                                    <p id="hello-user">Chào <i>{{SubscriberName}}</i>,</p>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <img id="header-user-avatar" src="{{Avatar}}" alt="{{Fullname}}">
+                                    <ul id="user-menu">
+                                        <li>
+                                            <a href="/user/info">
+                                                <i class="fa fa-user col-2" aria-hidden="true"></i>Thông tin cá nhân
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-unlock-alt col-2" aria-hidden="true"></i>Đổi mật khẩu
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-credit-card-alt col-2" aria-hidden="true"></i>Đăng ký Premium
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/logout"><i class="fa fa-sign-out col-2" aria-hidden="true"></i>Đăng xuất</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                {{/with}}
+                                {{else}}
                                 <li class="nav-item">
                                     <a class="nav-link" href="/register" title="Đăng ký">
-                                        {{!-- <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle-thin fa-stack-2x"></i>
-                                            <i class="fa fa-user-plus fa-stack-1x"></i>
-                                        </span> --}}
-                                        {{!-- <i class="fa fa-user" aria-hidden="true"></i> --}}
                                         Đăng ký
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/login" title="Đăng nhập">
-                                        {{!-- <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle-thin fa-stack-2x"></i>
-                                            <i class="fa fa-user fa-stack-1x"></i>
-                                        </span> --}}
-                                        {{!-- <i class="fa fa-user-plus" aria-hidden="true"></i> --}}
                                         Đăng nhập
                                     </a>
                                 </li>
+                                {{/if}}
+                                
                             </ul>
                             <form class="form-inline" id="header-search-box">
                                 <input class="col-10 border-0" type="search" placeholder="Nội dung cần tìm kiếm..."
@@ -170,7 +194,7 @@
         <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
     </button>
 
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    {{!-- <script src="https://apis.google.com/js/platform.js" async defer></script> --}}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

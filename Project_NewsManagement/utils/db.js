@@ -17,19 +17,7 @@ module.exports = {
             });
         });
     },
-    loadCount: sql => {
-        return new Promise((resolve, reject) => {
-            var connection = createConnection();
-            connection.connect();
-
-            connection.query(sql, (error, results, fields) => {
-                if (error) reject(error);
-                else resolve(results.length);
-                
-                connection.end();
-            });
-        });
-    },
+    
     add: (tableName, entity) => {
         return new Promise((resolve, reject) => {
             var connection = createConnection();
@@ -44,6 +32,7 @@ module.exports = {
             });
         });
     },
+
     update: (tableName, idField, entity, id) => {
         return new Promise((resolve, reject) => {
             var connection = createConnection();
@@ -58,6 +47,7 @@ module.exports = {
             });
         });
     },
+    
     delete: (tableName, idField, id) => {
         return new Promise((resolve, reject) => {
             var connection = createConnection();

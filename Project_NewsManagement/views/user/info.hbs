@@ -1,0 +1,38 @@
+{{#with user}}
+<div class="container-fluid section-user-info">
+    <div class="row">
+        <h1 class="col-lg-12 main-title">Thông tin cá nhân</h1>
+        <div class="col-lg-7 user-info">
+            <div class="row">
+                <p class="label col-sm-6">Tài khoản:</p>
+                <p class="normal-user col-xs-10 col-sm-4">Normal</p>
+                <p class="label col-sm-6">Địa chỉ email:</p>
+                <p class="label-content col-sm-6">{{Username}}</p>
+                <p class="label col-sm-6">Họ tên:</p>
+                <p class="label-content col-sm-6">{{SubscriberName}}</p>
+                <p class="label col-sm-6">Ngày sinh:</p>
+                <p class="label-content col-sm-6">{{DOB}}</p>
+                <p class="label col-sm-6">Đăng ký premium:</p>
+                {{#if BoughtOn}}
+                <p class="label-content col-sm-6">{{BoughtOn}}</p>
+                {{else}}
+                <p class="label-content col-sm-6">-</p>
+                {{/if}}
+                <p class="label col-sm-6">Hết hạn premium:</p>
+                {{#if ExpiredOn}}
+                <p class="label-content col-sm-6">{{ExpiredOn}}</p>
+                {{else}}
+                <p class="label-content col-sm-6">-</p>
+                {{/if}}
+            </div>
+        </div>
+        <div class="col-lg-4 ml-auto">
+            <div class="row">
+                <button class="col-lg-12 user-button edit-info-button">Thay đổi thông tin</button>
+                <button class="col-lg-12 user-button change-pw-button">Đổi mật khẩu</button>
+                <button class="col-lg-12 user-button buy-premium-button">Đăng ký Premium</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/with}}

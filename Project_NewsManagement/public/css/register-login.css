@@ -8,7 +8,7 @@
 }
 
 .register-subtitle {
-    font-size: 13px;
+    font-size: 12px;
 }
 
 #register-form {
@@ -17,35 +17,43 @@
     padding: 15px 10px;
 }
 
-.input-form {
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid #cc0000;
-    margin-bottom: 15px;
+#register-form label {
     font-size: 14px;
+    margin: 0;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
-.dob-form {
-    width: calc(100% - 67px);
-    font-size: 14px;
-    border: none;
-    border-bottom: 1px solid #cc0000;
-    margin-bottom: 15px;
+.input-form {
+    width: 100%;
+    border: 1px solid #e6e6e6;
+    margin-bottom: 10px;
+    font-size: 12px;
+    padding: 9px;
+}
+
+.input-form:focus {
+    border: 1px solid #cc0000;
 }
 
 .input-form::placeholder {
-    text-align: center;
     color: #999999;
-    font-size: 14px;
+    font-size: 12px;
+}
+
+.select-form {
+    font-size: 12px;
+    padding: 6px;
+    border: 1px solid #e6e6e6;
+}
+
+.select-form:focus {
+    border: 1px solid #cc0000;
+    outline: none;
 }
 
 .input-form:focus, .dob-form:focus, .button-form:focus, .google-register:focus, .facebook-register:focus {
     outline: none;
-}
-
-.label-form {
-    color: #999999;
-    font-size: 14px;
 }
 
 .button-form {
@@ -57,6 +65,7 @@
     color: #fff;
     font-size: 13px;
     padding: 5px 15px;
+    margin-top: 17px;
 }
 
 .button-form:hover {
@@ -127,12 +136,13 @@
     border-color: #f5c6cb;
     font-size: 12px;
     margin-bottom: 2px;
-    padding: 3px 5px;
+    padding: 7px;
     border-radius: 3px;
 }
 
 .register-alert {
-    background-color: #cc0000;
+    background-color: rgb(204, 0, 0, 0.9);
+    border: 1px solid #cc0000;
     margin: 20px 0;
     color: #fff;
     font-weight: bold;

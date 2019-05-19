@@ -8,6 +8,8 @@ var subscriberModel = require('../models/subscriber.model');
 var articleModel = require('../models/article.model');
 var roleModel = require('../models/role.model');
 var router = express.Router();
+var writeModel = require('../models/writer.model');
+
 
 const saltRounds = 10;
 
@@ -164,14 +166,10 @@ router.post('/login', async (req, res) => {
         } else {
             var user = accRows[0];
             var match = bcrypt.compareSync(req.body.Password, user.Password);
-
+            console.log(req.body.Password);
+            console.log(user.Password);
+            
             if (match) {
-                // subscriberModel.getByAccID(user.AccID).then(subRows => {
-                //     req.session.user = subRows[0];
-                //     req.session.userExistence = true;
-                //     res.redirect('/');
-                // });
-
                 roleModel.getByRoleID(user.RoleID).then(roleRows => {
                     var userRole = roleRows[0].RoleName;
 
@@ -182,12 +180,11 @@ router.post('/login', async (req, res) => {
                             res.redirect('/');
                         });
                     } else if (userRole == 'Writer') {
-                        // lưu req.session.user và req.session.userExistence
-                        // res.redirect tới route của writer
-                        // Lưu ý: route nào đc res.redirect tới, 
-                        // đó phải truyền req.session.user và req.session.userExistence    
-                        // giống như subscriber res.redirect tới route('/)
-                        // thì route('/) được truyền phải được truyền 2 sessions đó.
+                        writeModel.getByAccID(user.AccID).then(writerRows=>{
+                            req.session.user = writerRows[0];
+                            req.session.userExistence = true;
+                            res.redirect('/writer');
+                        })
                     } else if (userRole == 'Editor') {
                         // như Writer
                     } else {
@@ -220,7 +217,7 @@ router.get('/logout', (req, res) => {
     req.session.user = null;
     req.session.userExistence = null;
 
-    res.redirect('/');
+    res.redirect('/login');
 });
 
 router.get('/article/:id', (req, res) => {

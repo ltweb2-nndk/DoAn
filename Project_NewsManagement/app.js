@@ -72,6 +72,7 @@ app.use(require('./middlewares/category.mdw'));
 app.use(require('./middlewares/subcategories.mdw'));
 app.use(require('./middlewares/status.mdw'));
 app.use(require('./middlewares/rank.mdw'));
+
 app.use(expSession({
     secret: 'i do not know',
     saveUninitialized: true,
@@ -81,6 +82,12 @@ app.use(expSession({
 app.use('/', require('./routes/home'));
 app.use('/user', require('./routes/user'));
 app.use('/writer',require('./routes/writer'));
+app.use('/admin',require('./routes/admin'));
+app.use('/admin/category',require('./routes/category'));
+app.use('/admin/subCategory',require('./routes/subCategory'));
+app.use('/admin/tag',require('./routes/tag'));
+app.use('/admin/article',require('./routes/article'));
+
 
 //show all images in folder upload to json
 app.get('/files', function (req, res) {

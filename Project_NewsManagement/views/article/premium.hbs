@@ -1,0 +1,52 @@
+<div id="articles-wrapper">
+    <span class="cat-name premium-name">PREMIUM</span>
+    <br>
+
+    <div class="row margin-0">
+        {{#each articles}}
+        <div class="col-12 article">
+            <a href="/article/{{ArtID}}">
+                <img src="{{ArtAvatar}}" class="w-100">
+            </a>
+            <div class="newest-article-title">
+                <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                <a class="premium-article-link" href="/article/premium">
+                    <span class="premium-article">PREMIUM</span>
+                </a>
+                <div>
+                    <span class="date-article">{{formatArticleDateTime ArtPostedOn}}</span>
+                    <span class="category-article">
+                        <a href="#">{{SubCatName}}</a>
+                    </span>
+                </div>
+                <p class="summary-article">{{Summary}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link previous-page {{#if previousInactive}}page-is-inactive{{/if}}" {{#unless previousInactive}}href="?page={{previous page}}"{{/unless}} aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    {{#each totalPages}}
+                    <li class="page-item">
+                        <a class="page-link {{#if active}}page-is-active{{/if}}" href="?page={{value}}">{{value}}</a>
+                    </li>
+                    {{/each}}
+                    <li class="page-item">
+                        <a class="page-link next-page {{#if nextInactive}}page-is-inactive{{/if}}" {{#unless nextInactive}}href="?page={{next page}}"{{/unless}} aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

@@ -1,10 +1,8 @@
 var db = require('../utils/db');
-var date = require('../public/js/custom');
+var config = require('../config/default.json');
 
-module.exports={
-    getArticleTags: id=>{
-       return db.load(`select t.TagName
-                from articletags a inner join tag t on a.TagID=t.TagID
-                WHERE ArtID=${id}`);
+module.exports = {
+    getByArtID: artID => {
+        return db.load(`select * from tag t join articletags ats where t.TagID = ats.TagID and ats.ArtID = ${artID}`);
     }
 };

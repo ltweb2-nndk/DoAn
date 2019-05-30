@@ -6,20 +6,18 @@ $(document).ready(() => {
         }
         else $('#scrollToTopButton').css('display', 'none');
     });
+
     // Ấn nút quay về đầu trang -> quay về đầu trang
     $('#scrollToTopButton').click(() => {
         $('html, body').animate({
             scrollTop: 0
         }, '300');
     });
-    // Ấn các lỗi khi ấn bất kì ô input đăng ký nào
-    $('.input-form, .dob-form').click(function() {
-        $('.input-errors').hide();
-    });
-    // Ẩn các lỗi khi đăng ký sau 4 giây
-    setTimeout(() => {
-        $('.input-errors').hide();
-    }, 4000);
-    // Ẩn thông báo đăng ký thành công sau 10 giây
-    // $('.register-alert').fadeOut(10000);
+
+    // Upload hình
+    // $('#img-file').change((e) => {
+    //     $('#user-avatar').attr('src', URL.createObjectURL(e.target.files[0]));
+    // });
+
+    
 });

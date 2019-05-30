@@ -6,8 +6,7 @@ module.exports = {
         var params = {
             "AccID": entity.AccID,
             "SubscriberName": entity.Fullname,
-            "Avatar": "/img/user/default-avatar.jpg",
-            "DOB": new Date(entity.Year, entity.Month - 1, entity. Day)
+            "DOB": entity.DOB
         }
 
         return db.add('subscriber', params);
@@ -15,5 +14,9 @@ module.exports = {
 
     getByAccID: id => {
         return db.load(`select * from subscriber s join account c where s.AccID = ${id} and s.AccID = c.AccID`);
+    },
+    
+    update: (id, entity) => {
+        return db.update('subscriber', 'SubscriberID', entity, id);
     }
 };

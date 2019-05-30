@@ -2,26 +2,14 @@ var db = require('../utils/db');
 
 module.exports = {
     all: () => {
-        return db.load('select * from subcategories');
+        return db.load('select * from subcategories where SubCatIsActive = 1');
     },
-    allByCatID: id => {
-        return db.load(`select * from subcategories where CatID = ${id}`);
+    
+    getByCatID: id => {
+        return db.load(`select * from subcategories where CatID = ${id} and SubCatIsActive = 1`);
     },
-    single:(id)=>{
-        return db.load(`select * from subcategories where SubCatID=${id}`);
-     },
-     singles:(id)=>{
-    return db.load(`select * from subcategories where CatID=${id}`);
-     },
-     insert:(entity)=>{
-         return db.add('subcategories',entity);
-     },
-     update:entity=>{
-         var id=entity.SubCatID;
-         delete entity.SubCatID;
-         return db.update('subcategories','SubCatID',entity,id);
-     },
-     delete: id => {
-         return db.delete('subcategories', 'SubCatID', id);
-     },
+
+    getBySubCatID: id => {
+        return db.load(`select * from subcategories where SubCatID = ${id} and SubCatIsActive = 1`);
+    }
 };

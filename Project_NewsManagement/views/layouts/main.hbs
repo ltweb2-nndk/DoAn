@@ -11,11 +11,11 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/register-login.css">
+    <link rel="stylesheet" href="/css/register-login-verify.css">
     <link rel="stylesheet" href="/css/article.css">
     <link rel="stylesheet" href="/css/user.css">
     <link rel="stylesheet" href="/css/media.css">
-    <script src="/js/custom.js"></script>
+    {{{_sections.css}}}
     <link rel="icon" href="/img/newsweek-icon.png">
 </head>
 
@@ -35,51 +35,49 @@
                         </button>
                         <div id="user-action" class="collapse navbar-collapse">
                             <ul class="navbar-nav ml-auto">
-                                {{#if userExistence}}
+                                {{#if isAuthenticated}}
                                 {{#with user}}
                                 <li class="nav-item">
-                                    <p id="hello-user">Chào <i>{{SubscriberName}}</i>,</p>
+                                    <a class="nav-link" href="/user/info">
+                                        {{#if Avatar}}
+                                        <img id="header-user-avatar" src="{{Avatar}}">
+                                        {{else}}
+                                        <img id="header-user-avatar" src="/img/user/default-avatar.jpg">
+                                        {{/if}}
+                                        <span>
+                                            {{#ifeq RoleID 1}}
+                                            {{../SubscriberName}}
+                                            {{/ifeq}}
+                                            {{#ifeq RoleID 2}}
+                                            {{../WriterName}}
+                                            {{/ifeq}}
+                                            {{#ifeq RoleID 3}}
+                                            {{../EditorName}}
+                                            {{/ifeq}}
+                                        </span>
+                                    </a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <img id="header-user-avatar" src="{{Avatar}}" alt="{{Fullname}}">
-                                    <ul id="user-menu">
-                                        <li>
-                                            <a href="/user/info">
-                                                <i class="fa fa-user col-2" aria-hidden="true"></i>Thông tin cá nhân
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-unlock-alt col-2" aria-hidden="true"></i>Đổi mật khẩu
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-credit-card-alt col-2" aria-hidden="true"></i>Đăng ký Premium
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/logout"><i class="fa fa-sign-out col-2" aria-hidden="true"></i>Đăng xuất</a>
-                                        </li>
-                                    </ul>
+                                <li class="nav-item">
+                                    <form id="logout-form" action="/account/logout" method="POST"></form>
+                                    <a class="nav-link" href="javascript: $('#logout-form').submit();">Đăng xuất</a>
                                 </li>
                                 {{/with}}
                                 {{else}}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/register" title="Đăng ký">
+                                    <a class="nav-link" href="/account/register" title="Đăng ký">
                                         Đăng ký
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/login" title="Đăng nhập">
+                                    <a class="nav-link" href="/account/login" title="Đăng nhập">
                                         Đăng nhập
                                     </a>
                                 </li>
                                 {{/if}}
                                 
                             </ul>
-                            <form class="form-inline" id="header-search-box">
-                                <input class="col-10 border-0" type="search" placeholder="Nội dung cần tìm kiếm..."
+                            <form class="form-inline" id="header-search-box" action="/article/search" method="GET">
+                                <input class="col-10 border-0" name="keyword" type="search" placeholder="Nội dung cần tìm kiếm..."
                                     aria-label="Search" width="100">
                                 <button class="col-2 border-0" type="submit">
                                     <i class="fa fa-search" aria-hidden="true"></i>
@@ -102,21 +100,21 @@
 
                     <div class="collapse navbar-collapse h-100" id="cat-navbar">
                         <ul class="navbar-nav mx-auto h-100">
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a class="nav-link" href="/">
                                     <i class="fa fa-home fa-lg" aria-hidden="true"></i>
                                 </a>
                             </li>
                             {{#each lcCategory}}
-                            <li class="nav-item dropdown active">
-                                <a class="nav-link" href="#" id="cat-navbar-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
+                            <li class="nav-item dropdown {{#if active}}is-active{{/if}}">
+                                <a class="nav-link" href="/article/category/{{CatID}}" id="cat-navbar-dropdown"> 
+                                {{!-- data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" --}}
                                     {{CatName}}
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="cat-navbar-dropdown">
                                     {{#each ../lcSubCategories}}
                                         {{#ifeq CatID ../CatID}}
-                                        <a class="dropdown-item nav-link" href="#">
+                                        <a class="dropdown-item nav-link {{#if ../active}}is-active{{/if}}" href="/article/subcategory/{{../SubCatID}}">
                                             <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> {{../SubCatName}}
                                         </a>
                                         {{/ifeq}}
@@ -187,26 +185,26 @@
                     </div>
                 </div>
             </div>
-        </div
+        </div>
     </div>
 
     <button id="scrollToTopButton">
         <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
     </button>
 
-    {{!-- <script src="https://apis.google.com/js/platform.js" async defer></script> --}}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    {{{_sections.js}}}
     <script src="/js/script.js"></script>
+    <script src="/js/custom.js"></script>
 </body>
 
 </html>

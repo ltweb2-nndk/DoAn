@@ -15,15 +15,15 @@ module.exports = {
         return db.add('account', params);
     },
 
-    checkUsernameExistence: username => {
+    getByUsername: username => {
         return db.load(`select * from account where Username = '${username}'`);
-    },
-
-    verify: id => {
-        return db.load(`update account set AccIsActive = 1 where AccID = ${id}`);
     },
 
     checkLogin: (username, password) => {
         return db.load(`select * from account where Username = '${username}' and Password = '${password}'`);
+    },
+    
+    update: (id, entity) => {
+        return db.update('account', 'AccID', entity, id);
     }
 };

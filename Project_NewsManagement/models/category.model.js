@@ -34,5 +34,13 @@ module.exports = {
     pageByCat:(start_offset)=>{
         var limit=config.paginate.default;
         return db.load(`select * from category limit ${limit} offset ${start_offset}`);
+    },
+    allwithNum: () => {
+        return db.load('select c.*,count(a.StatusID) as num_of_art from category c left join  article a on c.CatID=a.CatID GROUP BY c.CatName,c.CatID,c.EditorID,c.CatIsActive');
+    },
+    getByID: (editID) =>{
+        return db.load(`select c.*,a.StatusID,count(a.CatID) as num_of_art from category c join article a on c.CatID = a.CatID
+        where c.EditorID = ${editID} and a.StatusID = 1
+        GROUP BY c.CatName,c.CatID,c.EditorID,c.CatIsActive,a.StatusID`); 
     }
 };

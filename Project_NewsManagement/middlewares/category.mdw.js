@@ -22,4 +22,9 @@ module.exports = (req, res, next) => {
         res.locals.lcCategory = data;
         next();
     }
+
+    categoryModel.allwithNum().then(rows => {
+        res.locals.lcCategory = rows;
+        next();
+    });
 };

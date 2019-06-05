@@ -19,5 +19,9 @@ module.exports={
     },
     search:(value)=>{
         return db.load(`select * from editor where FullName like N'%${value}%'`);
+    },
+    getByAccID: id=>{
+        return db.load(`select * from editor s join account c join role r 
+        on s.AccID = ${id} and s.AccID = c.AccID and r.RoleID = c.RoleID`)
     }
 }

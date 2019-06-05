@@ -1,7 +1,7 @@
 var db = require('../utils/db');
 var config=require('../config/default.json');
 module.exports={
-    all:()=>{
+    all:()=>{   
         return db.load('select * from tag');
     },
     single:(id)=>{
@@ -30,5 +30,12 @@ module.exports={
     pageByTag:(start_offset)=>{
         var limit=config.paginate.default;
         return db.load(`select * from tag limit ${limit} offset ${start_offset}`);
+    },
+    add: (tagname) =>{
+        var entity = {
+            "TagName": tagname
+        };
+
+        return db.add('tag', entity);
     }
 };

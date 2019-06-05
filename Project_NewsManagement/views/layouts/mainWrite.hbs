@@ -1,6 +1,4 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <!------ Include the above in your HEAD tag ---------->
 
 <!DOCTYPE html>
@@ -11,15 +9,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/styleEdit.css">
+    <link rel="stylesheet" href="/css/infoW_E.css">
     <meta name="description" content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
     <title>Newsweek</title>
     <link rel="icon" href="/img/newsweek-icon.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
     <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
-    {{!-- <script src="https://cdn.ckeditor.com/ckeditor5/12.1.0/decoupled-document/ckeditor.js"></script> --}}
-    {{!-- <script src="[ckeditor-build-path]/ckeditor.js"></script> --}}
+
+    {{{_sections.css}}}
     <script>
                 jQuery(function ($) {
 
@@ -68,15 +70,13 @@
   <nav id="sidebar" class="sidebar-wrapper">
     <div class="sidebar-content">
       <div class="sidebar-brand">
-        <a href="#">pro sidebar</a>
+        <a href="#"></a>
         <div id="close-sidebar">
           <i class="fas fa-times"></i>
         </div>
       </div>
       <div class="sidebar-header">
         <div class="user-pic">
-          {{!-- <img class="img-responsive img-rounded " src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
-            alt="User picture"> --}}
           <div class="navbar-nav ml-auto nav-flex-icons">
             <div class="nav-item avatar dropdown">
               <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -85,17 +85,16 @@
               </a>
 
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-5">
+                  <a class="dropdown-item" href="/writer/info">
+                    <i class="fa fa-user" aria-hidden="true"> Thông tin cá nhân</i>
+                  </a>
                 <a class="dropdown-item" href="#">
-                  <i class="fa fa-user" aria-hidden="true"></i>
-                  Thông tin cá nhân
+                  <i class="fa fa-unlock-alt" aria-hidden="true"> Đổi mật khẩu</i>
+                  
                 </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-                  Đổi mật khẩu
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fa fa-sign-out" aria-hidden="true"></i>
-                  Đăng xuất
+                <a class="dropdown-item" href="/login">
+                  <i class="fa fa-sign-out" aria-hidden="true"> Đăng xuất</i>
+                  
                 </a>
               </div>
             </div>
@@ -106,15 +105,15 @@
           <span class="user-name"  >
             {{#if userExistence}}
             {{#with user}}
-            <strong id="user-name">{{WriterName}}</strong>
+            <strong id="user-name">{{FullName}}</strong>
             {{/with}}
             {{/if}}
             {{!-- <strong id="user-name"><%= JSON.stringify(writer) %></strong> --}}
           </span>
-          <span class="user-role">Writer</span>
+          <span class="user-role">{{user.RoleName}}</span>
           <span class="user-status">
             <i class="fa fa-circle"></i>
-            <span>Online</span>
+            <span>Đang hoạt động</span>
           </span>
         </div>
       </div>
@@ -134,9 +133,8 @@
       <!-- sidebar-search  -->
       <div class="sidebar-menu">
         <ul>
-          {{!-- <li class="header-menu">
-            <span>General</span>
-          </li> --}}
+          {{#with user}}
+            {{#ifeq RoleID 2}}
           <li class="sidebar-dropdown">
             <a href="/writer/add">
               {{!-- <i class="fa fa-tachometer-alt"></i> --}}
@@ -148,19 +146,49 @@
             <a href="#">
               <i class="fas fa-newspaper "></i>
               <span>Danh sách bài viết</span>
-              <span class="badge badge-pill badge-danger">3</span>
+              
             </a>
             <div class="sidebar-submenu">
               <ul>
-                {{#each this.lcStatus}}
-                <li>
-                  <a href="/writer/articlesByStatus/{{StatusID}}">{{StatusName}}</a>
-                </li>
+                {{#each ../../lcStatus}}
+                    <li>
+                      <a href="/writer/articlesByStatus/{{StatusID}}">{{StatusName}}
+                      {{#if num_of_art}} 
+                        <span class="badge badge-pill badge-danger float-right">{{num_of_art}}</span>
+                      {{/if}} 
+                      </a>
+                    </li>
+                    
                 {{/each}}
               </ul>
             </div>
           </li>
-          
+          {{/ifeq}}
+          {{#ifeq RoleID 3}}
+            <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="fas fa-newspaper "></i>
+              <span>Chuyên mục quản lý</span>
+            </a>
+            <div class="sidebar-submenu">
+              <ul>
+                {{#each ../../lcCategory}}
+                  {{#ifeq EditorID ../../EditorID}}
+                    <li>
+                      <a href="/editor/articlesByCat/{{../CatID}}">{{../CatName}}
+                        {{#if ../num_of_art}} 
+                          <span class="badge badge-pill badge-danger float-right">{{../num_of_art}}</span>
+                        {{/if}} 
+                      </a>
+                    </li>
+                  {{/ifeq}}
+                {{/each}}
+              </ul>
+            </div>
+          </li>
+          {{/ifeq}}
+        {{/with}}
+        </ul>
     </div>
   </nav>
   <!-- sidebar-wrapper  -->
@@ -176,6 +204,7 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    {{{_sections.js}}}
     
 </body>
 

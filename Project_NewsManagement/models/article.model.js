@@ -1,5 +1,6 @@
 var db = require('../utils/db');
 var config = require('../config/default.json');
+var date = require('../public/js/custom');
 
 module.exports = {
     getByArtID: id => {
@@ -98,6 +99,69 @@ module.exports = {
     pageByArt:(start_offset)=>{
         var limit=config.paginate.default;
         return db.load(`select * from article limit ${limit} offset ${start_offset}`);
-    }
+    },
+
+    getByArtID_2: id => {
+        return db.load(`select * from article a join category c join writer w 
+        where a.ArtID = ${id} and a.CatID = c.CatID and a.WriterID = w.WriterID`);
+    },
+    getByStatus_2: statusID => {
+        return db.load(`select ArtID,ArtTitle,Summary,ArtCreatedOn,ArtPostedOn,StatusID from article where StatusID = ${statusID}`);
+    },
+    getByCat_2: catID => {
+        return db.load(`select* from article where CatID = 6 = ${catID}`);
+    },
+    add_2:(entity)=>{
+        var link = "/img/article/"+ entity.avaArt
+        var params = {
+            "ArtTitle":entity.ArtTitle,
+            "Summary":entity.Summary,
+            "Content":entity.Content,
+            "CatID":entity.CatID,
+            "StatusID":entity.StatusID,
+            "RankID":entity.RankID,
+            "WriterID":entity.WriterID,
+            "ArtCreatedOn":date.getDateTimeNow(),
+            "StatusID":1,
+            "ArtAvatar":link
+        }
+        return db.add('article',params);
+    },
+    update_2: entity=>{
+        var link = "/img/article/"+ entity.avaArt
+        var id = entity.ArtID;
+        var params={
+            "ArtTitle":entity.ArtTitle,
+            "Summary":entity.Summary,
+            "Content":entity.Content,
+            "SubCatID":entity.SubCatID,
+            "StatusID":entity.StatusID,
+            "RankID":entity.RankID,
+            "WriterID":entity.WriterID,
+            "ArtCreatedOn":date.getDateTimeNow(),
+            "ArtAvatar":link,
+            "StatusID":1
+        }
+        return db.update('article','ArtID',params,id);
+    },
+    edit_2: (entity,id)=>{
+        return db.update('article','ArtID',entity,id);
+    },
+    countByStatus_2: (id)=>{
+        return db.load(`select count(StatusID) as total from article where StatusID=${id} GROUP BY StatusID`);
+    },
+    countByCat_2:(catID)=>{
+        return db.load(`select count(CatID) as total from article where CatID=${catID} GROUP BY CatID`);
+    },
+    pageByStatus_2: (stusID, start_offset)=>{
+        var lim = config.paginate.default;
+        return db.load(`select a.ArtID,a.ArtTitle,a.Summary,a.StatusID,s.StatusName 
+        from article a join status s on a.StatusID = s.StatusID
+        where a.StatusID = ${stusID} limit 6 offset ${start_offset}`);
+    },
+    pageByCat_2: (catID, start_offset)=>{
+        var lim = config.paginate.default;
+        return db.load(`select a.ArtID,a.ArtTitle,a.Summary,a.ArtCreatedOn,a.ArtPostedOn,a.StatusID,a.ArtAvatar,c.CatName from article a join category c on a.CatID = c.CatID  where a.CatID = ${catID} and a.StatusID=1 limit ${lim} offset ${start_offset}`);
+    },
 
 };

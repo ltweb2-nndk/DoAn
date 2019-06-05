@@ -1,43 +1,39 @@
 
 <div class="table-responsive ">
     <div class="card shadow mb-4 h-100" >
-    <h5 class="card-header">{{stusName}}</h5>
-  <table class="table table-hover">
-        <thead>
+    <h5 class="the-article-category">{{catName}}</h5>
+  <table class="table table-hover ">
+        <thead >
+            <tr>
+            </tr>
         </thead>
         <tbody>
-            {{!-- {{#each this.articles}}
-                <tr>
-                    <th scope="row">{{ArtID}}</th>
-                    <td>{{ArtTitle}}</td>
-                    <td>{{Summary}}</td>
-                    <td>{{ArtCreatedOn}}</td>
-                    <td>{{ArtPostedOn}}</td>
-                    
-                    <td class="text-right">
-                        {{#checkStatus StatusID}}
-                        <a  class="btn btn-primary btn-sm" href="/writer/edit/{{../ArtID}}" role="button" title="Edit">
-                            Xem chi tiết
-                        </a>
-                        {{/checkStatus}}
-                        
-                    </td>
-                </tr>
-            {{/each}} --}}
-
-            {{#each this.articles}}
+            {{#each articles}}
                 <tr>
                     <td>
                         <img class="box-list-item-img" src="{{ArtAvatar}}" alt="List user">
                     </td>
                     <td>
                         <div class="box-list-item-text ">
-                            {{#checkStatus StatusID}}
-                            <h3><a href="/writer/edit/{{../ArtID}}" title="Edit">{{../ArtTitle}}</a></h3>
-                            {{else}}
-                            <h3>{{../ArtTitle}}</h3>
-                            {{/checkStatus}}
+                            <h3><a href="#">{{ArtTitle}}</a></h3>
                             <p>{{Summary}}</p>
+                        </div>
+                    </td>
+                    
+                    <td class="text-right">
+                        <div class="box-list-item-text ">
+                        <a  class="btn btn-success btn-sm" href="/editor/accept/{{ArtID}}" role="button" title="Edit">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                            Duyệt bài
+                        </a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="box-list-item-text ">
+                        <a  class="btn btn-danger btn-sm" href="/editor/decline/{{ArtID}}" role="button" title="Edit">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                            Từ chối 
+                        </a>
                         </div>
                     </td>
                 </tr>
@@ -116,5 +112,4 @@
             {{/each}}
         </ul>
     </nav>
-</div>
-
+</div> 

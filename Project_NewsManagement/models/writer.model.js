@@ -3,7 +3,8 @@ var date = require('../public/js/custom');
 
 module.exports = {
     getByAccID: id => {
-        return db.load(`select * from writer s join account c where s.AccID = ${id} and s.AccID = c.AccID`);
+        return db.load(`select * from writer s join account c join role r 
+        on s.AccID = ${id} and s.AccID = c.AccID and r.RoleID = c.RoleID`);
     },
     all:()=>{
         return db.load('select * from writer');

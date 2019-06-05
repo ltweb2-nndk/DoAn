@@ -8,39 +8,35 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
   <script src="/js/Category.Check.js"></script>  
-  </head>
+</head>
 <body>
-      <legend><h2>Chỉnh Sửa Danh Mục</h2></legend>
-      <center>
-      <form action="/Admin/Category/Update" method="POST" name="frmDanhMuc" onsubmit="return CheckValueCategory();">
-        <div class="form-group">
-        <input  type="hidden" class="form-control" id="txtCatID" name="CatID" value="{{this.category.CatID}}" style="width:300px;"/>
-       </div>
- 
+  <h2>Cập nhật danh mục</h2>
+  <form action="/admin/category/update" method="POST" id="frmDanhMuc" style="width:400px;margin:0 auto;">
     <div class="form-group">
-       <label class="loginFormElement" style="margin-right: 180px;">TÊN DANH MỤC</label>
-       <input class="form-control" placeholder="Nhập tên danh mục" type="text" style="width:300px;" name="CatName" value="{{this.category.CatName}}">
-      <div id="CatName"></div>
-      </div>
+        <input  type="hidden" class="form-control" id="txtCatID" name="CatID" value="{{this.category.CatID}}" style="width:300px;"/>
+    </div>
+ 
+    <div>
+       <label >TÊN DANH MỤC</label>
+       <input class="form-control" placeholder="Nhập tên danh mục" type="text"  name="CatName" id="txtCatName" value="{{this.category.CatName}}">
+    </div>
 
-     <div class="form-group">
-       <label class="loginFormElement" style="margin-right: 210px;">TÌNH TRẠNG</label>
-         <select class="form-control" style="width: 300px;" name="CatIsActive">
+     <div style="margin-top:20px;" >
+       <label>TÌNH TRẠNG</label>
+       <select class="form-control" name="CatIsActive">
          <option>Chọn Tình Trạng</option>
           <option {{#ifeq this.category.CatIsActive 0 }} selected {{/ifeq}} value="0">0</option>
           <option {{#ifeq this.category.CatIsActive 1 }} selected {{/ifeq}} value="1">1</option>
         </select>
-        <div id="CatIsActive"></div>
     </div>
 
-    <div class="form-group">
-     <button type="submit"  class="btn btn-primary" style="width:150px;margin-left:-150px;">SỬA</button>
+    <div style="margin-top:20px;">
+     <button type="submit"  class="btn btn-primary" style="width:100%;">CẬP NHẬT</button>
      </div>
-    </form>
-    </center>
+  </form>
+  </center>
 </body>
 </html>
 

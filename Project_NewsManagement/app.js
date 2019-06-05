@@ -68,11 +68,26 @@ require('./middlewares/passport')(app);
 app.use(require('./middlewares/auth'));
 app.use(require('./middlewares/category.mdw'));
 app.use(require('./middlewares/subcategories.mdw'));
+app.use(require('./middlewares/status.mdw'));
+app.use(require('./middlewares/rank.mdw'));
+app.use(require('./middlewares/role.mdw'));
+
+
 
 app.use('/', require('./routes/home'));
 app.use('/account', require('./routes/account'));
 app.use('/user', require('./routes/user'));
 app.use('/article', require('./routes/article'));
+app.use('/', require('./routes/home'));
+app.use('/user', require('./routes/user'));
+app.use('/writer',require('./routes/writer'));
+app.use('/admin',require('./routes/admin'));
+app.use('/admin/category',require('./routes/category'));
+app.use('/admin/subCategory',require('./routes/subCategory'));
+app.use('/admin/tag',require('./routes/tag'));
+app.use('/admin/article',require('./routes/article'));
+app.use('/admin/user',require('./routes/user'));
+app.use('/admin/account',require('./routes/account'));
 
 app.use((req, res, next) => {
     next(createError(404));

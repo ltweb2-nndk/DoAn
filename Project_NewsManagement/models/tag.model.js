@@ -7,6 +7,9 @@ module.exports={
     single:(id)=>{
         return db.load(`select * from tag where TagID=${id}`);
     },
+    singlebyname:(TagName)=>{
+        return db.load(`select * from tag where TagName='${TagName}'`);
+    },
     insert:(entity)=>{
         return db.add('tag',entity);
     },

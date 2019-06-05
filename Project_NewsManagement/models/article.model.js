@@ -72,4 +72,32 @@ module.exports = {
         
         return db.load(`select distinct(a.ArtID), a.CatID, a.SubCatID, a.ArtAvatar, a.ArtTitle, a.Summary, a.Content, a.RankID, a.ArtPostedOn, s.SubCatName from article a left join category c on a.CatID = c.CatID left join subcategories s on a.SubCatID = s.SubCatID left join articletags ats on a.ArtID = ats.ArtID left join tag t on t.TagID = ats.TagID where (match(c.CatName) against('${keyword}') or match(s.SubCatName) against('${keyword}') or match(a.ArtTitle, a.Summary) against('${keyword}') or match(t.TagName) against ('${keyword}')) and c.CatIsActive = 1 and s.SubCatIsActive = 1 order by a.ArtPostedOn desc limit ${lim} offset ${start_offset}`);
     },
+    all:()=>{
+        return db.load('select * from article');
+    },
+    update: entity => {
+        var id = entity.ArtID;
+        delete entity.ArtID;
+        return db.update('article', 'ArtID', entity, id);
+    },
+    single:(id)=>{
+        return db.load(`select * from article ar where ArtID=${id}`)
+    },
+    delete: id => {
+        return db.delete('article', 'ArtID', id);
+    },
+    search:(value)=>{
+        return db.load(`select * from article ar where ar.ArtID like '${value}' or ar.ArtTitle like N'%${value}%'`);
+    },
+    searchfollowsubct:(value)=>{
+        return db.load(`select * from article ar where ar.SubCatID=${value}`);
+    },
+    count:()=>{
+        return db.load('select count(*) as total from article ')
+    },
+    pageByArt:(start_offset)=>{
+        var limit=config.paginate.default;
+        return db.load(`select * from article limit ${limit} offset ${start_offset}`);
+    }
+
 };

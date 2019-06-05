@@ -17,7 +17,7 @@
   <p>Điền thông tin vào bên dưới  hoặc lựa chọn chuyên mục để tìm kiếm bài viết mà bạn muốn</p> 
 <form method="POST" name="frmBaiviet"> 
 <input name="timkiem" type="text" placeholder="Search.." />
-<button class="btn btn-dark" name="TKTTU" formaction="/Admin/Article/Search">Tìm kiếm</button>
+<button class="btn btn-dark" name="TKTTU" formaction="/admin/article/search">Tìm kiếm</button>
  <br><br>
 <div style="margin-bottom:50px;margin-left:5px;"> 
   <div style="float:right;">
@@ -29,7 +29,7 @@
      {{/each}}
     </select>
     </div>
-    <button class="btn btn-dark" name="TKTDanhMuc" style="margin-left:5px;" formaction="/Admin/Article/SubCategory" onclick="return CheckValueSubCategories();">Xem</button>
+    <button class="btn btn-dark" name="TKTDanhMuc" style="margin-left:5px;" formaction="/admin/article/subCategory" onclick="return CheckValueSubCategories();">Xem</button>
   </div>
 </div>
 </form>
@@ -38,7 +38,7 @@
 <th>Mã bài viết</th>
 <th>Tên bài viết</th>
 <th>Chi tiết</th>
-<th>Sửa</th>
+<th>Cập nhật</th>
 <th>Xóa</th>
 </thead>
 <tbody></tbody>
@@ -46,9 +46,9 @@
     <tr style="height:20px">
         <th>{{ArtID}}</th>
         <th>{{ArtTitle}}</td>
-        <th><a href="/Admin/Article/Details/{{ArtID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
-        <th><a href="/Admin/Article/Edit/{{ArtID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
-        <th><a href="/Admin/Article/Delete/{{ArtID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+        <th><a href="/admin/article/detail/{{ArtID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
+        <th><a href="/admin/Article/edit/{{ArtID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
+        <th><a href="/admin/article/delete/{{ArtID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
     </tr>
     {{/each}}
 </tbody>

@@ -18,13 +18,13 @@
 <input name="timkiem" type="text" placeholder="Search.."/>
 <button class="btn btn-dark" name="btnTimKiem">Tìm kiếm</button>
 <br><br>
-<a href="/admin/tag/Add" class="btn btn-success" style="float: left;margin-bottom:5px;">Thêm Nhãn</a>
+<a href="/admin/tag/add" class="btn btn-success" style="float: left;margin-bottom:5px;">Thêm Nhãn</a>
 </form>
 <table class="table table-bordred table-striped">
  <thead>
 <th>Mã nhãn</th>
 <th>Tên nhãn</th>
-<th>Sửa</th>
+<th>Cập nhật</th>
 <th>Xóa</th>
 </thead>
 <tbody>
@@ -32,8 +32,8 @@
     <tr style="height:20px">
         <th>{{TagID}}</th>
         <th>{{TagName}}</td>
-        <th><a href="/admin/tag/Edit/{{TagID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
-        <th><a href="/admin/tag/Delete/{{TagID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+        <th><a href="/admin/tag/edit/{{TagID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
+        <th><a href="/admin/tag/delete/{{TagID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
     </tr>
     {{/each}}
 </tbody>

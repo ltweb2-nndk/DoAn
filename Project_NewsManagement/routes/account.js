@@ -130,4 +130,18 @@ router.post('/logout', (req, res, next) => {
     res.redirect('/account/login');
 });
 
+router.get('/edit/:id',(req,res,next)=>{
+    var id=req.params.id;
+    accountModel.single(id).then(rows=>{
+        res.render('account/edit',{account:rows[0],layout:false})
+    }).catch(next);
+})
+
+router.post('/update',(req,res,next)=>{
+    var entity=req.body;
+    accountModel.update(entity).then(n=>{
+        res.send('<h3><center>Cập nhật thành công<center></h3>')
+    }).catch(next);
+})
+
 module.exports = router;

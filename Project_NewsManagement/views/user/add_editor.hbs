@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Biên tập viên</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+  <script src="/js/Editor.Check.js"></script> 
+ </head>
+<body>
+<legend><h2>BIÊN TẬP VIÊN</h2></legend>
+<form id="frmAddEditor"  action="/admin/user/add/editor" method="POST" style="width:600px;margin:0 auto;">
+   <div>
+    <label>HỌ TÊN</label>
+    <input  class="form-control" placeholder="Nhập họ tên" name="FullName">
+   </div>
+  <div style="margin-top:10px;">
+    <label >TÊN ĐĂNG NHẬP</label>
+    <input class="form-control" placeholder="Nhập địa chỉ email" type="email" name="UserName">
+  </div>
+  <div style="margin-top:10px;">
+    <label >NGÀY SINH</label>
+    <input type="date" class="form-control input-md" name="DOB">
+ </div>
+ <div style="margin-top:10px;">
+    <label >MẬT KHẨU</label>
+    <input class="form-control" placeholder="Nhập mật khẩu" type="password" name="Password">
+  </div>
+  <div style="margin-top:10px;">
+    <label >XÁC NHẬN MẬT KHẨU</label>
+    <input class="form-control" placeholder="Nhập lại mật khẩu" type="password" name="ConfirmPassword">
+  </div>
+  <button type="submit" class="btn btn-primary" style="width:100%;margin-top:20px;">TẠO NGƯỜI DÙNG</button>
+</form> 
+</div>
+</body>
+</html>

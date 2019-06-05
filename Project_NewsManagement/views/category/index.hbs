@@ -11,14 +11,14 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
    </head>
-  <body>
-  <h2><b>Chuyên mục</b></h2>
+<body>
+  <h2><b>Danh mục</b></h2>
   <p>Điền thông tin vào bên dưới để tìm kiếm danh mục mà bạn muốn</p> 
   <form action="" method="POST"> 
 <input name="timkiem" type="text" placeholder="Search.."/>
 <button class="btn btn-dark" name="btnTimKiem">Tìm kiếm</button>
 <br><br>
-<a href="/admin/category/Add" class="btn btn-success" style="float: left;margin-bottom:5px;">Thêm Danh Mục</a>
+<a href="/admin/category/add" class="btn btn-success" style="float: left;margin-bottom:5px;">Thêm Danh Mục</a>
 </form>
 <table class="table table-bordred table-striped">
  <thead>
@@ -35,13 +35,14 @@
         <th id="CatID">{{CatID}}</th>
         <th>{{CatName}}</td>
         <th>{{CatIsActive}}</th>
-        <th><a href="/admin/category/Detail/{{CatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
-        <th><a href="/admin/category/Edit/{{CatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
-        <th><a href="/admin/category/Delete/{{CatID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+        <th><a href="/admin/category/detail/{{CatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
+        <th><a href="/admin/category/edit/{{CatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
+        <th><a href="/admin/category/delete/{{CatID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
     </tr>
     {{/each}}
 </tbody>
 </table>
+</form>
 <nav aria-label="..." style="float:right;margin-right:10px;">
   <ul class="pagination">
     {{#each this.page_number}}
@@ -57,6 +58,5 @@
     {{/each}}
   </ul>
 </nav>
-</form>
 </body>
 </html>

@@ -3,7 +3,7 @@ var tagModel=require('../models/tag.model')
 var config=require('../config/default.json')
 var router=express.Router();
 
-router.get('/',(req,res)=>{
+router.get('/',(req,res,next)=>{
     var limit=config.paginate.default;
     var page=req.query.page ||1;
     var start_offset=(page-1)*limit;
@@ -30,10 +30,10 @@ router.get('/',(req,res)=>{
             page_number,
             layout:false
         })
-    })
+    }).catch(next);
 });
 
-router.post('/',(req,res)=>{
+router.post('/',(req,res,next)=>{
     var entity=req.body;
     var limit=config.paginate.default;
     var page=req.query.page ||1;
@@ -61,21 +61,26 @@ router.post('/',(req,res)=>{
             page_number,
             layout:false
         })
-    })
+    }).catch(next);
 });
-router.get('/Add',(req,res)=>{
+router.get('/add',(req,res)=>{
     res.render('tag/add',{layout:false});
 });
-router.post('/Add',(req,res)=>{
+router.post('/add',(req,res,next)=>{
     var entity=req.body;
     tagModel.insert(entity).then(id=>{
-        res.send('<h1><font color:red>Thêm thành công</font></h1>')
-    }).catch(error=>{
-        console.log(error);
-        res.end('error');
-    })
+        res.send('<center><h1>Thêm thành công</h1></center>')
+    }).catch(next);
 });
-router.get('/Edit/:id',(req,res)=>{
+router.get('/is-available', (req, res, next) => {
+    var TagName = req.query.TagName;
+    tagModel.singlebyname(TagName).then(rows => {
+      if (rows.length > 0)
+        res.json(false);
+      else res.json(true);
+    })
+})
+router.get('/edit/:id',(req,res,next)=>{
     var id=req.params.id;
     tagModel.single(id).then(rows=>{
         if(rows.length>0)
@@ -93,19 +98,19 @@ router.get('/Edit/:id',(req,res)=>{
                 success:false
             });
         }
-    });
+    }).catch(next);
 });
-router.post('/Update',(req,res)=>{
+router.post('/update',(req,res,next)=>{
     var entity=req.body;
     tagModel.update(entity).then(n=>{
       res.redirect('/admin/tag')
-    });
+    }).catch(next);
 });
-router.get('/Delete/:id', (req, res) => {
+router.get('/delete/:id', (req, res,next) => {
     var id=req.params.id;
     tagModel.delete(id).then(n => {
      res.redirect('/admin/tag')
-    })
+    }).catch(next);
  });
-
+ 
 module.exports=router;

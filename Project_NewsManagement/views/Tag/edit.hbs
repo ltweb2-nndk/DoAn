@@ -8,27 +8,18 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
   <script src="/js/Tag.Check.js"></script>  
   </head>
 <body>
-    <legend><h2>Chỉnh Sửa Nhãn</h2></legend>
-    <center>
-    <form action="/admin/tag/Update" method="POST" name="frmNhan" onsubmit="return CheckValueTag();">
-     <div class="form-group">
-      <input class="form-control" placeholder="Nhập tên nhãn" type="hidden" style="width:300px;" name="TagID" value="{{this.Tag.TagID}}">
-      <div id="TagName"></div>
-
-       <div class="form-group">
-       <label class="loginFormElement" style="margin-right: 220px;">TÊN NHÃN</label>
-       <input class="form-control" placeholder="Nhập tên nhãn" type="text" style="width:300px;" name="TagName" value="{{this.Tag.TagName}}">
-      <div id="TagName"></div>
+  <h2>Cập nhật nhãn</h2>
+  <form action="/admin/tag/Update" method="POST" id="frmNhan" style="width:400px;margin:0 auto;">
+    <input type="hidden" name="TagID" value="{{this.Tag.TagID}}"></input>
+    <div>
+       <label >TÊN NHÃN</label>
+       <input class="form-control" placeholder="Nhập tên nhãn" type="text" name="TagName" id="txtTagName" value="{{this.Tag.TagName}}">
    </div>
-    <div class="form-group"></div>
-     <button type="submit" class="btn btn-primary loginFormElement" style="margin-right: 150px;width:150px;">SỬA</button>
-     </div>
-     </form>
-     </center>
+     <button type="submit" class="btn btn-primary loginFormElement" style="width:100%;margin-top:20px;">CẬP NHẬT</button>
+  </form>
 </body>
 </html>

@@ -103,11 +103,9 @@
         </div>
         <div class="user-info" >
           <span class="user-name"  >
-            {{#if userExistence}}
             {{#with user}}
             <strong id="user-name">{{FullName}}</strong>
             {{/with}}
-            {{/if}}
             {{!-- <strong id="user-name"><%= JSON.stringify(writer) %></strong> --}}
           </span>
           <span class="user-role">{{user.RoleName}}</span>

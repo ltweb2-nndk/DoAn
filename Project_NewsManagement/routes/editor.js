@@ -16,8 +16,9 @@ router.get('/',(req,res)=>{
     catModel.getByID(id).then(rows=>{
         console.log(rows);
         res.render('layouts/mainWrite.hbs',{layout:false,
-            user: req.session.user,
-            userExistence: req.session.userExistence,
+            user: req.user,
+            // user: req.session.user,
+            // userExistence: req.session.userExistence,
             CatOfEditor:rows
         });
     })
@@ -54,8 +55,9 @@ router.get('/articlesByCat/:id',(req,res)=>{
         console.log(rows);
         console.log(page);
         res.render('editor/articlesByCat',{layout:'mainWrite.hbs',
-        user: req.session.user,
-        userExistence: req.session.userExistence,
+            user: req.user,
+        // user: req.session.user,
+        // userExistence: req.session.userExistence,
             catName : rows[0].CatName,
             articles : rows,
             page_numbers,
@@ -70,8 +72,9 @@ router.get('/accept/:id',(req,res)=>{
         subCatModel.allByCatID(catID).then(rowSub=>{
             artTagsModel.getArticleTags(artID).then(rowsTag=>{
                 res.render('editor/acceptArt',{layout: false,
-                    user: req.session.user,
-                    userExistence: req.session.userExistence,
+                    user: req.user,
+                    // user: req.session.user,
+                    // userExistence: req.session.userExistence,
                     article: rows,
                     subCat:rowSub,
                     artTags : rowsTag

@@ -11,24 +11,26 @@ var subCatModel = require('../models/subcategories.model');
 router.get('/',(req,res)=>{
 
     res.render('layouts/mainWrite.hbs',{layout:false,
-        user: req.session.user,
-        userExistence: req.session.userExistence,
+        user: req.user
+        // userExistence: req.session.userExistence,
 
     });
 })
 
 router.get('/info',(req,res)=>{
     res.render('writer/info',{layout:false,
-        user: req.session.user,
-        userExistence: req.session.userExistence 
+        user: req.user
+        // user: req.session.user,
+        // userExistence: req.session.userExistence 
     });
 })
 
 router.get('/add',(req,res)=>{
 
     res.render('writer/addArticle',{layout:'mainWrite.hbs',
-        user: req.session.user,
-        userExistence: req.session.userExistence,
+        user: req.user
+        // user: req.session.user,
+        // userExistence: req.session.userExistence,
 
     });
 })

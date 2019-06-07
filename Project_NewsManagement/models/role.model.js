@@ -4,7 +4,7 @@ module.exports = {
     getByRoleID: id => {
         return db.load(`select * from role where RoleID = ${id}`);
     },
-    all:()=>{
+    all: () => {
         return db.load('select * from role');
     },
 };

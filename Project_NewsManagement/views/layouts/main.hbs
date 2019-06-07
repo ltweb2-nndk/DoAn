@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Newsweek</title>
-    {{!-- <meta name="google-signin-client_id" content="623248920253-q1svab2n78l7mc59r1t6uvd1mj7c4ab5.apps.googleusercontent.com"> --}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -44,17 +43,7 @@
                                         {{else}}
                                         <img id="header-user-avatar" src="/img/user/default-avatar.jpg">
                                         {{/if}}
-                                        <span>
-                                            {{#ifeq RoleID 1}}
-                                            {{../SubscriberName}}
-                                            {{/ifeq}}
-                                            {{#ifeq RoleID 2}}
-                                            {{../WriterName}}
-                                            {{/ifeq}}
-                                            {{#ifeq RoleID 3}}
-                                            {{../EditorName}}
-                                            {{/ifeq}}
-                                        </span>
+                                        <span>{{FullName}}</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">

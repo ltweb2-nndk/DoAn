@@ -43,15 +43,7 @@
         <div class="col-lg-12 padding-0">
             <form action="/user/edit-info" id="edit-info-form" method="POST">
                 <label class="label-form">Tên hiển thị:</label>
-                {{#ifeq RoleID 1}}
-                <input class="input-form" name="Fullname" type="text" placeholder="Tên hiển thị" value="{{../SubscriberName}}">
-                {{/ifeq}}
-                {{#ifeq RoleID 2}}
-                <input class="input-form" name="Fullname" type="text" placeholder="Tên hiển thị" value="{{../WriterName}}">
-                {{/ifeq}}
-                {{#ifeq RoleID 3}}
-                <input class="input-form" name="Fullname" type="text" placeholder="Tên hiển thị" value="{{../EditorName}}">
-                {{/ifeq}}
+                <input class="input-form" name="Fullname" type="text" placeholder="Tên hiển thị" value="{{FullName}}">
                 <label class="label-form">Ngày sinh:</label>
                 <br>
                 <select name="Day" class="select-form">

@@ -50,6 +50,7 @@ var hbs = exphbs.create({
         previous: (value) => {
             return value - 1;
         },
+
         checkStatus: (val, options) => {
             if (Number(val) == 1) {
                 return options.fn(this);
@@ -60,12 +61,15 @@ var hbs = exphbs.create({
                 return options.inverse(this);
             }
         },
-        formatDatefromDB:(date)=>{
+
+        formatDatefromDB: (date) => {
             return moment(date).format("DD/MM/YYYY hh:mm:ss");
         },
-        format:(date)=>{
+        
+        format: (date) => {
             return moment(date).format("YYY-MM-DD hh:mm:ss");
         },
+
         section: hbsSections()
     }
 });
@@ -80,30 +84,20 @@ app.use(express.json());
 
 require('./middlewares/session')(app);
 require('./middlewares/passport')(app);
+require('./middlewares/upload')(app);
 app.use(require('./middlewares/auth'));
 app.use(require('./middlewares/category.mdw'));
 app.use(require('./middlewares/subcategories.mdw'));
 app.use(require('./middlewares/status.mdw'));
 app.use(require('./middlewares/rank.mdw'));
 app.use(require('./middlewares/role.mdw'));
-require('./middlewares/upload')(app);
 
-
-app.use('/', require('./routes/home'));
-app.use('/account', require('./routes/account'));
-app.use('/user', require('./routes/user'));
-app.use('/article', require('./routes/article'));
-app.use('/', require('./routes/home'));
-app.use('/user', require('./routes/user'));
-app.use('/writer',require('./routes/writer'));
-app.use('/admin',require('./routes/admin'));
-app.use('/admin/category',require('./routes/category'));
-app.use('/admin/subCategory',require('./routes/subCategory'));
-app.use('/admin/tag',require('./routes/tag'));
-app.use('/admin/article',require('./routes/article'));
-app.use('/admin/user',require('./routes/user'));
-app.use('/admin/account',require('./routes/account'));
-app.use('/editor',require('./routes/editor'));
+app.use('/', require('./routes/user/home'));
+app.use('/account', require('./routes/user/account'));
+app.use('/user', require('./routes/user/user'));
+app.use('/article', require('./routes/user/article'));
+app.use('/writer', require('./routes/writer/writer'));
+app.use('/editor', require('./routes/editor/editor'));
 
 app.use((req, res, next) => {
     next(createError(404));

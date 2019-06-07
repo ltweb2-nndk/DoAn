@@ -10,7 +10,7 @@ var transporter = nodemailer.createTransport({
 
 module.exports = user => {
     var htmlContent = `
-        <h4>Chào ${user.Fullname},</h4>
+        <h4>Chào ${user.FullName},</h4>
         <h5>Mã xác nhận tài khoản của bạn là: ${user.VerifyID}.</h5>
     `;
 

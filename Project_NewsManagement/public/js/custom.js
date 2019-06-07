@@ -64,17 +64,7 @@ module.exports = {
 
         return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
     },
-    formatDate: (originDate) => {
-        var date = new Date(originDate);
-        var year = date.getFullYear();
-        year = year < 10 ? '0' + year : year;
-        var month = date.getMonth() + 1;
-        month = month < 10 ? '0' + month : month;
-        var day = date.getDate();
-        day = day < 10 ? '0' + day : day;
-        console.log(`${day}/${month}/${year}`);
-        return `${year}-${day}-${month}`;
-    },
+
     day: () => {
         var day = [];
         for (i = 1; i <= 31; i++) {

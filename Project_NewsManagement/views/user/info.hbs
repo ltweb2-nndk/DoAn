@@ -24,24 +24,14 @@
                 </div>
                 {{/if}}
                 {{else}}
-                <div class="col-xs-10 col-sm-4">
+                <div class="col-xs-10 col-sm-6">
                     <p class="user-role margin-0">{{../RoleName}}</p>
                 </div>
                 {{/ifeq}}
                 <label class="label-form col-sm-6">Địa chỉ email:</label>
                 <p class="label-content col-sm-6 margin-0">{{Username}}</p>
                 <label class="label-form col-sm-6">Tên hiển thị:</label>
-                <p class="label-content col-sm-6 margin-0">
-                    {{#ifeq RoleID 1}}
-                    {{../SubscriberName}}
-                    {{/ifeq}}
-                    {{#ifeq RoleID 2}}
-                    {{../WriterName}}
-                    {{/ifeq}}
-                    {{#ifeq RoleID 3}}
-                    {{../EditorName}}
-                    {{/ifeq}}
-                </p>
+                <p class="label-content col-sm-6 margin-0">{{FullName}}</p>
                 <label class="label-form col-sm-6">Ngày sinh:</label>
                 <p class="label-content col-sm-6 margin-0">{{formatDate DOB}}</p>
                 {{#ifeq RoleID 1}}

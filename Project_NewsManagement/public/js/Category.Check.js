@@ -1,44 +1,16 @@
-$(function(){
-	$.validator.addMethod('validDate',function(value,element){
-		if(value==='Chọn Tình Trạng') return false;
-		return true;
-	})
-	$('#frmDanhMuc').validate({
-		//onkeyup:false,
-		rules:{
-			CatName:{
-				required:true,
-				/*remote: {
-					url: '/admin/category/is-available',
-					data: {
-					  catname: function () {
-						return $('#txtCatName').val();
-					  }
-					}
-				},*/
-			},
-			CatIsActive:{
-				required:true,
-			    validDate:true
-			}
-		},
-		messages:{
-			CatName:{
-				required:'Tên danh mục là bắt buộc',
-				//remote:'Tên danh mục đã tồn tại , hãy nhập giá trị khác'
-			},
-			CatIsActive:{
-				validDate:'Lựa chọn một giá trị cho trạng thái danh mục'
-			}
-		},
-		errorElement:'small',
-		errorClass:'help-block text-danger',
-		validClass:'is-valid',
-		highlight:function(e){
-           $(e).removeClass('is-valid').addClass('is-invalid');
-		},
-		unhighlight:function(e){
-			$(e).removeClass('is-invalid').addClass('is-valid');
-		}
-	})
-})
+function CheckValueCategory(){
+    frm=document.frmDanhMuc;
+   if(frm.CatName.value.length==0)
+	{
+		document.getElementById('CatName').innerHTML="<span style='color:red,font-weight:bold'>Tên danh mục không hợp lệ.</span>";
+		return false;
+	}
+	else document.getElementById('CatName').innerHTML="";
+	if(frm.CatIsActive.value=="Chọn Tình Trạng")
+	{
+		document.getElementById('CatIsActive').innerHTML="<span style='color:red,font-weight:bold'>Tình trạng không hợp lệ.</span>";
+		return false;
+	}
+	else document.getElementById('CatIsActive').innerHTML="";
+	return true;
+}

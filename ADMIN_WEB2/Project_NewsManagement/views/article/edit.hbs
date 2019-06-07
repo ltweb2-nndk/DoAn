@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chỉnh sủa bài viết</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="/js/Article.Check.js"></script>
+</head>
+<body>
+  <legend><b>Chỉnh sửa bài viết</b></legend>
+  <form action="/admin/article/update" method="POST" name="frmBaiviet" style="width:300px;margin:0 auto;" >
+    <input class="form-control" type="hidden"  value="{{this.article.ArtID}}" name="ArtID">  
+    <div>
+       <label>TRẠNG THÁI BÀI VIẾT</label>
+        <select class="form-control"  name="StatusID">
+         {{#each lcStatus}}
+            <option {{#if active}} selected {{/if}} value="{{StatusID}}">{{StatusName}}</option>
+          {{/each}}
+         </select>
+    </div>
+    <div >
+     <button type="submit" class="btn btn-primary loginFormElement" style="width:100%;margin-top:20px;">CẬP NHẬT</button>
+    </div>
+  </form>
+</body>
+</html>

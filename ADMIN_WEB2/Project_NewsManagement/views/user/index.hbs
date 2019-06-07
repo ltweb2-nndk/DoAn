@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tài khoản</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="/js/User.Check.js"></script>
+</head>
+  <body>
+  <h2><b>Người dùng</b></h2>
+  <p>Điền thông tin vào bên dưới hoặc lựa chọn loại người dùng để tìm kiếm người dùng mà bạn muốn</p> 
+<form method="POST" name="frmNguoiDung"> 
+<input name="timkiem" type="text" placeholder="Search.." style="margin-left:5px;"/>
+<button class="btn btn-dark" name="TKTTU" formaction="/admin/user/search">Tìm kiếm</button>
+<br><br>
+<div style="margin-bottom:50px;margin-left:5px;"> 
+ <div style="float:left;">
+    <div style="float:left;width:175px;">
+    <select name="TypeAccount" class="browser-default custom-select" class="browser-default custom-select">
+    <option>Người dùng</option>
+     {{#each lcRole}}
+      <option  value="{{RoleID}}">{{RoleName}}</option>
+     {{/each}}
+    </select>
+    </div>
+    <button class="btn btn-info" style="margin-left:5px;width:95px;" formaction="/admin/user/add" name="TTK" onclick="return CheckValueRole();">Thêm</button>
+  </div>
+ <div style="float:right;">
+    <div style="float:left;">
+    <select name="RoleID" class="browser-default custom-select" class="browser-default custom-select">
+    <option>Người dùng</option>
+    <option>All</option>
+     {{#each lcRole}}
+      <option  {{#if active }} selected {{/if}} value="{{RoleID}}">{{RoleName}}</option>
+     {{/each}}
+    </select>
+    </div>
+    <button class="btn btn-dark" name="TKTRole" style="margin-left:5px;" formaction="/Admin/User/Role" onclick="return CheckValueRoles();">Xem</button>
+  </div>
+</div>
+</form>
+<table class="table table-bordred table-striped">
+<thead>
+<th>Họ tên</th>
+<th>Chi tiết</th>
+<th>Xóa</th>
+</thead>
+<tbody></tbody>
+    {{#each this.subscriber}}
+    <tr style="height:20px">
+        <th>{{FullName}}</th>
+        <th><a href="/admin/user/detail/subscriber/{{SubscriberID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
+        <th><a href="/admin/user/delete/subscriber/{{SubscriberID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+    </tr>
+    {{/each}}
+     {{#each this.editor}}
+    <tr style="height:20px">
+        <th>{{FullName}}</th>
+        <th><a href="/admin/user/detail/editor/{{EditorID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
+        <th><a href="/admin/user/delete/editor/{{EditorID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+    </tr>
+    {{/each}}
+     {{#each this.writer}}
+    <tr style="height:20px">
+        <th>{{FullName}}</th>
+        <th><a href="/admin/user/detail/writer/{{WriterID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
+        <th><a href="/admin/user/delete/writer/{{WriterID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+    </tr>
+    {{/each}}
+</tbody>
+</table>
+</body>
+</html>

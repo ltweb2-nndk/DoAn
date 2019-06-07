@@ -1,0 +1,40 @@
+{{#if success}}
+    <div class="alert register-alert" role="alert">
+        Đăng ký thành công! <a href="/login">Đăng nhập</a> ngay!
+    </div>
+{{/if}}
+    <div id="register-user" class="mx-auto mt-4">
+        <span class="register-title mr-3">Tạo tài khoản</span>
+        <span class="register-subtitle font-italic">
+            Bạn đã có tài khoản? <a href="/login">Đăng nhập</a> ngay!
+        </span>
+    
+        <form id="register-form" name="registerForm" method="POST">
+            {{#if existedEmail}}
+            <p class="input-errors">Địa chỉ email đã tồn tại.</p>
+            {{/if}}
+            {{#if errors}}
+                {{#each errors}}
+                <p class="input-errors">{{msg}}</p>
+                {{/each}}
+            {{/if}}
+            <input class="input-form" name="Username" type="text" placeholder="Địa chỉ email">
+            <input class="input-form" name="Fullname" type="text" placeholder="Tên hiển thị">
+            <input class="input-form" name="Password" type="password" placeholder="Mật khẩu (6-20 kí tự)">
+            <input class="input-form" name="passwordconfirm" type="password" placeholder="Xác nhận mật khẩu">
+            <label for="dob" class="label-form">Ngày sinh</label>
+            <input class="dob-form" name="DOB" type="date">
+            <button class="button-form">Đăng ký</button>
+        </form>
+    
+        <hr class="hr-text" data-content="Hoặc đăng ký với">
+    
+        <button class="subregister-button google-register">
+            <i class="fa fa-google-plus" aria-hidden="true"></i>
+            Google
+        </button>
+        <button class="subregister-button facebook-register">
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+            Facebook
+        </button>
+    </div>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chỉnh sửa danh mục</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+  <script src="/js/SubCategory.Check.js"></script>  
+  </head>
+<body>
+<h2>Chỉnh sửa chuyên đề</h2>
+<form action="/admin/subCategory/update" method="POST" id="frmChuyenDe" style="width:400px;margin:0 auto;">
+    
+    <input  type="hidden"  name="SubCatID" value="{{this.subcategories.SubCatID}}" style="width:300px;"/>
+   
+    <div>
+       <label >TÊN CHUYÊN ĐỀ</label>
+       <input class="form-control" placeholder="Nhập tên chuyên đề" type="text"  name="SubCatName" id="txtSubCatName" value="{{this.subcategories.SubCatName}}">
+    </div>
+
+    <div style="margin-top:20px;">
+       <label >TRẠNG THÁI</label>
+       <select class="form-control"  name="SubCatIsActive">
+         <option>Chọn Tình Trạng</option>
+          <option {{#ifeq this.subcategories.SubCatIsActive 0 }} selected {{/ifeq}} value="0">0</option>
+          <option {{#ifeq this.subcategories.SubCatIsActive 1 }} selected {{/ifeq}} value="1">1</option>
+       </select>
+     </div>
+
+    <input type="hidden" name="CatID" value="{{this.subcategories.CatID}}">
+
+    <div style="margin-top:20px;">
+     <button type="submit"  class="btn btn-primary" style="width:100%;">CẬP NHẬT</button>
+    </div>
+</form>
+</body>
+</html>
+

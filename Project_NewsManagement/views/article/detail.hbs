@@ -1,0 +1,104 @@
+{{#if canRead}}
+{{#with article}}
+<div id="article-zone">
+    <a class="subcatname" href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+    {{#ifeq RankID 2}}
+    <a class="premium-article-link" href="/article/premium">
+        <span class="premium-article">PREMIUM</span>
+    </a>
+    {{/ifeq}}
+    <h1 class="article-title">{{ArtTitle}}</h1>
+    <ul class="article-meta">
+        <li class="article-writer"><a href="#">{{Pseudonym}}</a></li>
+        <li class="article-publish">đăng lúc {{formatArticleDateTime ArtPostedOn}}</li>
+    </ul>
+    <h3 class="article-summary">{{Summary}}</h3>
+    <div class="article-content">{{{Content}}}</div>
+    <span class="keyword-title">Từ khóa tìm kiếm:</span>
+    {{#each ../tags}}
+    <a class="article-keyword" href="/article/search?keyword={{TagName}}">{{TagName}}</a>
+    {{/each}}
+</div>
+<div id="article-suggested">
+    <p class="title-meta meta-2"><i class="fa fa-star" aria-hidden="true"></i> ĐỪNG BỎ LỠ</p>
+    <div class="row">
+        {{#each ../top4Art}}
+        <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 article">
+            <a href="/article/{{ArtID}}"><img src="{{ArtAvatar}}" class="w-100"></a>
+            <div class="newest-article-title">
+                {{#ifeq RankID 2}}
+                <a class="premium-article-link" href="/article/premium">
+                    <span class="premium-article">PREMIUM</span>
+                </a>
+                {{/ifeq}}
+                <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                <div>
+                    <span class="date-article">{{formatArticleDateTime ArtPostedOn}}</span>
+                    <span class="category-article">
+                        <a href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+                    </span>
+                </div>
+                <p class="summary-article">{{Summary}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <p class="title-meta"><i class="fa fa-caret-right" aria-hidden="true"></i> ĐỌC THÊM</p>
+    <div class="row">
+        {{#each ../randomTop8OfCategoryArts}}
+        <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 article">
+            <a href="/article/{{ArtID}}"><img src="{{ArtAvatar}}" class="w-100"></a>
+            <div class="newest-article-title">
+                {{#ifeq RankID 2}}
+                <a class="premium-article-link" href="/article/premium">
+                    <span class="premium-article">PREMIUM</span>
+                </a>
+                {{/ifeq}}
+                <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                <div>
+                    <span class="date-article">{{formatArticleDateTime ArtPostedOn}}</span>
+                    <span class="category-article">
+                        <a href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+                    </span>
+                </div>
+                <p class="summary-article">{{Summary}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <p class="title-meta meta-3"><i class="fa fa-caret-right" aria-hidden="true"></i> XEM NHIỀU</p>
+    <div class="row">
+        {{#each ../top12TheMostViewedArt}}
+        <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 article">
+            <a href="/article/{{ArtID}}"><img src="{{ArtAvatar}}" class="w-100"></a>
+            <div class="newest-article-title">
+                {{#ifeq RankID 2}}
+                <a class="premium-article-link" href="/article/premium">
+                    <span class="premium-article">PREMIUM</span>
+                </a>
+                {{/ifeq}}
+                <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                <div>
+                    <span class="date-article">{{formatArticleDateTime ArtPostedOn}}</span>
+                    <span class="category-article">
+                        <a href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+                    </span>
+                </div>
+                <p class="summary-article">{{Summary}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+</div>
+{{/with}}
+{{else}}
+<div id="premium-error">
+    <h4 class="premium-error-title">Bạn chưa là thành viên Premium.</h4>
+    <a class="link home-link" href="/">Về trang chủ</a>
+    <a class="link buy-premium-link" href="/user/buy-premium">Đăng ký Premium</a>    
+</div>
+{{/if}}

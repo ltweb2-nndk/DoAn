@@ -1,0 +1,10 @@
+<div class="section-user section-user-buy-premium">
+    <h1 class="main-title">Đăng ký Premium</h1>
+    <form>
+        {{#if expired}}
+        <button class="premium-button" formaction="/user/buy-premium" formmethod="POST">Mua Premium</button>
+        {{else}}
+        <button class="premium-button" formaction="/user/expire-premium" formmethod="POST">Gia hạn Premium</button>
+        {{/if}}
+    </form>
+</div>

@@ -1,0 +1,124 @@
+
+
+
+{{#section 'css'}}
+<
+    ink rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+
+{{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script>
+    $(() => {
+        $.validator.addMethod('onlyletters', (value, element) => {
+            return !(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value));
+        });
+
+        $('#txtDOB').datetimepicker({
+            format: 'd/m/Y',
+            timepicker: false,
+            mask: true
+        });
+
+        $('#register-form').validate({
+            rules: {
+                Username: {
+                    required: true,
+                    email: true,
+                    remote: {
+                        url: '/account/username-is-available',
+                        data: {
+                            username: () => {
+                                return $('#txtUsername').val();
+                            }
+                        }
+                    }
+                },
+                Fullname: {
+                    required: true,
+                    onlyletters: true
+                },
+                Password: {
+                    required: true,
+                    rangelength: [6, 20]
+                },
+                ConfirmPassword: {
+                    required: true,
+                    equalTo: $('[name="Password"]')
+                },
+                DOB: {
+                    required: true
+                }
+            },
+            messages: {
+                Username: {
+                    required: 'Vui lòng nhập địa chỉ email.',
+                    email: 'Địa chỉ email không hợp lệ.',
+                    remote: 'Địa chỉ email đã tồn tại.'
+                },
+                Fullname: {
+                    required: 'Vui lòng nhập tên hiển thị.',
+                    onlyletters: 'Tên hiển thị không chứa kí tự đặc biệt.'
+                },
+                Password: {
+                    required: 'Vui lòng nhập mật khẩu.',
+                    rangelength: 'Mật khẩu từ 6-20 kí tự.'
+                },
+                ConfirmPassword: {
+                    required: 'Vui lòng xác nhận mật khẩu.',
+                    equalTo: 'Mật khẩu xác nhận không đúng.'
+                },
+                DOB: {
+                    required: 'Ngày sinh không hợp lệ.'
+                }
+            },
+            errorElement: 'p',
+            errorClass: 'input-errors'
+        });
+    });
+</script>
+{{/section}}
+
+{{#if success}}
+<div class="alert register-alert" role="alert">
+    Đăng ký thành công! Kiểm tra gmail lấy mã xác nhận kích hoạt tài khoản nhé!
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+</div>
+{{/if}}
+<div id="register-user" class="mx-auto mt-4">
+    <span class="register-title mr-3">Đăng ký</span>
+    <span class="register-subtitle font-italic">
+        Bạn đã có tài khoản? <a href="/account/login">Đăng nhập</a> ngay!
+    </span>
+
+    <form id="register-form" class="default-form" method="POST">
+        <label class="label-form">Địa chỉ email:</label>
+        <input class="input-form" name="Username" id="txtUsername" type="text" placeholder="Địa chỉ email">
+        <label class="label-form">Tên hiển thị:</label>
+        <input class="input-form" name="FullName" type="text" placeholder="Tên hiển thị">
+        <label class="label-form">Mật khẩu:</label>
+        <input class="input-form" name="Password" type="password" placeholder="Mật khẩu (6-20 kí tự)">
+        <label class="label-form">Xác nhận mật khẩu:</label>
+        <input class="input-form" name="ConfirmPassword" type="password" placeholder="Xác nhận mật khẩu">
+        <label class="label-form">Ngày sinh:</label>
+        <input class="input-form" name="DOB" id="txtDOB" type="text">
+        <button class="button-form">Đăng ký</button>
+    </form>
+
+    <hr class="hr-text" data-content="Hoặc đăng ký với">
+
+    <form>
+        {{!-- bỏ formaction="/login/google" --}}
+        <button class="subregister-button google-register">
+            <i class="fa fa-google-plus" aria-hidden="true"></i>
+            Google
+        </button>
+    </form>
+
+    <button class="subregister-button facebook-register">
+        <i class="fa fa-facebook" aria-hidden="true"></i>
+        Facebook
+    </button>
+</div>

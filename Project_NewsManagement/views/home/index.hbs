@@ -1,0 +1,156 @@
+<!-- home-hotnews -->
+<div id="home-hotnews">
+    <h2 class="home-news-title">TIN HOT</h2>
+    <div class="row">
+        <div class="col-lg-12 col-xl-6 w-100 xs-no-padding">
+            <div id="home-hot-news" class="carousel slide border" data-ride="carousel">
+                <div class="carousel-inner h-100">
+                    {{#each top1Art}}
+                    <div class="carousel-item h-100 active">
+                        <a href="/article/{{ArtID}}">
+                            <img class="d-block w-100 h-100" src="{{ArtAvatar}}">
+                        </a>
+                        <div class="carousel-caption padding-0">
+                            <a href="/article/{{ArtID}}">
+                                {{ArtTitle}}
+                            </a>
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{#each top2To3Art}}
+                    <div class="carousel-item h-100">
+                        <a href="/article/{{ArtID}}">
+                            <img class="d-block w-100 h-100" src="{{ArtAvatar}}">
+                        </a>
+                        <div class="carousel-caption padding-0">
+                            {{#ifeq RankID 2}}
+                            <a class="premium-article-link" href="/article/premium">
+                                <span class="premium-article">PREMIUM</span>
+                            </a>
+                            {{/ifeq}}
+                            <a href="/article/{{ArtID}}">
+                                {{ArtTitle}}
+                            </a>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+                <a class="carousel-control-prev hot-news-slider-button" href="#home-hot-news" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next hot-news-slider-button" href="#home-hot-news" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-12 col-xl-6 xs-no-padding">
+            <div class="row">
+                {{#each top4To6Art}}
+                <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-12 hot-article article">
+                    <a href="/article/{{ArtID}}"><img src="{{ArtAvatar}}" class="w-100"></a>
+                    <div class="hot-article-title">
+                        {{#ifeq RankID 2}}
+                        <a class="premium-article-link" href="/article/premium">
+                            <span class="premium-article">PREMIUM</span>
+                        </a>
+                        {{/ifeq}}
+                        <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                        <div>
+                            <span class="date-article">{{formatArticleDateTime ArtPostedOn}}</span>
+                            <span class="category-article">
+                                <a href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+                            </span>
+                        </div>
+                        <p class="summary-article">{{Summary}}</p>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End home-hotnews -->
+
+<!-- home-newestnews -->
+<div id="home-newestnews">
+    <h2 class="home-news-title">TIN MỚI</h2>
+
+    <div class="row">
+        {{#each top12TheNewestArt}}
+        <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 newest-article article">
+            <a href="/article/{{ArtID}}"><img src="{{ArtAvatar}}" class="w-100"></a>
+            <div class="newest-article-title">
+                {{#ifeq RankID 2}}
+                <a class="premium-article-link" href="/article/premium">
+                    <span class="premium-article">PREMIUM</span>
+                </a>
+                {{/ifeq}}
+                <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                <div>
+                    <span class="date-article">{{formatArticleDateTime ArtPostedOn}}</span>
+                    <span class="category-article">
+                        <a href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+                    </span>
+                </div>
+                <p class="summary-article">{{Summary}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+<!-- End home-newestnews -->
+
+<!-- home-mostviewdnews -->
+<div id="home-mostviewednews">
+    <h2 class="home-news-title">ĐANG ĐƯỢC QUAN TÂM</h2>
+
+    <div class="row">
+        {{#each top12TheMostViewedArt}}
+        <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 mostviewed-article article">
+            <a href="/article/{{ArtID}}"><img src="{{ArtAvatar}}" class="w-100"></a>
+            <div class="mostviewd-article-title">
+                {{#ifeq RankID 2}}
+                <a class="premium-article-link" href="/article/premium">
+                    <span class="premium-article">PREMIUM</span>
+                </a>
+                {{/ifeq}}
+                <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                <div>
+                    <span class="date-article">{{formatArticleDateTime ArtPostedOn}}</span>
+                    <span class="category-article">
+                        <a href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+                    </span>
+                </div>
+                <p class="summary-article">{{Summary}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+<!-- End home-mostviewdnews -->
+
+<!-- home-top10-categories -->
+<div id="home-top10-categories">
+    <div class="row">
+        {{#each theNewestOfCategories}}
+        <div class="col-lg-6 top10-categories">
+            <h2 class="home-category-title"><a href="/article/category/{{CatID}}" title="">{{CatName}}</a></h2>
+            <a href="/article/{{ArtID}}"><img src="{{ArtAvatar}}" class="w-100"></a>
+            <div class="top1-article-title">
+                {{#ifeq RankID 2}}
+                <a class="premium-article-link" href="/article/premium">
+                    <span class="premium-article">PREMIUM</span>
+                </a>
+                {{/ifeq}}
+                <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                <p class="date-article">{{formatArticleDateTime ArtPostedOn}}</p>
+                <p class="summary-article">{{Summary}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+<!-- End home-top10-categories -->

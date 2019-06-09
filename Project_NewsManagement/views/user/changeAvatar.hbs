@@ -1,0 +1,38 @@
+{{#section 'js'}}
+<script>
+    $(() => {
+        // Upload hình
+        $('#img-file').change((e) => {
+            $('#user-avatar').attr('src', URL.createObjectURL(e.target.files[0]));
+        });
+    });
+</script>
+{{/section}}
+
+{{#with user}}
+<div class="section-user section-user-change-avatar">
+    <div class="row">
+        <h1 class="col-lg-12 main-title">Thay đổi ảnh đại diện</h1>
+        <div class="col-lg-12 padding-0">
+            <form id="change-avatar-form" name="changeAvatarForm" action="/user/change-avatar" method="POST" enctype="multipart/form-data">
+                <div class="col-lg-12">
+                    {{#if Avatar}}
+                    <img id="user-avatar" class="user-avatar" src="{{Avatar}}">
+                    {{else}}
+                    <img id="user-avatar" class="user-avatar" src="/img/user/default-avatar.jpg">
+                    {{/if}}
+                </div>
+                <div class="col-lg-12">
+                    <button id="upload-img-button" class="focus-no-outline" onclick="return uploadImgButton()">
+                        Chọn hình ảnh
+                    </button>
+                    <input id="img-file" type="file" name="Avatar" accept="image/*">
+                </div>
+                <div class="col-lg-12">
+                    <button class="button-form">Xác nhận thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{/with}}

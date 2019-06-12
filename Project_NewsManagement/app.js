@@ -99,6 +99,14 @@ app.use('/article', require('./routes/user/article'));
 app.use('/writer', require('./routes/writer/writer'));
 app.use('/editor', require('./routes/editor/editor'));
 
+app.use('/admin',require('./routes/admin/admin'));
+app.use('/admin/category',require('./routes/admin/category'));
+app.use('/admin/subCategory',require('./routes/admin/subCategory'));
+app.use('/admin/tag',require('./routes/admin/tag'));
+app.use('/admin/article',require('./routes/admin/article'));
+app.use('/admin/user',require('./routes/admin/user'));
+app.use('/admin/account',require('./routes/admin/account'));
+
 app.use((req, res, next) => {
     next(createError(404));
 });

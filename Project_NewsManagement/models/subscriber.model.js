@@ -9,8 +9,24 @@ module.exports = {
         return db.load(`select * from subscriber s join account c where s.AccID = ${id} and s.AccID = c.AccID`);
     },
 
+    getByUsername: username => {
+        return db.load(`select * from subscriber s join account c where c.Username = '${username}' and s.AccID = c.AccID`);
+    },
+
     update: (id, entity) => {
         return db.update('subscriber', 'SubscriberID', entity, id);
+    },
+    all:()=>{
+        return db.load('select * from subscriber');
+    },
+    single:(id)=>{
+        return db.load(`select * from subscriber where SubscriberID='${id}'`);
+    },
+    delete: id => {
+        return db.delete('subscriber', 'SubscriberID', id);
+     }, 
+    search:(value)=>{
+        return db.load(`select * from subscriber where FullName like N'%${value}%'`);
     }
 
     // all: () => {

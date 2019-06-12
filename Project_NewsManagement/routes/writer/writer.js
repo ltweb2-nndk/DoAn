@@ -7,15 +7,17 @@ var config = require('../../config/default.json');
 var tagModel = require('../../models/tag.model');
 var subCatModel = require('../../models/subcategories.model');
 var restricted = require('../../middlewares/restricted');
+var custom = require('../../public/js/custom');
+var isWriter = require('../../middlewares/isWriter');
 
-router.get('/welcome', restricted, (req, res, next) => {
+router.get('/welcome', restricted, isWriter, (req, res, next) => {
     console.log(req.user);
     res.render('writer/welcome', {
         layout: 'mainWrite.hbs'
     });
 })
 
-router.get('/add', restricted, (req, res, next) => {
+router.get('/add', restricted, isWriter, (req, res, next) => {
     res.render('writer/addArticle', {
         layout: 'mainWrite.hbs'
     });
@@ -47,7 +49,7 @@ router.post('/add', restricted, (req, res, next) => {
 
 })
 
-router.get('/articlesByStatus/:id', (req, res, next) => {
+router.get('/articlesByStatus/:id', isWriter, (req, res, next) => {
     var id = req.params.id;
     var lim = config.paginate.default;
     var page = req.query.page || 1;
@@ -89,7 +91,7 @@ router.get('/articlesByStatus/:id', (req, res, next) => {
     }).catch(next);
 })
 
-router.get('/edit/:id', restricted, (req, res, next) => {
+router.get('/edit/:id', restricted, isWriter, (req, res, next) => {
     var id = req.params.id;
     Promise.all([articleModel.getSomeByID(id), artTagsModel.getArticleTags(id)])
         .then(([rowsArt, rowsTag]) => {
@@ -116,7 +118,16 @@ router.post('/edit/:id', restricted, (req, res, next) => {
     var article = req.body;
     var avatar = req.body.avaArt;
     console.log('ád'+ avatar);
-    articleModel.update(article)
+    // Phần cũ của Đào:
+    //articleModel.update(article)
+
+    // Phần Đạt bổ sung
+    delete article.ArtID;
+    article.ArtCreatedOn = custom.getDateTimeNow();
+    article.StatusID = 1;
+    // /Phần Đạt bổ sung
+    
+    articleModel.update(artID, article)
         .then(nRows => {
     
             

@@ -8,13 +8,14 @@ var subCatModel = require('../../models/subcategories.model');
 var artTagsModel = require('../../models/articleTags.model');
 var moment = require('moment');
 var tagModel = require('../../models/tag.model');
+var restricted = require('../../middlewares/restricted');
+var isEditor = require('../../middlewares/isEditor');
 
-
-router.get('/welcome', (req, res, next) => {
-
-    var id = req.user.EditorID;
+router.get('/welcome', restricted, isEditor, (req, res, next) => {
     console.log(req.user)
-    catModel.getByID(id).then(rows => {
+    var id = req.user.EditorID;
+    console.log(id);
+    catModel.getByID(+id).then(rows => {
 
         console.log(rows);
         res.render('writer/welcome', {
@@ -25,7 +26,7 @@ router.get('/welcome', (req, res, next) => {
     }).catch(next);
 })
 
-router.get('/articlesByCat/:id', (req, res, next) => {
+router.get('/articlesByCat/:id', restricted, isEditor, (req, res, next) => {
     var catID = req.params.id;
     var lim = config.paginate.default;
     var page = req.query.page || 1;
@@ -72,7 +73,7 @@ router.get('/articlesByCat/:id', (req, res, next) => {
     }).catch(next);
 })
 
-router.get('/accept/:id', (req, res) => {
+router.get('/accept/:id', restricted, isEditor, (req, res) => {
     var artID = req.params.id;
     articleModel.getByArtID(artID).then(rows => {
         var catID = rows[0].CatID;
@@ -99,14 +100,18 @@ router.post('/accept/:id', (req, res, next) => {
     console.log("a" + RankID);
     var ArtPostedOn = moment(req.body.ArtPostedOn, 'DD/MM/YYYY hh:mm:ss').format('YYYY-MM-DD hh:mm:ss');
 
-    var entity1 = {
+    var entity = {
         "SubCatID": SubCatID,
         "ArtPostedOn": ArtPostedOn,
         "StatusID": 2,
         "EditorID": EditorID,
         "RankID": RankID
     }
-    articleModel.edit(entity1, artID).then(n => {
+    // Phần cũ của Đào:
+    // articleModel.edit(entity1, artID)
+    // /Phần cũ của Đào
+
+    articleModel.update(artID, entity).then(n => {
         var tags = req.body.TagName.split(',');
         tags.forEach(element => {
             tagModel.add(element).then(id => {
@@ -125,7 +130,7 @@ router.post('/accept/:id', (req, res, next) => {
     }).catch(next);
 })
 
-router.get('/decline/:id', (req, res, next) => {
+router.get('/decline/:id', restricted, isEditor, (req, res, next) => {
     var artID = req.params.id;
     articleModel.getByArtID(artID).then(rows => {
         res.render('editor/declineArt', {

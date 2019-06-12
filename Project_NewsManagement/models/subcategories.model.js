@@ -13,9 +13,9 @@ module.exports = {
         return db.load(`select * from subcategories where SubCatID = ${id} and SubCatIsActive = 1`);
     },
 
-    allByCatID: id => {
+   /* allByCatID: id => {
         return db.load(`select * from subcategories where CatID = ${id}`);
-    },
+    },*/
 
     single: (id) => {
         return db.load(`select * from subcategories where SubCatID=${id}`);

@@ -16,6 +16,12 @@ module.exports = {
     update: (id, entity) => {
         return db.update('account', 'AccID', entity, id);
     },
+    delete:(id)=>{
+        return db.delete('account', 'AccID', id);
+    },
+    single:(id)=>{
+        return db.load(`select * from account where AccID=${id}`);
+    },
 
     // singlebyUserName: (username) => {
     //     return db.load(`select * from account where Username='${username}'`);

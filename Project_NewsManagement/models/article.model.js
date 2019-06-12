@@ -12,10 +12,7 @@ module.exports = {
         return db.load(`select * from article a join category c join writer w 
         where a.ArtID = ${artID} and a.CatID = c.CatID and a.WriterID = w.WriterID and c.CatIsActive = 1`);
     },
-    updateViews: entity => {
-        var id = entity.ID;
-        delete entity.ID;
-
+    update: (id, entity) => {
         return db.update('article', 'ArtID', entity, id);
     },
 
@@ -82,12 +79,6 @@ module.exports = {
     all: () => {
         return db.load('select * from article');
     },
-    
-    // update: entity => {
-    //     var id = entity.ArtID;
-    //     delete entity.ArtID;
-    //     return db.update('article', 'ArtID', entity, id);
-    // },
 
     single: (id) => {
         return db.load(`select * from article ar where ArtID=${id}`)
@@ -112,11 +103,6 @@ module.exports = {
         var limit = config.paginate.default;
         return db.load(`select * from article limit ${limit} offset ${start_offset}`);
     },
-
-    // getByArtID: id => {
-    //     return db.load(`select * from article a join category c join writer w 
-    //     where a.ArtID = ${id} and a.CatID = c.CatID and a.WriterID = w.WriterID`);
-    // },
 
     getByStatus: statusID => {
         return db.load(`select ArtID,ArtTitle,Summary,ArtCreatedOn,ArtPostedOn,StatusID from article where StatusID = ${statusID}`);
@@ -143,32 +129,32 @@ module.exports = {
         return db.add('article', params);
     },
 
-    update: (entity) => {
-        // var img = entity.avaArt
-        // if(img==="")
-        //     img='/img/article/fdgf'+entity.avaArt
-        // else
-        //     img = entity.avaArt2
+    // update: (entity) => {
+    //     // var img = entity.avaArt
+    //     // if(img==="")
+    //     //     img='/img/article/fdgf'+entity.avaArt
+    //     // else
+    //     //     img = entity.avaArt2
         
-        var id = entity.ArtID;
-        var params = {
-            "ArtTitle": entity.ArtTitle,
-            "Summary": entity.Summary,
-            "Content": entity.Content,
-            "SubCatID": entity.SubCatID,
-            "StatusID": entity.StatusID,
-            "RankID": entity.RankID,
-            "WriterID": entity.WriterID,
-            "ArtCreatedOn": date.getDateTimeNow(),
-            "ArtAvatar": entity.artAvatar,
-            "StatusID": 1
-        }
-        return db.update('article', 'ArtID', params, id);
-    },
+    //     var id = entity.ArtID;
+    //     var params = {
+    //         "ArtTitle": entity.ArtTitle,
+    //         "Summary": entity.Summary,
+    //         "Content": entity.Content,
+    //         "SubCatID": entity.SubCatID,
+    //         "StatusID": entity.StatusID,
+    //         "RankID": entity.RankID,
+    //         "WriterID": entity.WriterID,
+    //         "ArtCreatedOn": date.getDateTimeNow(),
+    //         "ArtAvatar": entity.artAvatar,
+    //         "StatusID": 1
+    //     }
+    //     return db.update('article', 'ArtID', params, id);
+    // },
 
-    edit: (entity, id) => {
-        return db.update('article', 'ArtID', entity, id);
-    },
+    // edit: (entity, id) => {
+    //     return db.update('article', 'ArtID', entity, id);
+    // },
 
     countByStatus: (id) => {
         return db.load(`select count(StatusID) as total from article where StatusID=${id} GROUP BY StatusID`);

@@ -133,14 +133,17 @@ router.post('/login', (req, res, next) => {
         } else if (user.RoleID == 2) {
             await writerModel.getByAccID(user.AccID).then(rows => {
                 user = rows[0];
-                console.log(user);
                 originalURL = '/writer/welcome';
             });
-        }else if (user.RoleID == 3) {
+        } else if (user.RoleID == 3) {
             await editorModel.getByAccID(user.AccID).then(rows => {
                 user = rows[0];
-                console.log(user);
                 originalURL = '/editor/welcome';
+            });
+        } else {
+            await accountModel.single(user.AccID).then(rows => {
+                user = rows[0];
+                originalURL = '/admin';
             });
         }
 
@@ -152,9 +155,71 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
 });
 
+router.get('/logout', (req, res, next) => {
+    req.logout();
+    res.redirect('/account/login');
+});
+
 router.post('/logout', (req, res, next) => {
     req.logout();
     res.redirect('/account/login');
+});
+
+router.get('/forget-password', logedin, (req, res, next) => {
+    res.render('account/forgetPassword');
+});
+
+router.post('/forget-password', (req, res, next) => {
+    req.session.Username = req.body.Username;
+    var verifyID = Math.floor(100000 + Math.random() * 900000);
+    var entity = {
+        "VerifyID": verifyID
+    };
+
+    subscriberModel.getByUsername(req.body.Username).then(rows => {
+        var user = rows[0];
+        
+        accountModel.update(user.AccID, entity).then(count => {
+            subscriberModel.getByAccID(user.AccID).then(rows => {
+                require('../../middlewares/nodemailer')(rows[0]);
+                res.redirect('/account/verify-forget-password');
+            }).catch(next);
+        }).catch(next);
+    }).catch(next);
+});
+
+router.get('/verify-forget-password', logedin, (req, res, next) => {
+    res.render('account/verify');
+});
+
+router.post('/verify-forget-password', (req, res, next) => {
+    subscriberModel.getByUsername(req.session.Username).then(rows => {
+        var user = rows[0];
+
+        if (user.VerifyID == +req.body.VerifyID) {
+            res.redirect('/account/verify-new-password');
+        } else {
+            res.redirect('/account/verify-forget-password');
+        }
+    }).catch(next);
+});
+
+router.get('/verify-new-password', (req, res, next) => {
+    res.render('user/changePassword');
+});
+
+router.post('/verify-new-password', (req, res, next) => {
+    subscriberModel.getByUsername(req.session.Username).then(rows => {
+        var user = rows[0];
+        var entity = {
+            "Password": bcrypt.hashSync(req.body.NewPassword, saltRounds)
+        };
+        console.log(user.AccID);
+        accountModel.update(user.AccID, entity).then(count => {
+            res.redirect('/account/login');
+            req.session.Username = null;
+        }).catch(next);
+    }).catch(next);
 });
 
 module.exports = router;

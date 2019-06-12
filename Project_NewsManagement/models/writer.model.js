@@ -9,8 +9,27 @@ module.exports = {
 
     update: (id, entity) => {
         return db.update('writer', 'WriterID', entity, id);
+    },
+
+    all: () => {
+        return db.load('select * from writer');
+    },
+    single: (id) => {
+        return db.load(`select * from writer where WriterID=${id}`);
+    },
+    singlebyname: (FullName) => {
+        return db.load(`select * from writer where FullName='${FullName}'`);
+    },
+    insert: (entity) => {
+        return db.add('writer', entity);
+    },
+    delete: id => {
+        return db.delete('writer', 'WriterID', id);
+    },
+    search: (value) => {
+        return db.load(`select * from writer where FullName like N'%${value}%' `);
     }
-    
+
     // all: () => {
     //     return db.load('select * from writer');
     // },

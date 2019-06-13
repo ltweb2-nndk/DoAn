@@ -110,7 +110,7 @@ module.exports = {
     },
 
     getByCat: catID => {
-        return db.load(`select* from article where CatID = 6 = ${catID}`);
+        return db.load(`select* from article where CatID = ${catID}`);
     },
 
     add: (entity) => {
@@ -129,34 +129,6 @@ module.exports = {
         }
         return db.add('article', params);
     },
-
-    // update: (entity) => {
-    //     // var img = entity.avaArt
-    //     // if(img==="")
-    //     //     img='/img/article/fdgf'+entity.avaArt
-    //     // else
-    //     //     img = entity.avaArt2
-
-    //     var id = entity.ArtID;
-    //     var params = {
-    //         "ArtTitle": entity.ArtTitle,
-    //         "Summary": entity.Summary,
-    //         "Content": entity.Content,
-    //         "SubCatID": entity.SubCatID,
-    //         "StatusID": entity.StatusID,
-    //         "RankID": entity.RankID,
-    //         "WriterID": entity.WriterID,
-    //         "ArtCreatedOn": date.getDateTimeNow(),
-    //         "ArtAvatar": entity.artAvatar,
-    //         "StatusID": 1
-    //     }
-    //     return db.update('article', 'ArtID', params, id);
-    // },
-
-    // edit: (entity, id) => {
-    //     return db.update('article', 'ArtID', entity, id);
-    // },
-
     countByStatus: (id) => {
         return db.load(`select count(StatusID) as total from article where StatusID=${id} GROUP BY StatusID`);
     },
@@ -164,19 +136,29 @@ module.exports = {
     countByCat: (catID) => {
         return db.load(`select count(CatID) as total from article where CatID=${catID} GROUP BY CatID`);
     },
-
+    countAllDraft:()=>{
+        var statusID = config.status.chuaDuyet;
+        return db.load(`select count(StatusID) as total from article where StatusID=${statusID} GROUP BY StatusID`)
+    },
     countDraftByCat: (catID) => {
-        return db.load(`select count(CatID) as total from article where CatID=${catID} and StatusID=1 GROUP BY CatID`);
+        var statusID = config.status.chuaDuyet;
+        return db.load(`select count(CatID) as total from article where CatID=${catID} and StatusID=${statusID} GROUP BY CatID`);
     },
     pageByStatus: (stusID, start_offset) => {
         var lim = config.paginate.default;
         return db.load(`select a.ArtID,a.ArtAvatar,a.ArtTitle,a.Summary,a.StatusID,s.StatusName 
         from article a join status s on a.StatusID = s.StatusID
-        where a.StatusID = ${stusID} limit 6 offset ${start_offset}`);
+        where a.StatusID = ${stusID} limit ${lim} offset ${start_offset}`);
     },
 
     pageByCat: (catID, start_offset) => {
+        var statusID = config.status.chuaDuyet;
         var lim = config.paginate.default;
-        return db.load(`select * from article a join category c on a.CatID = c.CatID  where a.CatID = ${catID} and a.StatusID=1 limit ${lim} offset ${start_offset}`);
+        return db.load(`select * from article a join category c on a.CatID = c.CatID  where a.CatID = ${catID} and a.StatusID=${statusID} limit ${lim} offset ${start_offset}`);
+    },
+    pageDraft:(start_offset)=>{
+        var lim = config.paginate.default;
+        var statusID = config.status.chuaDuyet;
+        return db.load(`select* from article where StatusID = ${statusID} limit ${lim} offset ${start_offset}`)
     }
 };

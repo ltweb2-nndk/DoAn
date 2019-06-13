@@ -15,9 +15,7 @@ module.exports = {
     },
 
     getByID: (editID) => {
-        return db.load(`select c.*,a.StatusID,count(a.CatID) as num_of_art from category c join article a on c.CatID = a.CatID
-        where c.EditorID = ${editID} and a.StatusID = 1
-        GROUP BY c.CatName,c.CatID,c.EditorID,c.CatIsActive,a.StatusID`);
+        return db.load(`select c.CatID, c.CatName, count(*) num_of_arts from article a join category c on a.CatID = c.CatID join editor e on a.EditorID = e.EditorID join status s on a.StatusID = s.StatusID where a.EditorID = ${editID} and a.StatusID = 1 group by c.CatID, c.CatName`);
     },
     allOfAdmin:()=>{
         return db.load('select * from category');

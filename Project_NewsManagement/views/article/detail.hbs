@@ -19,6 +19,55 @@
     <a class="article-keyword" href="/article/search?keyword={{TagName}}">{{TagName}}</a>
     {{/each}}
 </div>
+<div id="article-comments">
+    <div id="comments-area">
+        <div class="user-comment">
+            <img class="user-avatar" src="/img/user/default-avatar.jpg">
+            <span class="username">Nguyen Dat</span>
+            <span class="comment-datetime">11/11/11 11:11</span>
+            <ul class="interact-comment">
+                <li>
+                    <form></form>
+                    <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+                    <span class="likes-dislikes">2</span>
+                </li>
+                <li>
+                    <form></form>
+                    <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+                    <span class="likes-dislikes">2</span>
+                </li>
+            </ul>
+            <p class="comment-content">Bài báo này hay quá ta!</p>
+        </div>
+
+        <div class="user-comment">
+            <img class="user-avatar" src="/img/user/default-avatar.jpg">
+            <span class="username">Nguyen Dat</span>
+            <span class="comment-datetime">11/11/11 11:11</span>
+            <ul class="interact-comment">
+                <li>
+                    <form id="like-comment-form" action="/article/like-comment/{{CommentID}}" method="POST"></form>
+                    <a href="javascript: $('#like-comment-form').submit();"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+                    <span class="likes-dislikes">2</span>
+                </li>
+                <li>
+                    <form id="dislike-comment-form" action="/article/dislike-comment/{{CommentID}}" method="POST"></form>
+                    <a href="javascript: $('#dislike-comment-form').submit();"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+                    <span class="likes-dislikes">2</span>
+                </li>
+            </ul>
+            <p class="comment-content">Bài báo này hay quá ta!</p>
+        </div>
+    </div>
+    {{#if ../user}}
+    <form id="comment-form" action="/article/comment/{{ArtID}}">
+        <textarea rows="5" name="CommentContent" placeholder="Bạn nghĩ gì về tin này?"></textarea>
+        <button class="button-form">Đăng bình luận</button>
+    </form>
+    {{else}}
+    <a class="login-link" href="/account/login?originalURL=/article/{{ArtID}}">Đăng nhập để bình luận</a>
+    {{/if}}
+</div>
 <div id="article-suggested">
     <p class="title-meta meta-2"><i class="fa fa-star" aria-hidden="true"></i> ĐỪNG BỎ LỠ</p>
     <div class="row">

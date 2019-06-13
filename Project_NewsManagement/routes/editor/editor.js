@@ -10,17 +10,14 @@ var moment = require('moment');
 var tagModel = require('../../models/tag.model');
 var restricted = require('../../middlewares/restricted');
 var isEditor = require('../../middlewares/isEditor');
+var custom = require('../../public/js/custom');
 
 router.get('/welcome', restricted, isEditor, (req, res, next) => {
-    console.log(req.user)
-    var id = req.user.EditorID;
-    console.log(id);
-    catModel.getByID(+id).then(rows => {
+    catModel.getByID(req.user.EditorID).then(rows => {
 
         console.log(rows);
         res.render('writer/welcome', {
             layout: 'mainWrite.hbs',
-            EditorID : rows[0].EditorID,
             CatOfEditor: rows
         });
     }).catch(next);
@@ -97,13 +94,14 @@ router.post('/accept/:id', (req, res, next) => {
     var SubCatID = req.body.SubCatID;
     var EditorID = req.body.EditorID;
     var RankID = req.body.RankID;
-    console.log("a" + RankID);
-    var ArtPostedOn = moment(req.body.ArtPostedOn, 'DD/MM/YYYY hh:mm:ss').format('YYYY-MM-DD hh:mm:ss');
-
+    // console.log("a" + RankID);
+    // console.log(req.body.ArtPostedOn);
+    var ArtPostedOn = moment(req.body.ArtPostedOn, 'DD/MM/YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
+    // console.log(ArtPostedOn);
     var entity = {
         "SubCatID": SubCatID,
         "ArtPostedOn": ArtPostedOn,
-        "StatusID": 2,
+        "StatusID": 3,
         "EditorID": EditorID,
         "RankID": RankID
     }
@@ -121,12 +119,14 @@ router.post('/accept/:id', (req, res, next) => {
                 };
                 console.log(entity);
                 artTagsModel.delete(artID).then(id => {
-                    artTagsModel.add(entity).then();
+                    artTagsModel.add(entity).then(count => {
+                        
+                    }).catch(next);
                 }).catch(next);
 
             }).catch(next);
         });
-        res.redirect(req.originalUrl);
+        res.redirect('/editor/welcome');
     }).catch(next);
 })
 

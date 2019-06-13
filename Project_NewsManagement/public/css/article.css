@@ -264,3 +264,95 @@
     text-decoration: none;
     color: #fff;
 }
+
+#article-comments {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#article-comments textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 13px;
+}
+
+#article-comments .button-form {
+    width: 150px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+#article-comments textarea:focus {
+    border: 1px solid #cc0000;
+    outline: 0;
+}
+
+.user-avatar {
+    width: 27px;
+    height: 27px;
+    margin: 0 !important;
+    border-radius: 50%;
+}
+
+.username {
+    font-size: 13px;
+}
+
+.comment-datetime {
+    font-size: 12px;
+    color: #888888;
+}
+
+.comment-content {
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+#comments-area {
+    padding: 10px;
+    border: 1px solid #c6c6c6;
+    margin-bottom: 20px;
+}
+
+.user-comment {
+    border-bottom: 1px solid #c6c6c6;
+    margin-bottom: 10px;
+}
+
+.user-comment:last-child {
+    border: none;
+}
+
+.interact-comment {
+    float: right;
+    padding: 0;
+}
+
+.interact-comment li {
+    display: inline;
+}
+
+.interact-comment li:first-child {
+    margin-right: 15px;
+}
+
+.interact-comment a {
+    color: #000;
+} 
+
+.interact-comment li form {
+    margin: 0;
+    display: none;
+}
+
+.likes-dislikes {
+    font-size: 13px;
+}
+
+.comment-likes {
+    margin-right: 15px;
+}
+
+.login-link {
+    font-size: 14px;
+}

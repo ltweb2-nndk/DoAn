@@ -145,12 +145,11 @@ router.get('/:id', (req, res, next) => {
                 }
             } else {
                 var entity = {
-                    "ID": id,
                     "Views": article.Views + 1
                 };
 
                 Promise.all([
-                    articleModel.updateViews(entity),
+                    articleModel.update(id, entity),
                     articleModel.getTopFeatured(4, 0),
                     articleModel.getRandomTopByCatID(8, article.CatID),
                     articleModel.getTopByProperty(12, 'Views'),

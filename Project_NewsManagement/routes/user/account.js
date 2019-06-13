@@ -56,6 +56,7 @@ router.post('/register', (req, res, next) => {
     accountModel.add(accountEntity).then(AccID => {
         var subEntity = {
             "AccID": AccID,
+            "Avatar": '/img/user/default-avatar.jpg',
             "FullName": user.FullName,
             "DOB": moment(user.DOB, 'DD/MM/YYYY').format('YYYY-MM-DD')
         };

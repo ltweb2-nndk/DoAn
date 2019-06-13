@@ -7,11 +7,12 @@ module.exports = {
         return db.load(`select * from article a join category c join subcategories s join writer w 
         where a.ArtID = ${id} and a.CatID = c.CatID and a.SubCatID = s.SubCatID and a.WriterID = w.WriterID and c.CatIsActive = 1 and s.SubCatIsActive = 1`);
     },
-    //hàm này ko cần kết thêm bảng SubCat
-    getSomeByID: artID =>{
+
+    getSomeByID: artID => {
         return db.load(`select * from article a join category c join writer w 
         where a.ArtID = ${artID} and a.CatID = c.CatID and a.WriterID = w.WriterID and c.CatIsActive = 1`);
     },
+
     update: (id, entity) => {
         return db.update('article', 'ArtID', entity, id);
     },
@@ -135,7 +136,7 @@ module.exports = {
     //     //     img='/img/article/fdgf'+entity.avaArt
     //     // else
     //     //     img = entity.avaArt2
-        
+
     //     var id = entity.ArtID;
     //     var params = {
     //         "ArtTitle": entity.ArtTitle,

@@ -1,3 +1,84 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+
+{{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+    $(() => {
+        /*
+        $('#comment-form').submit(() => {
+            var commentContent = $('#txtCommentContent').val();
+            var subscriberID = $('#txtSubscriberID').val();
+            var artID = $('#txtArtID').val();
+
+            if (commentContent) {
+                $.ajax({
+                    type: 'post',
+                    url: `article/comment/${artID}`;,
+                    data: {
+                        CommentContent: commentContent,
+                        SubscriberID: subscriberID
+                    }
+                });
+            }
+        });
+        */
+
+        $('#comment-form').submit(function(e) {
+            e.preventDefault(); // Stops browser from navigating away from page
+            var commentContent = $('#txtCommentContent').val();
+            var subscriberID = $('#txtSubscriberID').val();
+            var artID = $('#txtArtID').val();
+            var action = `/article/comment/${artID}`;
+
+            if (commentContent) {
+                var data = {
+                    CommentContent: commentContent,
+                    SubscriberID: subscriberID,
+                    ArtID: artID
+                };
+                // build a json object or do something with the form, store in data
+                $.post(action, data, res => {
+                    // do something when it was successful
+                    $('#comments-area').html(res + $('#comments-area').html());
+                });
+            }
+        
+            return false;
+        });
+    });
+
+    function postComment() {
+        var commentContent = $('#txtCommentContent').val();
+        var subscriberID = $('#txtSubscriberID').val();
+        var artID = $('#txtArtID').val();
+        var action = `/article/comment/${artID}`;
+
+        if (commentContent) {
+            $.ajax({
+               type: 'post',
+               url: action,
+               data: {
+                   CommentContent: commentContent,
+                   SubscriberID: subscriberID,
+                   ArtID: artID
+               },
+               success: (res) => {
+                   /*$('#comments-area').html(res + $('#comments-area').html());
+                   console.log($('#comments-area').html());
+                   $('#txtCommentContent').val() = "";*/
+                   //$('#comments-area').html(res);
+                   $('#comments-area').html(res + $('#comments-area').html());
+               }
+            });
+        }
+
+        return false;
+    }
+</script>
+{{/section}}
+
 {{#if canRead}}
 {{#with article}}
 <div id="article-zone">
@@ -20,48 +101,35 @@
     {{/each}}
 </div>
 <div id="article-comments">
+    {{#if ../comments}}
     <div id="comments-area">
+        {{#each ../comments}}
         <div class="user-comment">
-            <img class="user-avatar" src="/img/user/default-avatar.jpg">
-            <span class="username">Nguyen Dat</span>
-            <span class="comment-datetime">11/11/11 11:11</span>
+            <img class="user-avatar" src="{{Avatar}}">
+            <span class="username">{{FullName}}</span>
+            <span class="comment-datetime">{{formatArticleDateTime CommentCreatedOn}}</span>
             <ul class="interact-comment">
                 <li>
                     <form></form>
                     <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
-                    <span class="likes-dislikes">2</span>
+                    <span class="likes-dislikes">{{Likes}}</span>
                 </li>
                 <li>
                     <form></form>
                     <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
-                    <span class="likes-dislikes">2</span>
+                    <span class="likes-dislikes">{{Dislikes}}</span>
                 </li>
             </ul>
-            <p class="comment-content">Bài báo này hay quá ta!</p>
+            <p class="comment-content">{{CommentContent}}</p>
         </div>
-
-        <div class="user-comment">
-            <img class="user-avatar" src="/img/user/default-avatar.jpg">
-            <span class="username">Nguyen Dat</span>
-            <span class="comment-datetime">11/11/11 11:11</span>
-            <ul class="interact-comment">
-                <li>
-                    <form id="like-comment-form" action="/article/like-comment/{{CommentID}}" method="POST"></form>
-                    <a href="javascript: $('#like-comment-form').submit();"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
-                    <span class="likes-dislikes">2</span>
-                </li>
-                <li>
-                    <form id="dislike-comment-form" action="/article/dislike-comment/{{CommentID}}" method="POST"></form>
-                    <a href="javascript: $('#dislike-comment-form').submit();"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
-                    <span class="likes-dislikes">2</span>
-                </li>
-            </ul>
-            <p class="comment-content">Bài báo này hay quá ta!</p>
-        </div>
+        {{/each}}
     </div>
+    {{/if}}
     {{#if ../user}}
-    <form id="comment-form" action="/article/comment/{{ArtID}}">
-        <textarea rows="5" name="CommentContent" placeholder="Bạn nghĩ gì về tin này?"></textarea>
+    <form id="comment-form">
+        <input name="ArtID" id="txtArtID" type="hidden" value="{{ArtID}}">
+        <input name="SubscriberID" id="txtSubscriberID" type="hidden" value="{{../user.SubscriberID}}">
+        <textarea rows="5" name="CommentContent" id="txtCommentContent" placeholder="Bạn nghĩ gì về tin này?"></textarea>
         <button class="button-form">Đăng bình luận</button>
     </form>
     {{else}}

@@ -1,4 +1,5 @@
 var express = require('express');
+var moment = require('moment');
 var restricted = require('../../middlewares/restricted');
 var verify = require('../../middlewares/verify');
 var articleModel = require('../../models/article.model');
@@ -6,6 +7,7 @@ var articalTagsModel = require('../../models/articletags.model');
 var categoryModel = require('../../models/category.model');
 var subcategoriesModel = require('../../models/subcategories.model');
 var subscriberModel = require('../../models/subscriber.model');
+var commentModel = require('../../models/comment.model');
 var config = require('../../config/default.json');
 var custom = require('../../public/js/custom');
 var router = express.Router();
@@ -119,12 +121,13 @@ router.get('/:id', (req, res, next) => {
             
                             Promise.all([
                                 articleModel.update(id, entity),
+                                commentModel.getByArtID(id),
                                 articleModel.getTopFeatured(4, 0),
                                 articleModel.getRandomTopByCatID(8, article.CatID),
                                 articleModel.getTopByProperty(12, 'Views'),
-                                articalTagsModel.getByArtID(article.ArtID)
+                                articalTagsModel.getByArtID(id),
                             ]).then(([
-                                views, top4Art, randomTop8OfCategoryArts, top12TheMostViewedArt, tags
+                                views, comments, top4Art, randomTop8OfCategoryArts, top12TheMostViewedArt, tags
                             ]) => {
                                 res.locals.lcCategory.forEach(x => {
                                     if (x.CatID == article.CatID) x.active = true;
@@ -134,9 +137,8 @@ router.get('/:id', (req, res, next) => {
                                     if (x.SubCatID == article.SubCatID) x.active = true;
                                     else x.active = false;
                                 });
-            
                                 res.render('article/detail', {
-                                    article, top4Art, randomTop8OfCategoryArts, top12TheMostViewedArt, tags,
+                                    article, comments, top4Art, randomTop8OfCategoryArts, top12TheMostViewedArt, tags,
                                     canRead: true
                                 });
                             }).catch(next);
@@ -150,12 +152,13 @@ router.get('/:id', (req, res, next) => {
 
                 Promise.all([
                     articleModel.update(id, entity),
+                    commentModel.getByArtID(id),
                     articleModel.getTopFeatured(4, 0),
                     articleModel.getRandomTopByCatID(8, article.CatID),
                     articleModel.getTopByProperty(12, 'Views'),
-                    articalTagsModel.getByArtID(article.ArtID)
+                    articalTagsModel.getByArtID(id)
                 ]).then(([
-                    views, top4Art, randomTop8OfCategoryArts, top12TheMostViewedArt, tags
+                    views, comments, top4Art, randomTop8OfCategoryArts, top12TheMostViewedArt, tags
                 ]) => {
                     res.locals.lcCategory.forEach(x => {
                         if (x.CatID == article.CatID) x.active = true;
@@ -167,7 +170,7 @@ router.get('/:id', (req, res, next) => {
                     });
 
                     res.render('article/detail', {
-                        article, top4Art, randomTop8OfCategoryArts, top12TheMostViewedArt, tags,
+                        article, comments, top4Art, randomTop8OfCategoryArts, top12TheMostViewedArt, tags,
                         canRead: true
                     });
                 }).catch(next);
@@ -293,6 +296,46 @@ router.get('/subcategory/:id', (req, res, next) => {
         } else {
             res.redirect('/');
         }
+    }).catch(next);
+});
+
+router.post('/comment/:id', (req, res, next) => {
+    var id = req.params.id;
+    var entity = {
+        "ArtID": id,
+        "SubscriberID": req.body.SubscriberID,
+        "CommentContent": req.body.CommentContent,
+        "CommentCreatedOn": custom.getDateTimeNow(),
+        "Likes": 0,
+        "Dislikes": 0
+    };
+
+    commentModel.add(entity).then(id => {
+        commentModel.getByCommentID(id).then(rows => {
+            var comment = rows[0];
+            var user_comment = `
+                <div class="user-comment">
+                    <img class="user-avatar" src="${comment.Avatar}">
+                    <span class="username">${comment.FullName}</span>
+                    <span class="comment-datetime">${comment.CommentCreatedOn}</span>
+                    <ul class="interact-comment">
+                        <li>
+                            <form></form>
+                            <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+                            <span class="likes-dislikes">${comment.Likes}</span>
+                        </li>
+                        <li>
+                            <form></form>
+                            <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+                            <span class="likes-dislikes">${comment.Dislikes}</span>
+                        </li>
+                    </ul>
+                    <p class="comment-content">${comment.CommentContent}</p>
+                </div>
+            `;
+
+            res.send(user_comment);
+        }).catch(next);
     }).catch(next);
 });
 

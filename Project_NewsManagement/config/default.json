@@ -4,10 +4,16 @@
         "port": 3306,
         "user": "root",
         "password": "",
-        "database": "newsmanagement"
+        "database": "db_newsmanagement"
     },
     "paginate": {
         "default": 5
+    },
+    "status":{
+        "chuaDuyet":1,
+        "choXuatBan":2,
+        "daXuatBan":3,
+        "tuChoi":4
     },
     "bcrypt" : {
         "saltRounds": 10

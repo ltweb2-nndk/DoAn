@@ -1,0 +1,246 @@
+{{#section 'css'}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+
+{{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+    $(() => {
+        /*
+        $('#comment-form').submit(() => {
+            var commentContent = $('#txtCommentContent').val();
+            var subscriberID = $('#txtSubscriberID').val();
+            var artID = $('#txtArtID').val();
+
+            if (commentContent) {
+                $.ajax({
+                    type: 'post',
+                    url: `article/comment/${artID}`;,
+                    data: {
+                        CommentContent: commentContent,
+                        SubscriberID: subscriberID
+                    }
+                });
+            }
+        });
+        */
+
+        $('#comment-form').submit(e => {
+            e.preventDefault(); // Stops browser from navigating away from page
+            var commentContent = $('#txtCommentContent').val();
+            var subscriberID = $('#txtSubscriberID').val();
+            var artID = $('#txtArtID').val();
+
+            if (commentContent) {
+                var data = {
+                    CommentContent: commentContent,
+                    SubscriberID: subscriberID,
+                    ArtID: artID
+                };
+                // build a json object or do something with the form, store in data
+                $.post('/article/comment/', data, res => {
+                    // do something when it was successful
+                    console.log(res.comments);
+                    $('#comments-area').html('');
+                    
+                    res.comments.forEach(c => {
+                        $('#comments-area').append(`
+                        <div class="user-comment">
+                            <img class="user-avatar" src="${c.Avatar}">
+                            <span class="username">${c.FullName}</span>
+                            <span class="comment-datetime">${c.CommentPostedOn}</span>
+                            <ul class="interact-comment">
+                                <li>
+                                    <form></form>
+                                    <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+                                    <span class="likes-dislikes">${c.Likes}</span>
+                                </li>
+                                <li>
+                                    <form></form>
+                                    <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+                                    <span class="likes-dislikes">${c.Dislikes}</span>
+                                </li>
+                            </ul>
+                            <p class="comment-content">${c.CommentContent}</p>
+                        </div>
+                        `);
+                    });
+
+                    $('#txtCommentContent').val('');
+                });
+            }
+        
+            return false;
+        });
+    });
+
+    function postComment() {
+        var commentContent = $('#txtCommentContent').val();
+        var subscriberID = $('#txtSubscriberID').val();
+        var artID = $('#txtArtID').val();
+        var action = `/article/comment/${artID}`;
+
+        if (commentContent) {
+            $.ajax({
+               type: 'post',
+               url: action,
+               data: {
+                   CommentContent: commentContent,
+                   SubscriberID: subscriberID,
+                   ArtID: artID
+               },
+               success: (res) => {
+                   /*$('#comments-area').html(res + $('#comments-area').html());
+                   console.log($('#comments-area').html());
+                   $('#txtCommentContent').val() = "";*/
+                   //$('#comments-area').html(res);
+                   $('#comments-area').html(res + $('#comments-area').html());
+               }
+            });
+        }
+
+        return false;
+    }
+</script>
+{{/section}}
+
+{{#if canRead}}
+{{#with article}}
+<div id="article-zone">
+    <a class="subcatname" href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+    {{#ifeq RankID 2}}
+    <a class="premium-article-link" href="/article/premium">
+        <span class="premium-article">PREMIUM</span>
+    </a>
+    {{/ifeq}}
+    <h1 class="article-title">{{ArtTitle}}</h1>
+    <ul class="article-meta">
+        <li class="article-writer"><a href="#">{{Pseudonym}}</a></li>
+        <li class="article-publish">đăng lúc {{formatArticleDateTime ArtPostedOn}}</li>
+    </ul>
+    <h3 class="article-summary">{{Summary}}</h3>
+    <div class="article-content">{{{Content}}}</div>
+    <span class="keyword-title">Từ khóa tìm kiếm:</span>
+    {{#each ../tags}}
+    <a class="article-keyword" href="/article/search?keyword={{TagName}}">{{TagName}}</a>
+    {{/each}}
+</div>
+<div id="article-comments">
+    {{#if ../comments}}
+    <div id="comments-area">
+        {{#each ../comments}}
+        <div class="user-comment">
+            <img class="user-avatar" src="{{Avatar}}">
+            <span class="username">{{FullName}}</span>
+            <span class="comment-datetime">{{formatArticleDateTime CommentCreatedOn}}</span>
+            <ul class="interact-comment">
+                <li>
+                    <form id="like-comment-form" action="#" method="POST"></form>
+                    <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+                    <span class="likes-dislikes">{{Likes}}</span>
+                </li>
+                <li>
+                    <form id="dislike-comment-form" action="#" method="POST"></form>
+                    <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+                    <span class="likes-dislikes">{{Dislikes}}</span>
+                </li>
+            </ul>
+            <p class="comment-content">{{CommentContent}}</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+    {{#if ../user}}
+    <form id="comment-form">
+        <input name="ArtID" id="txtArtID" type="hidden" value="{{ArtID}}">
+        <input name="SubscriberID" id="txtSubscriberID" type="hidden" value="{{../user.SubscriberID}}">
+        <textarea rows="5" name="CommentContent" id="txtCommentContent" placeholder="Bạn nghĩ gì về tin này?"></textarea>
+        <button class="button-form">Đăng bình luận</button>
+    </form>
+    {{else}}
+    <a class="login-link" href="/account/login?originalURL=/article/{{ArtID}}">Đăng nhập để bình luận</a>
+    {{/if}}
+</div>
+<div id="article-suggested">
+    <p class="title-meta meta-2"><i class="fa fa-star" aria-hidden="true"></i> ĐỪNG BỎ LỠ</p>
+    <div class="row">
+        {{#each ../top4Art}}
+        <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 article">
+            <a href="/article/{{ArtID}}"><img src="{{ArtAvatar}}" class="w-100"></a>
+            <div class="newest-article-title">
+                {{#ifeq RankID 2}}
+                <a class="premium-article-link" href="/article/premium">
+                    <span class="premium-article">PREMIUM</span>
+                </a>
+                {{/ifeq}}
+                <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                <div>
+                    <span class="date-article">{{formatArticleDateTime ArtPostedOn}}</span>
+                    <span class="category-article">
+                        <a href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+                    </span>
+                </div>
+                <p class="summary-article">{{Summary}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <p class="title-meta"><i class="fa fa-caret-right" aria-hidden="true"></i> ĐỌC THÊM</p>
+    <div class="row">
+        {{#each ../randomTop8OfCategoryArts}}
+        <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 article">
+            <a href="/article/{{ArtID}}"><img src="{{ArtAvatar}}" class="w-100"></a>
+            <div class="newest-article-title">
+                {{#ifeq RankID 2}}
+                <a class="premium-article-link" href="/article/premium">
+                    <span class="premium-article">PREMIUM</span>
+                </a>
+                {{/ifeq}}
+                <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                <div>
+                    <span class="date-article">{{formatArticleDateTime ArtPostedOn}}</span>
+                    <span class="category-article">
+                        <a href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+                    </span>
+                </div>
+                <p class="summary-article">{{Summary}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <p class="title-meta meta-3"><i class="fa fa-caret-right" aria-hidden="true"></i> XEM NHIỀU</p>
+    <div class="row">
+        {{#each ../top12TheMostViewedArt}}
+        <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3 article">
+            <a href="/article/{{ArtID}}"><img src="{{ArtAvatar}}" class="w-100"></a>
+            <div class="newest-article-title">
+                {{#ifeq RankID 2}}
+                <a class="premium-article-link" href="/article/premium">
+                    <span class="premium-article">PREMIUM</span>
+                </a>
+                {{/ifeq}}
+                <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                <div>
+                    <span class="date-article">{{formatArticleDateTime ArtPostedOn}}</span>
+                    <span class="category-article">
+                        <a href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+                    </span>
+                </div>
+                <p class="summary-article">{{Summary}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+</div>
+{{/with}}
+{{else}}
+<div id="premium-error">
+    <h4 class="premium-error-title">Bạn chưa là thành viên Premium.</h4>
+    <a class="link home-link" href="/">Về trang chủ</a>
+    <a class="link buy-premium-link" href="/user/buy-premium">Đăng ký Premium</a>    
+</div>
+{{/if}}

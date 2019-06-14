@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chi tiết danh mục</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <h2>Chuyên đề</h2>
+  <a href="/admin/subCategory/add/{{CatID}}" class="btn btn-success" style="float: left;margin-bottom:5px;margin-top:10px;">Thêm Chuyên Đề</a>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Mã chuyên đề</th>
+        <th>Tên chuyên đề</th>
+        <th>Trạng thái</th>
+        <th>Cập nhật</th>
+        <th>Xóa</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#each this.subcategories}}
+      <tr>
+        <th>{{SubCatID}}</th>
+        <th>{{SubCatName}}</th>
+        <th>{{SubCatIsActive}}</th>
+        <th><a href="/admin/subCategory/edit/{{SubCatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a></th>
+        <th><a href="/admin/subCategory/delete/{{SubCatID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a></th>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+</body>

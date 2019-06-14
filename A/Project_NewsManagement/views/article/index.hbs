@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bài viết</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="/js/Article.Check.js"></script>
+</head>
+  <body>
+  <h2><b>Bài viết</b></h2>
+  <p>Điền thông tin vào bên dưới  hoặc lựa chọn chuyên mục để tìm kiếm bài viết mà bạn muốn</p> 
+<form method="POST" name="frmBaiviet"> 
+<input name="timkiem" type="text" placeholder="Search.." />
+<button class="btn btn-dark" name="TKTTU" formaction="/admin/article/search">Tìm kiếm</button>
+ <br><br>
+<div style="margin-bottom:50px;margin-left:5px;"> 
+  <div style="float:right;">
+    <div style="float:left;">
+    <select name="SubCatID" class="browser-default custom-select" class="browser-default custom-select">
+    <option>Chọn chuyên mục</option>
+     {{#each lcSubCategories}}
+      <option {{#if active }} selected {{/if}} value="{{SubCatID}}">{{SubCatName}}</option>
+     {{/each}}
+    </select>
+    </div>
+    <button class="btn btn-dark" name="TKTDanhMuc" style="margin-left:5px;" formaction="/Admin/Article/SubCategory" onclick="return CheckValueSubCategories();">Xem</button>
+  </div>
+</div>
+</form>
+<table class="table table-bordred table-striped">
+<thead>
+<th>Mã bài viết</th>
+<th>Tên bài viết</th>
+<th>Chi tiết</th>
+<th>Cập nhật</th>
+<th>Xóa</th>
+</thead>
+<tbody></tbody>
+    {{#each this.article}}
+    <tr style="height:20px">
+        <th>{{ArtID}}</th>
+        <th>{{ArtTitle}}</td>
+        <th><a href="/admin/article/detail/{{ArtID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
+        <th><a href="/admin/article/edit/{{ArtID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
+        <th><a href="/admin/article/delete/{{ArtID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+    </tr>
+    {{/each}}
+</tbody>
+</table>
+<nav aria-label="..." style="float:right;margin-right:10px;">
+  <ul class="pagination">
+    {{#each this.page_number}}
+    {{#if active}}
+    <li class="page-item active" aria-current="page">
+      <a class="page-link" href="?page={{value}}">{{value}}<span class="sr-only">(current)</span></a>
+    </li>
+    {{else}}
+    <li class="page-item " aria-current="page">
+      <a class="page-link" href="?page={{value}}">{{value}}</a>
+    </li>
+    {{/if}}
+    {{/each}}
+  </ul>
+</nav>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<div id="articles-wrapper">
+    {{#with category}}
+    <span class="cat-name">{{CatName}}</span>
+    {{/with}}
+    <br>
+
+    <ul class="cat-subcats">
+    {{#each subcategories}}
+    <li><a class="{{#if active}}subcat-is-active{{/if}}" href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a></li>
+    {{/each}}
+    </ul>
+
+    <div id="top-articles-carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            {{#each top1OfCategory}}
+            <div class="carousel-item active">
+                <a href="/article/{{ArtID}}"><img class="d-block w-100" src="{{ArtAvatar}}"></a>
+                <div class="carousel-caption padding-0">
+                    <a href="/article/{{ArtID}}">
+                        {{ArtTitle}}
+                    </a>
+                </div>
+            </div>
+            {{/each}}
+            {{#each top2To5OfCategory}}
+            <div class="carousel-item">
+                <a href="/article/{{ArtID}}"><img class="d-block w-100" src="{{ArtAvatar}}"></a>
+                <div class="carousel-caption padding-0">
+                    <a href="/article/{{ArtID}}">
+                        {{ArtTitle}}
+                    </a>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <a class="carousel-control-prev" href="#top-articles-carousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#top-articles-carousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+    <div class="row margin-0">
+        {{#each articles}}
+        <div class="col-12 article">
+            <a href="/article/{{ArtID}}"><img src="{{ArtAvatar}}" class="w-100"></a>
+            <div class="newest-article-title">
+                {{#ifeq RankID 2}}
+                <a class="premium-article-link" href="/article/premium">
+                    <span class="premium-article">PREMIUM</span>
+                </a>
+                {{/ifeq}}
+                <a href="/article/{{ArtID}}" class="title-article">{{ArtTitle}}</a>
+                <div>
+                    <span class="date-article">{{formatArticleDateTime ArtPostedOn}}</span>
+                    <span class="category-article">
+                        <a href="/article/subcategory/{{SubCatID}}">{{SubCatName}}</a>
+                    </span>
+                </div>
+                <p class="summary-article">{{Summary}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link previous-page {{#if previousInactive}}page-is-inactive{{/if}}" {{#unless previousInactive}}href="?page={{previous page}}"{{/unless}} aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    {{#each totalPages}}
+                    <li class="page-item">
+                        <a class="page-link {{#if active}}page-is-active{{/if}}" href="?page={{value}}">{{value}}</a>
+                    </li>
+                    {{/each}}
+                    <li class="page-item">
+                        <a class="page-link next-page {{#if nextInactive}}page-is-inactive{{/if}}" {{#unless nextInactive}}href="?page={{next page}}"{{/unless}} aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+

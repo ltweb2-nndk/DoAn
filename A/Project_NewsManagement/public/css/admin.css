@@ -1,0 +1,37 @@
+.DanhMuc{
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	color: white;
+}
+.DanhMuc ul{
+	text-align:center;
+	list-style-type:none;
+	padding-left:0;
+	margin-top:0;
+	}
+.DanhMuc ul li{
+	width:100%;
+	height:40px;
+	line-height:40px;
+	border-bottom:1px solid #222222;
+}
+.DanhMuc  a{
+	text-decoration:none;
+	color:white;
+	display:block;
+}
+a:hover{
+	background:#666666;
+	transition-duration:1s;
+}
+.Administrtor{
+	width: 100%;
+	background-color: #CFCFCF;
+	text-align:center;
+	height: 100%;
+}
+.HinhAnh{
+	background-color: red;
+	float: right;
+}

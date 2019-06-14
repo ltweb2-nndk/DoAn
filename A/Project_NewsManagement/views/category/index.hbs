@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Danh mục</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+</head>
+<body>
+  <h2><b>Danh mục</b></h2>
+  <p>Điền thông tin vào bên dưới để tìm kiếm danh mục mà bạn muốn</p> 
+  <form action="" method="POST"> 
+<input name="timkiem" type="text" placeholder="Search.."/>
+<button class="btn btn-dark" name="btnTimKiem">Tìm kiếm</button>
+<br><br>
+<a href="/admin/category/add" class="btn btn-success" style="float: left;margin-bottom:5px;">Thêm Danh Mục</a>
+</form>
+<table class="table table-bordred table-striped">
+ <thead>
+<th>Mã danh mục</th>
+<th>Tên danh mục</th>
+<th>Trạng thái</th>
+<th>Chi tiết</th>
+<th>Cập nhật</th>
+<th>Xóa</th>
+</thead>
+<tbody></tbody>
+    {{#each this.category}}
+    <tr style="height:20px">
+        <th id="CatID">{{CatID}}</th>
+        <th>{{CatName}}</td>
+        <th>{{CatIsActive}}</th>
+        <th><a href="/admin/category/detail/{{CatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
+        <th><a href="/admin/category/edit/{{CatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
+        <th><a href="/admin/category/delete/{{CatID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+    </tr>
+    {{/each}}
+</tbody>
+</table>
+</form>
+<nav aria-label="..." style="float:right;margin-right:10px;">
+  <ul class="pagination">
+    {{#each this.page_number}}
+    {{#if active}}
+    <li class="page-item active" aria-current="page">
+      <a class="page-link" href="?page={{value}}">{{value}} <span class="sr-only">(current)</span></a>
+    </li>
+    {{else}}
+    <li class="page-item " aria-current="page">
+      <a class="page-link" href="?page={{value}}">{{value}}</a>
+    </li>
+    {{/if}}
+    {{/each}}
+  </ul>
+</nav>
+</body>
+</html>

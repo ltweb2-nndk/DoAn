@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Duyệt bài viết</title>
+    <link rel="stylesheet" href="/css/infoW_E.css">
+    
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
+    
+    </head>
+</head>
+<body>
+    <div class="container emp-profile">
+        <div class="content">
+        {{#each article}}
+            {{!-- <form method="post"> --}}
+            <header class="the-article-header">
+                <a class="btn btn-light" onclick="goBack()" role="button">Quay về trang trước</a>
+                <p class="the-article-category">{{CatName}}</p>
+                <h3 class="the-article-title">{{ArtTitle}}</h3>
+                <ul class="the-article-meta">
+                    <li class="the-article-author">{{FullName}} </li>
+                    <li class="the-article-create ml-3">{{formatDatefromDB ArtCreatedOn}}</li>
+                </ul>
+            </header>
+            <section class="main">
+                <p class="the-article-summary">{{Summary}}</p>
+                <div class="the-article-body">
+                    <div class="table-responsive table-img">
+                        <table class=" picture mb-3">
+                        <tbody>
+                            <tr>
+                                <img src="{{ArtAvatar}}">
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    
+                    
+                    <div>
+                        {{{Content}}}
+                    </div>
+            </div>
+            </section>
+            {{!-- </form>    --}}
+        {{/each}} 
+        <hr>
+        <form action="" method="POST">
+            
+            <div class="form-group row">
+                <label for="tag" class="col-sm-2 col-form-label">Lý do từ chối bài viết:</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control font-weight-bold" id="TagID" name="TagID">
+                        {{#each artTags}}{{TagName}}, {{/each}}
+                    </textarea>    
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <button type="submit" style="font-weight: bold; font-size:1.5em;" class="btn btn-danger bt-sm float-right w-100" >TỪ CHỐI BÀI VIẾT</button>
+            </div>
+        </form>   
+        </div>   
+    </div>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>
+

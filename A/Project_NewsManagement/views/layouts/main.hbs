@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Newsweek</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/register-login-verify.css">
+    <link rel="stylesheet" href="/css/article.css">
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/css/media.css">
+    {{{_sections.css}}}
+    <link rel="icon" href="/img/newsweek-icon.png">
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- #header -->
+        <div id="header" class="sticky-top">
+            <!-- #header-info -->
+            <div id="header-info">
+                <nav class="navbar navbar-expand-md navbar-light bg-light">
+                    <div class="container-fluid h-100">
+                        <a href="/" class="navbar-brand">
+                            <img id="header-logo" src="/img/newsweek-logo.jpeg" title="Newsweek" height="25">
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#user-action"> 
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div id="user-action" class="collapse navbar-collapse">
+                            <ul class="navbar-nav ml-auto">
+                                {{#if isAuthenticated}}
+                                {{#with user}}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/user/info">
+                                        {{#if Avatar}}
+                                        <img id="header-user-avatar" src="{{Avatar}}">
+                                        {{else}}
+                                        <img id="header-user-avatar" src="/img/user/default-avatar.jpg">
+                                        {{/if}}
+                                        <span>{{FullName}}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <form id="logout-form" action="/account/logout" method="POST"></form>
+                                    <a class="nav-link" href="javascript: $('#logout-form').submit();">Đăng xuất</a>
+                                </li>
+                                {{/with}}
+                                {{else}}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/account/register" title="Đăng ký">
+                                        Đăng ký
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/account/login" title="Đăng nhập">
+                                        Đăng nhập
+                                    </a>
+                                </li>
+                                {{/if}}
+                                
+                            </ul>
+                            <form class="form-inline" id="header-search-box" action="/article/search" method="GET">
+                                <input class="col-10 border-0" name="keyword" type="search" placeholder="Nội dung cần tìm kiếm..."
+                                    aria-label="Search" width="100">
+                                <button class="col-2 border-0" type="submit">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!-- End #header-info -->
+
+            <!-- #header-cat-navbar -->
+            <div id="header-cat-navbar">
+                <nav class="navbar navbar-expand-lg navbar-light h-100 sticky-top">
+                    <!-- expand category button -->
+                    <button class="navbar-toggler ml-2" type="button" data-toggle="collapse" data-target="#cat-navbar"
+                        aria-controls="cat-navbar" aria-expanded="false" aria-label="Toggle navigation" id="expand-cat">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse h-100" id="cat-navbar">
+                        <ul class="navbar-nav mx-auto h-100">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">
+                                    <i class="fa fa-home fa-lg" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                            {{#each lcCategory}}
+                            <li class="nav-item dropdown {{#if active}}is-active{{/if}}">
+                                <a class="nav-link" href="/article/category/{{CatID}}" id="cat-navbar-dropdown"> 
+                                {{!-- data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" --}}
+                                    {{CatName}}
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="cat-navbar-dropdown">
+                                    {{#each ../lcSubCategories}}
+                                        {{#ifeq CatID ../CatID}}
+                                        <a class="dropdown-item nav-link {{#if ../active}}is-active{{/if}}" href="/article/subcategory/{{../SubCatID}}">
+                                            <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> {{../SubCatName}}
+                                        </a>
+                                        {{/ifeq}}
+                                    {{/each}}
+                                </div>
+                            </li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <!-- End #header-cat-navbar -->
+        </div>
+
+        <div id="content">
+            {{{body}}}
+        </div>
+
+        <div id="footer">
+            <hr class="hr-line">
+
+            <div class="container-fluid">
+                <div class="row text-center">
+                    <!-- footer logo -->
+                    <div class="col-lg-12">
+                        <img id="footer-logo" src="/img/newsweek-logo.jpeg" style="height: 35px">
+                    </div>
+                    <!-- footer information -->
+                    <div class="col-lg-12">
+                        <p id="footer-copyright">&copy; Bản quyền thuộc Newsweek</p>
+                    </div>
+                    <div class="col-lg-12">
+                        <ul id="footer-info">
+                            <li>
+                                <button class="footer-Newsweek" type="button" data-toggle="modal" data-target="#infoNewsweek">Giới thiệu</button>
+                                <div id="infoNewsweek" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body" id="A">
+                                                <h1 class="information1">BÁO ĐIỆN TỬ NEWSWEEK</h1>
+                                                <h2 class="information2">TRI THỨC NHÂN LOẠI</h2>
+                                                <p>Tổng biên tập: Nguyễn Tấn Đạt - 1660094</p>
+                                                <p>Tổng biên tập: Trần Thị Hồng Đào - 1660092</p>
+                                                <p style="margin-bottom: 20px;">Tổng biên tập: Trần Thị Kim Hiền - 1660178</p>
+                                                <button type="button" class="btn btn-info" data-dismiss="modal">Đóng</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <button class="footer-Newsweek" type="button" data-toggle="modal" data-target="#contactNewsweek">Liên hệ</button>
+                                <div id="contactNewsweek" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body" id="A">
+                                                <h1 class="information1">ĐỊA CHỈ</h1>
+                                                <p>227 Đường Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM</p>
+                                                <p>Holine: 0000.0000</p>
+                                                <p style="margin-bottom: 20px;">Email: newsweek.project@gmail.com</p>
+                                                <button type="button" class="btn btn-info" data-dismiss="modal">Đóng</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button id="scrollToTopButton">
+        <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+    </button>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    {{{_sections.js}}}
+    <script src="/js/script.js"></script>
+    <script src="/js/custom.js"></script>
+</body>
+
+</html>

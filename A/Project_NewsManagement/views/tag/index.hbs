@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Nhãn</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <h2><b>Nhãn</b></h2>
+  <p>Điền thông tin vào bên dưới để tìm kiếm nhãn mà bạn muốn</p> 
+<form action="" method="POST"> 
+<input name="timkiem" type="text" placeholder="Search.."/>
+<button class="btn btn-dark" name="btnTimKiem">Tìm kiếm</button>
+<br><br>
+<a href="/admin/tag/add" class="btn btn-success" style="float: left;margin-bottom:5px;">Thêm Nhãn</a>
+</form>
+<table class="table table-bordred table-striped">
+ <thead>
+<th>Mã nhãn</th>
+<th>Tên nhãn</th>
+<th>Cập nhật</th>
+<th>Xóa</th>
+</thead>
+<tbody>
+    {{#each this.tag}}
+    <tr style="height:20px">
+        <th>{{TagID}}</th>
+        <th>{{TagName}}</td>
+        <th><a href="/admin/tag/edit/{{TagID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
+        <th><a href="/admin/tag/delete/{{TagID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+    </tr>
+    {{/each}}
+</tbody>
+</table>
+<nav aria-label="..." style="float:right;margin-right:10px;">
+  <ul class="pagination">
+    {{#each this.page_number}}
+    {{#if active}}
+    <li class="page-item active" aria-current="page">
+      <a class="page-link" href="?page={{value}}">{{value}} <span class="sr-only">(current)</span></a>
+    </li>
+    {{else}}
+    <li class="page-item " aria-current="page">
+      <a class="page-link" href="?page={{value}}">{{value}}</a>
+    </li>
+    {{/if}}
+    {{/each}}
+  </ul>
+</nav>
+</body>
+</html>

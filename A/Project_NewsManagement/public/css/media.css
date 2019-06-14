@@ -1,0 +1,124 @@
+@media screen and (max-width: 575px) {
+    .article img {
+        width: 43% !important;
+        margin-right: 10px;
+        float: left;
+    }
+
+    .article {
+        padding: 0;
+        padding-bottom: 15px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #EEEEEE;
+    }
+
+    .article:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    #register-user {
+        width: 70%;
+    }
+
+    .row {
+        margin: 0;
+    }
+
+    .xs-no-padding, .article-suggestion .col-lg-12, .col-12 {
+        padding: 0;
+    }
+
+    .section-user-info .main-title, .section-user-edit-info .main-title {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .summary-article {
+        display: none;
+    }
+
+    .title-article {
+        font-size: 12px;
+    }
+
+    .section-user-change-avatar, #user-verify, .section-user-change-password, .section-user-buy-premium {
+        width: 90% !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .section-user-edit-info {
+        width: 80% !important;
+    }
+
+    .section-user-change-avatar, .section-user-change-password, .section-user-buy-premium {
+        width: 60%;
+    }
+
+    #article-zone, #article-suggested, #article-comments {
+        width: 100%;
+    }
+
+    #articles-wrapper {
+        width: 100% !important;
+    }
+
+    #articles-wrapper .row {
+        padding: 0;
+    }
+
+    #user-action .nav-item {
+        border: none;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .section-user-edit-info {
+        width: 60%;
+    }
+
+    .section-user-change-avatar {
+        width: 50%;
+    }
+
+    #articles-wrapper {
+        width: 80%;
+    }
+}
+
+/* >= 768px (m) */
+@media screen and (min-width: 768px) {
+    .hot-article img {
+        width: 100%;
+    }
+
+    .hot-article {
+        margin: 0;
+    }
+
+    .top10-categories img {
+        width: 55% !important;
+        margin-right: 10px;
+        float: left;
+    }
+}
+
+/* larger than large (xl) */
+@media screen and (min-width: 1200px) {
+    .hot-article img {
+        width: 215px !important;
+        height: 145px !important;
+        margin-right: 10px;
+        float: left;
+    }
+
+    .hot-article {
+        margin-bottom: 10px;
+    }
+
+    /* .hot-article, .hot-article-title {
+        overflow: hidden;
+    } */
+}

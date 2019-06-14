@@ -1,0 +1,79 @@
+{{#with user}}
+<div class="section-user section-user-info">
+    <div class="row">
+        <h1 class="col-lg-12 main-title">Thông tin cá nhân</h1>
+        <div class="col-lg-7 padding-0">
+            <div class="row">
+                <label class="label-form col-sm-6">Ảnh đại diện:</label>
+                <div class="col-sm-6">
+                    {{#if Avatar}}
+                    <img class="user-avatar" src="{{Avatar}}">
+                    {{else}}
+                    <img class="user-avatar" src="/img/user/default-avatar.jpg">
+                    {{/if}}
+                </div>
+                <label class="label-form col-sm-6">Tài khoản:</label>
+                {{#ifeq RoleID 1}}
+                {{#if ../../expired}}
+                <div class="col-xs-10 col-sm-6">
+                    <p class="user-role margin-0">Normal</p>
+                </div>
+                {{else}}
+                 <div class="col-xs-10 col-sm-6">
+                    <p class="user-role premium-user margin-0">Premium</p>
+                </div>
+                {{/if}}
+                {{else}}
+                <div class="col-xs-10 col-sm-6">
+                    <p class="user-role margin-0">{{../RoleName}}</p>
+                </div>
+                {{/ifeq}}
+                <label class="label-form col-sm-6">Địa chỉ email:</label>
+                <p class="label-content col-sm-6 margin-0">{{Username}}</p>
+                <label class="label-form col-sm-6">Tên hiển thị:</label>
+                <p class="label-content col-sm-6 margin-0">{{FullName}}</p>
+                <label class="label-form col-sm-6">Ngày sinh:</label>
+                <p class="label-content col-sm-6 margin-0">{{formatDate DOB}}</p>
+                {{#ifeq RoleID 1}}
+                <label class="label-form col-sm-6">Đăng ký premium:</label>
+                <p class="label-content col-sm-6 margin-0">{{formatDateTime ../BoughtOn}}</p>
+                <label class="label-form col-sm-6">Hết hạn premium:</label>
+                <p class="label-content col-sm-6 margin-0">{{formatDateTime ../ExpiredOn}}</p>
+                {{/ifeq}}
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="row">
+                <div class="col-lg-12 user-action padding-0">
+                    <form>
+                        <button class="col-lg-12 user-button focus-no-outline change-avatar-button" formaction="/user/change-avatar" formmethod="GET">
+                            Thay đổi ảnh đại diện
+                        </button>
+                        <button class="col-lg-12 user-button focus-no-outline edit-info-button" formaction="/user/edit-info" formmethod="GET">
+                            Chỉnh sửa thông tin
+                        </button>
+                        <button class="col-lg-12 user-button focus-no-outline change-pw-button" formaction="/user/change-password" formmethod="GET">
+                            Thay đổi mật khẩu
+                        </button>
+                        {{#ifeq RoleID 1}}
+                        <button class="col-lg-12 user-button focus-no-outline buy-premium-button" formaction="/user/buy-premium" formmethod="GET">
+                            Đăng ký Premium
+                        </button>
+                        {{/ifeq}}
+                        {{#ifeq RoleID 2 }}
+                        <button class="col-lg-12 user-button focus-no-outline private-page-button" formaction="/writer/welcome" formmethod="GET">
+                            Trang cá nhân
+                        </button>
+                        {{/ifeq}}
+                        {{#ifeq RoleID 3}}
+                        <button class="col-lg-12 user-button focus-no-outline private-page-button" formaction="/editor/welcome" formmethod="GET">
+                            Trang cá nhân
+                        </button>
+                        {{/ifeq}}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/with}}

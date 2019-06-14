@@ -25,12 +25,11 @@
         });
         */
 
-        $('#comment-form').submit(function(e) {
+        $('#comment-form').submit(e => {
             e.preventDefault(); // Stops browser from navigating away from page
             var commentContent = $('#txtCommentContent').val();
             var subscriberID = $('#txtSubscriberID').val();
             var artID = $('#txtArtID').val();
-            var action = `/article/comment/${artID}`;
 
             if (commentContent) {
                 var data = {
@@ -39,9 +38,35 @@
                     ArtID: artID
                 };
                 // build a json object or do something with the form, store in data
-                $.post(action, data, res => {
+                $.post('/article/comment/', data, res => {
                     // do something when it was successful
-                    $('#comments-area').html(res + $('#comments-area').html());
+                    console.log(res.comments);
+                    $('#comments-area').html('');
+                    
+                    res.comments.forEach(c => {
+                        $('#comments-area').append(`
+                        <div class="user-comment">
+                            <img class="user-avatar" src="${c.Avatar}">
+                            <span class="username">${c.FullName}</span>
+                            <span class="comment-datetime">${c.CommentPostedOn}</span>
+                            <ul class="interact-comment">
+                                <li>
+                                    <form></form>
+                                    <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+                                    <span class="likes-dislikes">${c.Likes}</span>
+                                </li>
+                                <li>
+                                    <form></form>
+                                    <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+                                    <span class="likes-dislikes">${c.Dislikes}</span>
+                                </li>
+                            </ul>
+                            <p class="comment-content">${c.CommentContent}</p>
+                        </div>
+                        `);
+                    });
+
+                    $('#txtCommentContent').val('');
                 });
             }
         
@@ -110,12 +135,12 @@
             <span class="comment-datetime">{{formatArticleDateTime CommentCreatedOn}}</span>
             <ul class="interact-comment">
                 <li>
-                    <form></form>
+                    <form id="like-comment-form" action="#" method="POST"></form>
                     <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
                     <span class="likes-dislikes">{{Likes}}</span>
                 </li>
                 <li>
-                    <form></form>
+                    <form id="dislike-comment-form" action="#" method="POST"></form>
                     <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
                     <span class="likes-dislikes">{{Dislikes}}</span>
                 </li>

@@ -299,10 +299,11 @@ router.get('/subcategory/:id', (req, res, next) => {
     }).catch(next);
 });
 
-router.post('/comment/:id', (req, res, next) => {
-    var id = req.params.id;
+router.post('/comment', (req, res, next) => {
+    console.log(req.body);
+    var artID = req.body.ArtID;
     var entity = {
-        "ArtID": id,
+        "ArtID": artID,
         "SubscriberID": req.body.SubscriberID,
         "CommentContent": req.body.CommentContent,
         "CommentCreatedOn": custom.getDateTimeNow(),
@@ -311,30 +312,48 @@ router.post('/comment/:id', (req, res, next) => {
     };
 
     commentModel.add(entity).then(id => {
-        commentModel.getByCommentID(id).then(rows => {
-            var comment = rows[0];
-            var user_comment = `
-                <div class="user-comment">
-                    <img class="user-avatar" src="${comment.Avatar}">
-                    <span class="username">${comment.FullName}</span>
-                    <span class="comment-datetime">${comment.CommentCreatedOn}</span>
-                    <ul class="interact-comment">
-                        <li>
-                            <form></form>
-                            <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
-                            <span class="likes-dislikes">${comment.Likes}</span>
-                        </li>
-                        <li>
-                            <form></form>
-                            <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
-                            <span class="likes-dislikes">${comment.Dislikes}</span>
-                        </li>
-                    </ul>
-                    <p class="comment-content">${comment.CommentContent}</p>
-                </div>
-            `;
+        commentModel.getByArtID(artID).then(rows => {
+            var comments = rows;
+            //console.log(comments);
+            comments.forEach(c => {
+                var distance = moment(custom.getDateTimeNow()).diff(moment(c.CommentCreatedOn));
+                var asMinutes = parseInt(moment.duration(distance).as('minutes'));
+                var asHours = parseInt(moment.duration(distance).as('hours'));
+                if (asHours < 24) {
+                    if (asMinutes < 60) {
+                        c.CommentPostedOn = `${asMinutes} phút trước`;
+                    } else {
+                        c.CommentPostedOn = `${asHours} giờ trước`;
+                    }
+                } else {
+                    c.CommentPostedOn = moment(c.CommentCreatedOn).format('HH:mm DD/MM/YYYY');
+                }
+            });
+            console.log(comments);
+            res.send({comments});
+            //console.log(comments);
+            // var user_comment = `
+            //     <div class="user-comment">
+            //         <img class="user-avatar" src="${comment.Avatar}">
+            //         <span class="username">${comment.FullName}</span>
+            //         <span class="comment-datetime">${comment.CommentCreatedOn}</span>
+            //         <ul class="interact-comment">
+            //             <li>
+            //                 <form></form>
+            //                 <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></a>
+            //                 <span class="likes-dislikes">${comment.Likes}</span>
+            //             </li>
+            //             <li>
+            //                 <form></form>
+            //                 <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></a>
+            //                 <span class="likes-dislikes">${comment.Dislikes}</span>
+            //             </li>
+            //         </ul>
+            //         <p class="comment-content">${comment.CommentContent}</p>
+            //     </div>
+            // `;
 
-            res.send(user_comment);
+            // res.send(user_comment);
         }).catch(next);
     }).catch(next);
 });

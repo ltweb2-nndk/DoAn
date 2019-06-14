@@ -14,61 +14,12 @@ var custom = require('../../public/js/custom');
 
 router.get('/welcome', restricted, isEditor, (req, res, next) => {
     catModel.getByID(req.user.EditorID).then(rows => {
-        catModel.countByID.then(ncount=>{
-            console.log(rows);
-                res.render('writer/welcome', {
-                    layout: 'mainWrite.hbs',
-                    CatOfEditor: rows,
-                    EditorID : rows.EditorID,
-                    
-                });
-            }).catch(next);
-        })
-        
-})
 
-router.get('/articlesByCat', restricted, isEditor, (req, res, next) => {
-    var lim = config.paginate.default;
-    var page = req.query.page || 1;
-    if (page < 1) {
-        page = 1;
-    }
-    var start_offset = (page - 1) * lim;
-    Promise.all([
-        articleModel.countAllDraft(),
-        articleModel.pageDraft(start_offset)
-    ]).then(([nRows, rows]) => {
-
-
-        var total = nRows.total;
-        var nPages = Math.floor(total / lim);
-        if (total % lim > 0) {
-            nPages++;
-        }
-        var page_numbers = [];
-        for (i = 1; i <= nPages; i++) {
-            page_numbers.push({
-                value: i,
-                active: i === +page
-            })
-        }
-        var id = req.user.EditorID;
-        console.log(req.user)
-        catModel.getByID(id).then(Numb=>{
-            res.render('editor/articlesByCat', {
-                layout: 'mainWrite.hbs',
-                articles: rows,
-                page_numbers,
-                curPage: +page,
-                CatOfEditor: total
-            });
-        })
-
-        console.log(nPages);
-        console.log(page_numbers.length);
         console.log(rows);
-        console.log(page);
-        
+        res.render('writer/welcome', {
+            layout: 'mainWrite.hbs',
+            CatOfEditor: rows
+        });
     }).catch(next);
 })
 
@@ -143,8 +94,10 @@ router.post('/accept/:id', (req, res, next) => {
     var SubCatID = req.body.SubCatID;
     var EditorID = req.body.EditorID;
     var RankID = req.body.RankID;
+    // console.log("a" + RankID);
+    // console.log(req.body.ArtPostedOn);
     var ArtPostedOn = moment(req.body.ArtPostedOn, 'DD/MM/YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
-    
+    // console.log(ArtPostedOn);
     var entity = {
         "SubCatID": SubCatID,
         "ArtPostedOn": ArtPostedOn,
@@ -152,6 +105,10 @@ router.post('/accept/:id', (req, res, next) => {
         "EditorID": EditorID,
         "RankID": RankID
     }
+    // Phần cũ của Đào:
+    // articleModel.edit(entity1, artID)
+    // /Phần cũ của Đào
+
     articleModel.update(artID, entity).then(n => {
         var tags = req.body.TagName.split(',');
         tags.forEach(element => {
@@ -188,7 +145,7 @@ router.post('/decline/:id', (req, res, next) => {
     var entity = {
         "StatusID": 4
     }
-    articleModel.update( artID,entity).then(n => {
+    articleModel.edit(entity, artID).then(n => {
         res.redirect(req.originalUrl);
     }).catch(next);
 })

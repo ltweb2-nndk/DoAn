@@ -40,7 +40,7 @@ var storageAvatar = multer.diskStorage({
 var upload = multer({storage: storageAvatar});
 
 router.get('/info', restricted, verify, (req, res, next) => {
-    //console.log(req.user);
+    console.log(req.user);
     var expiredOn = new Date(req.user.ExpiredOn);
     var datetimeNow = new Date(custom.getDateTimeNow());
     var expired = false;

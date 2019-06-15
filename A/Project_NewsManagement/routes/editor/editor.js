@@ -26,12 +26,32 @@ router.get('/welcome', (req, res, next) => {
         }).catch(next);
     }).catch(next);
 })
-// router.get('/articles',(req,res,next)=>{
-//     var id = req.user.EditorID;
-//     articleModel.allOfEdit(id).then(rows=>{
-
-//     })
-// })
+router.get('/articles',(req,res,next)=>{
+    var id = req.user.EditorID;
+    var lim = config.paginate.default;
+    var page = req.query.page || 1;
+    if (page < 1) {
+        page = 1;
+    }
+    var start_offset = (page - 1) * lim;
+    Promise.all([
+        articleModel.countAllDraft(id),
+        articleModel.pageAll(id, start_offset)
+    ]).then(([nrow,row])=>{
+        var total = nrow.total;
+        var nPages = Math.floor(total / lim);
+        if (total % lim > 0) {
+            nPages++;
+        }
+        var page_numbers = [];
+        for (i = 1; i <= nPages; i++) {
+            page_numbers.push({
+                value: i,
+                active: i === +page
+            })
+        }
+    })
+})
 router.get('/articlesByCat/:id', (req, res, next) => {
     var catID = req.params.id;
     var lim = config.paginate.default;

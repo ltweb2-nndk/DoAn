@@ -3,9 +3,7 @@ var config = require('../config/default.json');
 var date = require('../public/js/custom');
 
 module.exports = {
-    allOfEdit:EditorID=>{
-        return db.load(`select* from article a join category c on a.CatID=c.CatID where a.EditorID=${EditorID}`);
-    },
+    
     getByArtID: id => {
         return db.load(`select * from article a join category c join subcategories s join writer w 
         where a.ArtID = ${id} and a.CatID = c.CatID and a.SubCatID = s.SubCatID and a.WriterID = w.WriterID and c.CatIsActive = 1 and s.SubCatIsActive = 1`);
@@ -159,7 +157,10 @@ module.exports = {
     // edit: (entity, id) => {
     //     return db.update('article', 'ArtID', entity, id);
     // },
-
+    countAllDraft:EditorID=>{
+        return db.load(`select count(a.ArtID) as total from article a join category c on a.CatID=c.CatID where a.EditorID=${EditorID} and StatusID=1
+        GROUP BY a.CatID`);
+    },
     countByStatus: (id) => {
         return db.load(`select count(StatusID) as total from article where StatusID=${id} GROUP BY StatusID`);
     },
@@ -171,6 +172,9 @@ module.exports = {
     countDraftByCat: (catID) => {
         return db.load(`select count(CatID) as total from article where CatID=${catID} and StatusID=1 GROUP BY CatID`);
     },
+    // countAllDraft:(editorID)=>{
+    //     return db.load(`select* from article a join cate`)
+    // }
     pageByStatus: (stusID, start_offset) => {
         var lim = config.paginate.default;
         return db.load(`select a.ArtID,a.ArtAvatar,a.ArtTitle,a.Summary,a.StatusID,s.StatusName 
@@ -181,5 +185,9 @@ module.exports = {
     pageByCat: (catID, start_offset) => {
         var lim = config.paginate.default;
         return db.load(`select * from article a join category c on a.CatID = c.CatID  where a.CatID = ${catID} and a.StatusID=1 limit ${lim} offset ${start_offset}`);
+    },
+    pageAll:(editID,start_offset)=>{
+        var lim = config.paginate.default;
+        return db.load(`select * from article a join category c on a.CatID = c.CatID  where a.StatusID=1 and c.EditorID = ${editID} limit ${lim} offset ${start_offset} `)
     }
 };

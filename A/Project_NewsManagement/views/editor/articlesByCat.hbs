@@ -1,7 +1,11 @@
 
 <div class="table-responsive ">
     <div class="card shadow mb-4 h-100" >
-    <h5 class="the-article-category">{{catName}}</h5>
+    <h5 class="the-article-category">
+    {{#each CatOfEditor}}
+            {{CatName}}
+    {{/each}}
+    </h5>
   <table class="table table-hover ">
         <thead >
             <tr>

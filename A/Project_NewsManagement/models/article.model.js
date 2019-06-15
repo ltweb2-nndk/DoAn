@@ -3,6 +3,9 @@ var config = require('../config/default.json');
 var date = require('../public/js/custom');
 
 module.exports = {
+    allOfEdit:EditorID=>{
+        return db.load(`select* from article a join category c on a.CatID=c.CatID where a.EditorID=${EditorID}`);
+    },
     getByArtID: id => {
         return db.load(`select * from article a join category c join subcategories s join writer w 
         where a.ArtID = ${id} and a.CatID = c.CatID and a.SubCatID = s.SubCatID and a.WriterID = w.WriterID and c.CatIsActive = 1 and s.SubCatIsActive = 1`);
@@ -110,7 +113,7 @@ module.exports = {
     },
 
     getByCat: catID => {
-        return db.load(`select* from article where CatID = 6 = ${catID}`);
+        return db.load(`select* from article where CatID = ${catID}`);
     },
 
     add: (entity) => {

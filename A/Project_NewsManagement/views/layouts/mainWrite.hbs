@@ -167,13 +167,19 @@
               <div class="sidebar-submenu">
                 <ul>
                   {{#each ../../CatOfEditor}}
-                  <li>
-                    <a href="/editor/articlesByCat/{{CatID}}">{{CatName}}
-                      {{#if num_of_arts}}
-                      <span class="badge badge-pill badge-danger float-right">{{num_of_arts}}</span>
-                      {{/if}}
-                    </a>
-                  </li>
+                    
+                      <li>
+                        <a href="/editor/articlesByCat/{{CatID}}">{{CatName}}
+                        {{#each ../../../artOfEditor}}
+                        {{#ifeq ../CatID CatID}}
+                          {{#if ../num_of_arts}}
+                          <span class="badge badge-pill badge-danger float-right">{{../num_of_arts}}</span>
+                          {{/if}}
+                        {{/ifeq}}
+                        {{/each}}
+                        </a>
+                      </li>
+                      
                   {{/each}}
                 </ul>
               </div>

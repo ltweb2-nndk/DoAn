@@ -8,22 +8,31 @@ var subCatModel = require('../../models/subcategories.model');
 var artTagsModel = require('../../models/articleTags.model');
 var moment = require('moment');
 var tagModel = require('../../models/tag.model');
-var restricted = require('../../middlewares/restricted');
-var isEditor = require('../../middlewares/isEditor');
-var custom = require('../../public/js/custom');
 
-router.get('/welcome', restricted, isEditor, (req, res, next) => {
+
+router.get('/welcome', (req, res, next) => {
+
+    var id = req.user.EditorID;
+    console.log(req.user)
     catModel.getByID(req.user.EditorID).then(rows => {
-
-        console.log(rows);
-        res.render('writer/welcome', {
-            layout: 'mainWrite.hbs',
-            CatOfEditor: rows
-        });
+        catModel.countArt(req.user.EditorID).then(nArt=>{
+            console.log(rows);
+            res.render('writer/welcome', {
+                layout: 'mainWrite.hbs',
+                EditorID : rows.EditorID,
+                CatOfEditor: rows,
+                artOfEditor: nArt
+            });
+        }).catch(next);
     }).catch(next);
 })
+// router.get('/articles',(req,res,next)=>{
+//     var id = req.user.EditorID;
+//     articleModel.allOfEdit(id).then(rows=>{
 
-router.get('/articlesByCat/:id', restricted, isEditor, (req, res, next) => {
+//     })
+// })
+router.get('/articlesByCat/:id', (req, res, next) => {
     var catID = req.params.id;
     var lim = config.paginate.default;
     var page = req.query.page || 1;
@@ -37,7 +46,7 @@ router.get('/articlesByCat/:id', restricted, isEditor, (req, res, next) => {
     ]).then(([nRows, rows]) => {
 
 
-        var total = nRows[0].total;
+        var total = nRows.total;
         var nPages = Math.floor(total / lim);
         if (total % lim > 0) {
             nPages++;
@@ -51,16 +60,19 @@ router.get('/articlesByCat/:id', restricted, isEditor, (req, res, next) => {
         }
         var id = req.user.EditorID;
         console.log(req.user)
-        catModel.getByID(id).then(Numb=>{
-            res.render('editor/articlesByCat', {
-                layout: 'mainWrite.hbs',
-                catName: rows[0].CatName,
-                articles: rows,
-                page_numbers,
-                curPage: +page,
-                CatOfEditor: Numb
-            });
-        })
+        catModel.getByID(id).then(cat=>{
+            catModel.countArt(id).then(num=>{
+                res.render('editor/articlesByCat', {
+                    layout: 'mainWrite.hbs',
+                    articles: rows,
+                    page_numbers,
+                    curPage: +page,
+                    CatOfEditor: cat,
+                    artOfEditor:num
+                });
+            })
+            
+        }).catch(next);
 
         console.log(nPages);
         console.log(page_numbers.length);
@@ -70,7 +82,7 @@ router.get('/articlesByCat/:id', restricted, isEditor, (req, res, next) => {
     }).catch(next);
 })
 
-router.get('/accept/:id', restricted, isEditor, (req, res) => {
+router.get('/accept/:id', (req, res) => {
     var artID = req.params.id;
     articleModel.getByArtID(artID).then(rows => {
         var catID = rows[0].CatID;
@@ -94,22 +106,17 @@ router.post('/accept/:id', (req, res, next) => {
     var SubCatID = req.body.SubCatID;
     var EditorID = req.body.EditorID;
     var RankID = req.body.RankID;
-    // console.log("a" + RankID);
-    // console.log(req.body.ArtPostedOn);
-    var ArtPostedOn = moment(req.body.ArtPostedOn, 'DD/MM/YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
-    // console.log(ArtPostedOn);
-    var entity = {
+    console.log("a" + RankID);
+    var ArtPostedOn = moment(req.body.ArtPostedOn, 'DD/MM/YYYY hh:mm:ss').format('YYYY-MM-DD hh:mm:ss');
+
+    var entity1 = {
         "SubCatID": SubCatID,
         "ArtPostedOn": ArtPostedOn,
-        "StatusID": 3,
+        "StatusID": 2,
         "EditorID": EditorID,
         "RankID": RankID
     }
-    // Phần cũ của Đào:
-    // articleModel.edit(entity1, artID)
-    // /Phần cũ của Đào
-
-    articleModel.update(artID, entity).then(n => {
+    articleModel.edit(entity1, artID).then(n => {
         var tags = req.body.TagName.split(',');
         tags.forEach(element => {
             tagModel.add(element).then(id => {
@@ -119,18 +126,16 @@ router.post('/accept/:id', (req, res, next) => {
                 };
                 console.log(entity);
                 artTagsModel.delete(artID).then(id => {
-                    artTagsModel.add(entity).then(count => {
-                        
-                    }).catch(next);
+                    artTagsModel.add(entity).then();
                 }).catch(next);
 
             }).catch(next);
         });
-        res.redirect('/editor/welcome');
+        res.redirect(req.originalUrl);
     }).catch(next);
 })
 
-router.get('/decline/:id', restricted, isEditor, (req, res, next) => {
+router.get('/decline/:id', (req, res, next) => {
     var artID = req.params.id;
     articleModel.getByArtID(artID).then(rows => {
         res.render('editor/declineArt', {
@@ -145,7 +150,7 @@ router.post('/decline/:id', (req, res, next) => {
     var entity = {
         "StatusID": 4
     }
-    articleModel.edit(entity, artID).then(n => {
+    articleModel.update( artID,entity).then(n => {
         res.redirect(req.originalUrl);
     }).catch(next);
 })

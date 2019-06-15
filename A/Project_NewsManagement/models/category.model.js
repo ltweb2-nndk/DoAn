@@ -15,7 +15,11 @@ module.exports = {
     },
 
     getByID: (editID) => {
-        return db.load(`select c.CatID, c.CatName, count(*) num_of_arts from article a join category c on a.CatID = c.CatID join editor e on a.EditorID = e.EditorID join status s on a.StatusID = s.StatusID where a.EditorID = ${editID} and a.StatusID = 1 group by c.CatID, c.CatName`);
+        return db.load(`select c.* from category c  where c.EditorID = ${editID}`);
+    },
+    countArt:(editID)=>{
+        return db.load(`select c.CatID, c.CatName, count(*) num_of_arts 
+        from article a right join category c on a.CatID = c.CatID join editor e on c.EditorID = e.EditorID join status s on a.StatusID = s.StatusID where c.EditorID = ${editID} and a.StatusID = 1 group by c.CatID, c.CatName`)
     },
     allOfAdmin:()=>{
         return db.load('select * from category');

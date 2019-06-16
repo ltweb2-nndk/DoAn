@@ -11,10 +11,15 @@ var custom = require('../../public/js/custom');
 var isWriter = require('../../middlewares/isWriter');
 
 router.get('/welcome', restricted, isWriter, (req, res, next) => {
-    console.log(req.user);
-    res.render('writer/welcome', {
-        layout: 'mainWrite.hbs'
-    });
+    var writer = req.user.WriterID;
+
+    articleModel.countArtOfWriter(writer).then(nRows=>{
+        console.log(nRows);
+        res.render('writer/welcome', {
+            layout: 'mainWrite.hbs',
+            ArtOfWriter: nRows
+        });
+    })
 })
 
 router.get('/add', restricted, isWriter, (req, res, next) => {
@@ -46,11 +51,11 @@ router.post('/add', restricted, (req, res, next) => {
         req.session.success = true;
         res.redirect('/writer/add');
     }).catch(next);
-
 })
 
 router.get('/articlesByStatus/:id', isWriter, (req, res, next) => {
     var id = req.params.id;
+    var writer = req.user.WriterID;
     var lim = config.paginate.default;
     var page = req.query.page || 1;
     if (page < 1) {
@@ -59,9 +64,10 @@ router.get('/articlesByStatus/:id', isWriter, (req, res, next) => {
     var start_offset = (page - 1) * lim;
     console.log(start_offset);
     Promise.all([
-        articleModel.countByStatus(id),
-        articleModel.pageByStatus(id, start_offset)
-    ]).then(([nRows, rows]) => {
+        articleModel.countByStatus(id,writer),
+        articleModel.pageByStatus(id,writer,start_offset),
+        articleModel.countArtOfWriter(writer)
+    ]).then(([nRows, rows,nArt]) => {
 
         var total = nRows[0].total;
 
@@ -79,14 +85,13 @@ router.get('/articlesByStatus/:id', isWriter, (req, res, next) => {
 
         console.log(nPages);
         console.log(page_numbers.length);
-        console.log(nRows);
         console.log(page);
         res.render('writer/articlesByStatus', {
             layout: 'mainWrite.hbs',
-            stusName: rows[0].StatusName,
             articles: rows,
             page_numbers,
             curPage: +page,
+            ArtOfWriter: nArt
         });
     }).catch(next);
 })
@@ -96,7 +101,7 @@ router.get('/edit/:id', restricted, isWriter, (req, res, next) => {
     Promise.all([articleModel.getSomeByID(id), artTagsModel.getArticleTags(id)])
         .then(([rowsArt, rowsTag]) => {
             // console.log(rowsArt[0]);
-            // console.log(rowsArt);
+            console.log(rowsArt);
             // console.log(rowsTag);
             var catID = rowsArt[0].CatID;
             console.log(catID)
@@ -115,23 +120,34 @@ router.get('/edit/:id', restricted, isWriter, (req, res, next) => {
 
 router.post('/edit/:id', restricted, (req, res, next) => {
     var artID = req.params.id;
-    var article = req.body;
-    var avatar = req.body.avaArt;
+    // var article = req.body;
+    var avatar = req.body.artAvar;
+    // delete article.artAvar;
+    var tags = req.body.TagName.split(',');
+    if(avatar=='')
+        avatar = req.body.avaArt2;
+    else
+        avatar = "/img/article/"+ avatar;
+    // delete article.TagName;
+    delete req.body.avaArt2;
     console.log('ád'+ avatar);
-    // Phần cũ của Đào:
-    //articleModel.update(article)
-
-    // Phần Đạt bổ sung
-    delete article.ArtID;
-    article.ArtCreatedOn = custom.getDateTimeNow();
-    article.StatusID = 1;
-    // /Phần Đạt bổ sung
-    
-    articleModel.update(artID, article)
+    // delete article.ArtID;
+    // article.ArtCreatedOn = custom.getDateTimeNow();
+    // article.StatusID = 1;
+    var entityArt = {
+        "ArtTitle": req.body.ArtTitle,
+        "Summary": req.body.Summary,
+        "Content": req.body.Content,
+        "SubCatID": req.body.SubCatID,
+        "StatusID": req.body.StatusID,
+        "WriterID": req.body.WriterID,
+        "ArtCreatedOn": custom.getDateTimeNow(),
+        "ArtAvatar": avatar,
+        "StatusID": 1
+    }
+    articleModel.update(artID, entityArt)
         .then(nRows => {
-    
             
-            var tags = req.body.TagName.split(',');
             tags.forEach(element => {
                 tagModel.add(element).then(id => {
                     var entity = {

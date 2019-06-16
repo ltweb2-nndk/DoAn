@@ -147,9 +147,13 @@
                   {{#each ../../lcStatus}}
                   <li>
                     <a href="/writer/articlesByStatus/{{StatusID}}">{{StatusName}}
-                      {{#if num_of_art}}
-                      <span class="badge badge-pill badge-danger float-right">{{num_of_art}}</span>
-                      {{/if}}
+                      {{#each ../../../ArtOfWriter}}
+                      {{#ifeq ../StatusID StatusID}}
+                        {{#if ../total}}
+                          <span class="badge badge-pill badge-danger float-right">{{../total}}</span>
+                        {{/if}}
+                      {{/ifeq}}
+                      {{/each}}
                     </a>
                   </li>
 

@@ -11,7 +11,7 @@ module.exports = function (app) {
     });
 
     app.post('/upload', (req, res, next) => {
-        multer({ storage }).array('avatar')(req, res, err => {
+        multer({ storage }).array('ArtAvatar')(req, res, err => {
         if (err) {
             return res.json({
             error: err.message

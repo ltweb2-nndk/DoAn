@@ -131,37 +131,11 @@ module.exports = {
         return db.add('article', params);
     },
 
-    // update: (entity) => {
-    //     // var img = entity.avaArt
-    //     // if(img==="")
-    //     //     img='/img/article/fdgf'+entity.avaArt
-    //     // else
-    //     //     img = entity.avaArt2
-
-    //     var id = entity.ArtID;
-    //     var params = {
-    //         "ArtTitle": entity.ArtTitle,
-    //         "Summary": entity.Summary,
-    //         "Content": entity.Content,
-    //         "SubCatID": entity.SubCatID,
-    //         "StatusID": entity.StatusID,
-    //         "RankID": entity.RankID,
-    //         "WriterID": entity.WriterID,
-    //         "ArtCreatedOn": date.getDateTimeNow(),
-    //         "ArtAvatar": entity.artAvatar,
-    //         "StatusID": 1
-    //     }
-    //     return db.update('article', 'ArtID', params, id);
-    // },
-
-    // edit: (entity, id) => {
-    //     return db.update('article', 'ArtID', entity, id);
-    // },
     countAllDraft:EditorID=>{
         return db.load(`select count(*) as total from article a join category c on a.CatID=c.CatID where c.EditorID=${EditorID} and a.StatusID=1`);
     },
-    countByStatus: (id) => {
-        return db.load(`select count(StatusID) as total from article where StatusID=${id} GROUP BY StatusID`);
+    countByStatus: (id,writerID) => {
+        return db.load(`select count(StatusID) as total from article where StatusID=${id} and WriterID=${writerID} GROUP BY StatusID`);
     },
 
     countByCat: (catID) => {
@@ -174,11 +148,11 @@ module.exports = {
     // countAllDraft:(editorID)=>{
     //     return db.load(`select* from article a join cate`)
     // }
-    pageByStatus: (stusID, start_offset) => {
+    pageByStatus: (stusID,writerID, start_offset) => {
         var lim = config.paginate.default;
         return db.load(`select a.ArtID,a.ArtAvatar,a.ArtTitle,a.Summary,a.StatusID,s.StatusName 
         from article a join status s on a.StatusID = s.StatusID
-        where a.StatusID = ${stusID} limit 6 offset ${start_offset}`);
+        where a.StatusID = ${stusID} and WriterID=${writerID} limit 6 offset ${start_offset}`);
     },
 
     pageByCat: (catID, start_offset) => {
@@ -188,5 +162,9 @@ module.exports = {
     pageAll:(editID,start_offset)=>{
         var lim = config.paginate.default;
         return db.load(`select * from article a join category c on a.CatID = c.CatID  where a.StatusID=1 and c.EditorID = ${editID} limit ${lim} offset ${start_offset} `)
-    }
-};
+    },
+    countArtOfWriter: writerID=>{
+        return db.load(`select s.* , count(a.ArtID) as total from status s left join article a on s.StatusID = a.StatusID where a.WriterID = ${writerID} group by s.StatusID`)
+    },
+    
+};  

@@ -13,7 +13,7 @@
     <script>
     $(function () {
 
-        $('#avatar').fileinput({
+        $('#ArtAvatar').fileinput({
         theme: 'fa',
         dropZoneEnabled: false,
         allowedFileExtensions: ['png', 'jpg', 'gif'],
@@ -47,7 +47,7 @@
     </script>     
     <script>
 
-            $('#avatar').on('change',function(e){
+            $('#ArtAvatar').on('change',function(e){
                 var fileName = e.target.files[0].name;
                 alert('The file "' + fileName +  '" has been selected.');
                 $('.demo input').val(fileName);
@@ -59,7 +59,7 @@
         <div class="form-group row">
             <label for="ArtID" class="col-sm-2 col-form-label">Mã bài</label>
             <div class="col-sm-10">
-                <input type="text"  class="form-control" value="{{this.articles.ArtID}}" id="ArtID" name="ArtID" readonly>
+                <input type="text"  class="form-control" value="{{articles.ArtID}}" id="ArtID" name="ArtID" readonly>
             </div>
         </div>
         <div class="form-group row">
@@ -68,7 +68,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                             <select class="form-control" name="CatID">
-                            {{#if this.articles.ArtID}}
+                            {{#if articles}}
                                 <option value={{articles.CatID}} selected aria-readonly="true">{{articles.CatName}}</option>
                             {{/if}}
                             </select>
@@ -97,14 +97,15 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="avaArt" class="col-sm-2 col-form-label">Cập nhật ảnh đại diện bài viết</label>
+            <label for="tag" class="col-sm-2 col-form-label">Cập nhật ảnh đại diện bài viết</label>
             <div class="col-sm-10">
-                <div class="file-loading">
-                    <input id="avatar" name="avatar" type="file">
+                <div class="file-loading" >
+                    <input id="ArtAvatar" name="ArtAvatar" type="file">
+                    
                 </div>
             </div>
             <div class="demo">
-                <input id="artAvar" name="artAvar" type="text" hidden>
+                <input id="artAvar" name="artAvar" type="text">
             </div>
         </div>
         <div class="form-group row">

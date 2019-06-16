@@ -158,8 +158,7 @@ module.exports = {
     //     return db.update('article', 'ArtID', entity, id);
     // },
     countAllDraft:EditorID=>{
-        return db.load(`select count(a.ArtID) as total from article a join category c on a.CatID=c.CatID where a.EditorID=${EditorID} and StatusID=1
-        GROUP BY a.CatID`);
+        return db.load(`select count(*) as total from article a join category c on a.CatID=c.CatID where c.EditorID=${EditorID} and a.StatusID=1`);
     },
     countByStatus: (id) => {
         return db.load(`select count(StatusID) as total from article where StatusID=${id} GROUP BY StatusID`);

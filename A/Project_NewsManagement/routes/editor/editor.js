@@ -16,13 +16,17 @@ router.get('/welcome', (req, res, next) => {
     console.log(req.user)
     catModel.getByID(req.user.EditorID).then(rows => {
         catModel.countArt(req.user.EditorID).then(nArt=>{
-            console.log(rows);
-            res.render('writer/welcome', {
-                layout: 'mainWrite.hbs',
-                EditorID : rows.EditorID,
-                CatOfEditor: rows,
-                artOfEditor: nArt
-            });
+            articleModel.countAllDraft(id).then(nAll=>{
+                console.log(rows);
+                res.render('writer/welcome', {
+                    layout: 'mainWrite.hbs',
+                    EditorID : rows.EditorID,
+                    CatOfEditor: rows,
+                    artOfEditor: nArt,
+                    totalAll:nAll[0].total
+                });
+            })
+            
         }).catch(next);
     }).catch(next);
 })
@@ -35,10 +39,10 @@ router.get('/articles',(req,res,next)=>{
     }
     var start_offset = (page - 1) * lim;
     Promise.all([
-        articleModel.countAllDraft(id),
-        articleModel.pageAll(id, start_offset)
+        articleModel.countAllDraft(id), //return total
+        articleModel.pageAll(id, start_offset) //return articles
     ]).then(([nrow,row])=>{
-        var total = nrow.total;
+        var total = nrow[0].total;
         var nPages = Math.floor(total / lim);
         if (total % lim > 0) {
             nPages++;
@@ -50,10 +54,24 @@ router.get('/articles',(req,res,next)=>{
                 active: i === +page
             })
         }
+        catModel.getByID(id).then(cat=>{
+            catModel.countArt(id).then(avc=>{
+                res.render('editor/articlesByCat', {
+                    layout: 'mainWrite.hbs',
+                    articles: row,
+                    page_numbers,
+                    curPage: +page,
+                    totalAll:total,
+                    CatOfEditor: cat,
+                    artOfEditor:avc
+                });
+            }).catch(next);
+        }).catch(next);
     })
 })
 router.get('/articlesByCat/:id', (req, res, next) => {
     var catID = req.params.id;
+    var id = req.user.EditorID;
     var lim = config.paginate.default;
     var page = req.query.page || 1;
     if (page < 1) {
@@ -61,9 +79,10 @@ router.get('/articlesByCat/:id', (req, res, next) => {
     }
     var start_offset = (page - 1) * lim;
     Promise.all([
-        articleModel.countDraftByCat(catID),
-        articleModel.pageByCat(catID, start_offset)
-    ]).then(([nRows, rows]) => {
+        articleModel.countDraftByCat(catID), 
+        articleModel.pageByCat(catID, start_offset),
+        articleModel.countAllDraft(id)
+    ]).then(([nRows, rows,nAll]) => {
 
 
         var total = nRows.total;
@@ -78,7 +97,7 @@ router.get('/articlesByCat/:id', (req, res, next) => {
                 active: i === +page
             })
         }
-        var id = req.user.EditorID;
+        
         console.log(req.user)
         catModel.getByID(id).then(cat=>{
             catModel.countArt(id).then(num=>{
@@ -88,17 +107,12 @@ router.get('/articlesByCat/:id', (req, res, next) => {
                     page_numbers,
                     curPage: +page,
                     CatOfEditor: cat,
-                    artOfEditor:num
+                    artOfEditor:num,
+                    totalAll:nAll[0].total
                 });
             })
             
         }).catch(next);
-
-        console.log(nPages);
-        console.log(page_numbers.length);
-        console.log(rows);
-        console.log(page);
-        
     }).catch(next);
 })
 
@@ -136,7 +150,7 @@ router.post('/accept/:id', (req, res, next) => {
         "EditorID": EditorID,
         "RankID": RankID
     }
-    articleModel.edit(entity1, artID).then(n => {
+    articleModel.update(artID,entity1).then(n => {
         var tags = req.body.TagName.split(',');
         tags.forEach(element => {
             tagModel.add(element).then(id => {
@@ -151,7 +165,7 @@ router.post('/accept/:id', (req, res, next) => {
 
             }).catch(next);
         });
-        res.redirect(req.originalUrl);
+        res.redirect('/editor/articles');
     }).catch(next);
 })
 
@@ -171,7 +185,7 @@ router.post('/decline/:id', (req, res, next) => {
         "StatusID": 4
     }
     articleModel.update( artID,entity).then(n => {
-        res.redirect(req.originalUrl);
+        res.redirect('/editor/articles');
     }).catch(next);
 })
 

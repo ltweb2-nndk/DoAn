@@ -19,7 +19,7 @@ module.exports = {
     },
     countArt:(editID)=>{
         return db.load(`select c.CatID, c.CatName, count(*) num_of_arts 
-        from article a right join category c on a.CatID = c.CatID join editor e on c.EditorID = e.EditorID join status s on a.StatusID = s.StatusID where c.EditorID = ${editID} and a.StatusID = 1 group by c.CatID, c.CatName`)
+        from article a right join category c on a.CatID = c.CatID  where c.EditorID = ${editID} and a.StatusID = 1 group by c.CatID, c.CatName`)
     },
     allOfAdmin:()=>{
         return db.load('select * from category');

@@ -63,7 +63,7 @@ router.get('/articlesByStatus/:id', isWriter, (req, res, next) => {
         articleModel.pageByStatus(id, start_offset)
     ]).then(([nRows, rows]) => {
 
-        var total = nRows.total;
+        var total = nRows[0].total;
 
         var nPages = Math.floor(total / lim);
         if (total % lim > 0) {

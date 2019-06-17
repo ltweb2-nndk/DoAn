@@ -126,7 +126,9 @@ module.exports = {
             "WriterID": entity.WriterID,
             "ArtCreatedOn": date.getDateTimeNow(),
             "StatusID": 1,
-            "ArtAvatar": link
+            "ArtAvatar": link,
+            "Views":0,
+            "Featured":0
         }
         return db.add('article', params);
     },

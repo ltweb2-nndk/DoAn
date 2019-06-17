@@ -23,9 +23,14 @@ router.get('/welcome', restricted, isWriter, (req, res, next) => {
 })
 
 router.get('/add', restricted, isWriter, (req, res, next) => {
-    res.render('writer/addArticle', {
-        layout: 'mainWrite.hbs'
-    });
+    var writer = req.user.WriterID;
+    articleModel.countArtOfWriter(writer).then(nRows=>{
+        res.render('writer/addArticle', {
+            layout: 'mainWrite.hbs',
+            ArtOfWriter: nRows
+        });
+    })
+    
 })
 
 router.post('/add', restricted, (req, res, next) => {
@@ -34,20 +39,22 @@ router.post('/add', restricted, (req, res, next) => {
     articleModel.add(article).then(id => {
         var artID = id;
         var tags = article.TagName.split(',');
-
-        tags.forEach(x => {
-            tagModel.add(x).then(id => {
-                var entity = {
-                    "ArtID": artID,
-                    "TagID": id
-                };
-                console.log(entity);
-                artTagsModel.add(entity)
-                .then()
-                .catch(next);
-            }).catch(next);
-            
-        })
+        if(req.body.TagName!=""){
+            tags.forEach(x => {
+                tagModel.add(x).then(id => {
+                    var entity = {
+                        "ArtID": artID,
+                        "TagID": id
+                    };
+                    console.log(entity);
+                    artTagsModel.add(entity)
+                    .then()
+                    .catch(next);
+                }).catch(next);
+                
+            })
+        }
+        
         req.session.success = true;
         res.redirect('/writer/add');
     }).catch(next);
@@ -98,11 +105,13 @@ router.get('/articlesByStatus/:id', isWriter, (req, res, next) => {
 
 router.get('/edit/:id', restricted, isWriter, (req, res, next) => {
     var id = req.params.id;
-    Promise.all([articleModel.getSomeByID(id), artTagsModel.getArticleTags(id)])
-        .then(([rowsArt, rowsTag]) => {
-            // console.log(rowsArt[0]);
+    var writer = req.user.WriterID;
+    Promise.all([
+        articleModel.getSomeByID(id), 
+        artTagsModel.getArticleTags(id),
+        articleModel.countArtOfWriter(writer)])
+        .then(([rowsArt, rowsTag,nArt]) => {
             console.log(rowsArt);
-            // console.log(rowsTag);
             var catID = rowsArt[0].CatID;
             console.log(catID)
             subCatModel.allByCatID(catID).then(rowsCat => {
@@ -111,7 +120,8 @@ router.get('/edit/:id', restricted, isWriter, (req, res, next) => {
                     layout: 'mainWrite.hbs',
                     articles: rowsArt[0],
                     artTags: rowsTag,
-                    subCat: rowsCat
+                    subCat: rowsCat,
+                    ArtOfWriter: nArt
                 });
             }).catch(next);
 
@@ -120,20 +130,13 @@ router.get('/edit/:id', restricted, isWriter, (req, res, next) => {
 
 router.post('/edit/:id', restricted, (req, res, next) => {
     var artID = req.params.id;
-    // var article = req.body;
     var avatar = req.body.artAvar;
-    // delete article.artAvar;
     var tags = req.body.TagName.split(',');
     if(avatar=='')
         avatar = req.body.avaArt2;
     else
         avatar = "/img/article/"+ avatar;
-    // delete article.TagName;
     delete req.body.avaArt2;
-    console.log('ád'+ avatar);
-    // delete article.ArtID;
-    // article.ArtCreatedOn = custom.getDateTimeNow();
-    // article.StatusID = 1;
     var entityArt = {
         "ArtTitle": req.body.ArtTitle,
         "Summary": req.body.Summary,

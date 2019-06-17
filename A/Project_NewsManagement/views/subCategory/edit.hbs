@@ -15,7 +15,7 @@
 <body>
 <h2>Chỉnh sửa chuyên đề</h2>
 <form action="/admin/subCategory/update" method="POST" id="frmChuyenDe" style="width:400px;margin:0 auto;">
-    
+    <input name="CatName"  value="{{CatName}}" type="hidden"></input>
     <input  type="hidden"  name="SubCatID" value="{{this.subcategories.SubCatID}}" style="width:300px;"/>
    
     <div>

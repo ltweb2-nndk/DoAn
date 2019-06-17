@@ -19,14 +19,14 @@
 <div style="margin-bottom:50px;margin-left:5px;"> 
   <div style="float:left;">
     <div style="float:left;width:175px;">
-    <select name="StatusID" class="browser-default custom-select" class="browser-default custom-select">
-    <option>Chọn tình trạng</option>
+    <select name="TypeAccount" class="browser-default custom-select" class="browser-default custom-select">
+    <option>Tình trạng</option>
      {{#each statuses}}
-        <option {{#ifeq StatusID  statusID }}selected{{/ifeq}} value="{{StatusID}}">{{StatusName}}</option>
+        <option {{#ifeq StatusID ../StatusID}}selected{{/ifeq}} value="{{StatusID}}">{{StatusName}}</option>
        {{/each}}
     </select>
     </div>
-    <button class="btn btn-info" style="margin-left:5px;" formaction="/admin/article/status" name="TTK" onclick="return CheckValueStatus();">Danh Sách</button>
+    <button class="btn btn-info" style="margin-left:5px;width:95px;" formaction="/admin/article/status" name="TTK" onclick="return CheckValueRole();">Danh Sách</button>
   </div>
   <div style="float:right;">
     <div style="float:left;">
@@ -37,7 +37,7 @@
      {{/each}}
     </select>
     </div>
-    <button class="btn btn-dark" name="TKTDanhMuc" style="margin-left:5px;" formaction="/admin/article/Category" onclick="return CheckValueSubCategories();">Danh Sách</button>
+    <button class="btn btn-dark" name="TKTDanhMuc" style="margin-left:5px;" formaction="/Admin/Article/Category" onclick="return CheckValueSubCategories();">Danh Sách</button>
   </div>
 </div>
 </form>
@@ -51,15 +51,13 @@
 </thead>
 <tbody></tbody>
     {{#each this.article}}
-    <form action="GET">
     <tr style="height:20px">
-        <th><input type="hidden" name="ArtID" value="{{ArtID}}"/>{{ArtID}}</th>
+        <th>{{ArtID}}</th>
         <th>{{ArtTitle}}</td>
         <th><a href="/admin/article/detail/{{ArtID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
         <th><a href="/admin/article/edit/{{ArtID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
-        <th><button formaction="/admin/article/delete" class="btn btn-danger btn-lg active"><i class="fa fa-trash"></i></button>
+        <th><a href="/admin/article/delete/{{ArtID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
     </tr>
-    </form>
     {{/each}}
 </tbody>
 </table>
@@ -68,11 +66,11 @@
     {{#each this.page_number}}
     {{#if active}}
     <li class="page-item active" aria-current="page">
-      <a class="page-link" href="?page={{value}}">{{value}}<span class="sr-only">(current)</span></a>
+      <a class="page-link" href="?timkiem={{../timkiem}}&page={{value}}">{{value}}<span class="sr-only">(current)</span></a>
     </li>
     {{else}}
     <li class="page-item " aria-current="page">
-      <a class="page-link" href="?page={{value}}">{{value}}</a>
+      <a class="page-link" href="?timkiem={{../timkiem}}&page={{value}}">{{value}}</a>
     </li>
     {{/if}}
     {{/each}}

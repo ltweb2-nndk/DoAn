@@ -12,14 +12,18 @@ var helpersFunc = require('../../public/js/custom');
 var router = express.Router();
 var restricted = require('../../middlewares/restricted');
 var isAdmin = require('../../middlewares/isAdmin');
+var config = require('../../config/default.json')
 
-router.get('/', restricted, isAdmin, (req, res, next) => {
+router.get('/', restricted ,isAdmin, (req, res, next) => {
     Promise.all([
         subscriberModel.all(),
         editorModel.all(),
         writerModel.all(),
         roleModel.all()
     ]).then(([rowsSub, rowsEditor, rowsWriter, rowsRole]) => {
+        delete rowsRole[3];
+        delete rowsRole[0];
+        delete  res.locals.lcRole[3];
         res.render('user/index', {
             subscriber: rowsSub,
             editor: rowsEditor,
@@ -30,10 +34,10 @@ router.get('/', restricted, isAdmin, (req, res, next) => {
     }).catch(next);
 })
 
-router.post('/search', (req, res, next) => {
+router.get('/search', (req, res, next) => {
     var entity = {
-        value: req.body.timkiem,
-        RoleID: req.body.RoleID
+        value: req.query.timkiem,
+        RoleID: req.query.RoleID
     };
     if (entity.RoleID == 1) {
         subscriberModel.search(entity.value).then(rowsSub => {
@@ -61,7 +65,7 @@ router.post('/search', (req, res, next) => {
         }).catch(next);
     } else if (entity.RoleID == 3) {
         editorModel.search(entity.value).then(rowsEditor => {
-            for (var r of res.locals.lcRole) {
+           for (var r of res.locals.lcRole) {
                 if (r.RoleID === +entity.RoleID)
                     r.active = true;
                 else r.active = false;
@@ -78,7 +82,7 @@ router.post('/search', (req, res, next) => {
             writerModel.search(entity.value),
             roleModel.all()
         ]).then(([rowsSub, rowsEditor, rowsWriter, rowsRole]) => {
-            res.render('User/index', {
+            res.render('user/index', {
                 subscriber: rowsSub,
                 editor: rowsEditor,
                 writer: rowsWriter,
@@ -89,8 +93,12 @@ router.post('/search', (req, res, next) => {
     }
 });
 
-router.post('/role', (req, res, next) => {
-    var RoleID = req.body.RoleID;
+router.get('/role', (req, res, next) => {
+    var RoleID = req.query.RoleID;
+    var limit = config.paginate.default;
+    var page = req.query.page || 1;
+    var start_offset = (page - 1) * limit;
+    if (page < 1) page = 1;
     roleModel.all().then(rows => {
         var entity = rows;
         for (var r of res.locals.lcRole) {
@@ -99,38 +107,85 @@ router.post('/role', (req, res, next) => {
             else r.active = false;
         }
         if (RoleID == 1)
-            subscriberModel.all().then(rows => {
-                res.render('user/index', {
-                    subscriber: rows,
-                    role: entity,
-                    layout: false
+        Promise.all([
+            subscriberModel.count(),
+            subscriberModel.pageBySub(start_offset)
+        ]).then(([nRows, rows]) => {
+            var total = nRows[0].total;
+            var nPage = Math.floor(total / limit);
+    
+            if (total % limit > 0) nPage++;
+    
+            var page_number = [];
+            for (i = 1; i <= nPage; i++) {
+                page_number.push({
+                    value: i,
+                    active: i === +page
                 })
+            }
+            res.render('user/role', {
+                RoleID,
+                subscriber:rows,
+                page_number,
+                layout: false
             })
+        }).catch(next);
         else if (RoleID == 2)
-            writerModel.all().then(rows => {
-                res.render('user/index', {
-                    writer: rows,
-                    role: entity,
-                    layout: false
+        Promise.all([
+            writerModel.count(),
+            writerModel.pageByWrt(start_offset)
+        ]).then(([nRows, rows]) => {
+            var total = nRows[0].total;
+            var nPage = Math.floor(total / limit);
+    
+            if (total % limit > 0) nPage++;
+    
+            var page_number = [];
+            for (i = 1; i <= nPage; i++) {
+                page_number.push({
+                    value: i,
+                    active: i === +page
                 })
+            }
+            res.render('user/role', {
+                RoleID,
+                writer:rows,
+                page_number,
+                layout: false
             })
+        }).catch(next);     
         else if (RoleID == 3)
-            editorModel.all().then(rows => {
-                res.render('user/index', {
-                    editor: rows,
-                    role: entity,
-                    layout: false
+        Promise.all([
+            editorModel.count(),
+            editorModel.pageByEdi(start_offset)
+        ]).then(([nRows, rows]) => {
+            var total = nRows[0].total;
+            var nPage = Math.floor(total / limit);
+    
+            if (total % limit > 0) nPage++;
+    
+            var page_number = [];
+            for (i = 1; i <= nPage; i++) {
+                page_number.push({
+                    value: i,
+                    active: i === +page
                 })
+            }
+            res.render('user/role', {
+                RoleID,
+                editor: rows,
+                page_number,
+                layout: false
             })
-        else {
+        }).catch(next);    else {
             res.redirect('/admin/user');
         }
     }).catch(next);
 });
 
-router.post('/add', (req, res) => {
+router.get('/add', (req, res) => {
     var entity = {
-        RoleID: req.body.TypeAccount
+        RoleID: req.query.TypeAccount
     };
     if (entity.RoleID == 2)
         res.render('user/add_writer', {
@@ -159,13 +214,13 @@ router.post('/add/writer', (req, res, next) => {
 
     var writer = {
         FullName: entity.FullName,
-        Avatar: "/images/user/default_avartar.png",
+        Avatar: "/img/user/default-avatar.jpg",
         DOB: entity.DOB,
         AccID: 1,
         Pseudonym: entity.Pseudonym
     };
 
-    accountModel.insert(account).then(id => {
+    accountModel.add(account).then(id => {
         writer.AccID = id;
         writerModel.insert(writer).then(id => {
             res.redirect('/admin/user');
@@ -188,11 +243,11 @@ router.post('/add/editor', (req, res, next) => {
 
     var editor = {
         FullName: entity.FullName,
-        Avatar: "/images/user/default_avartar.png",
+        Avatar: "/img/user/default-avatar.jpg",
         DOB: req.body.DOB,
         AccID: 1
     };
-    accountModel.insert(account).then(id => {
+    accountModel.add(account).then(id => {
         editor.AccID = id;
         editorModel.insert(editor).then(id => {
             res.redirect('/admin/user');
@@ -200,7 +255,7 @@ router.post('/add/editor', (req, res, next) => {
     }).catch(next);
 });
 
-router.get('/detail/subscriber/:id', restricted, isAdmin, (req, res) => {
+router.get('/detail/subscriber/:id',  (req, res) => {
     var id = req.params.id;
     subscriberModel.single(id).then(rows => {
         rows[0].DOB = moment(new Date(rows[0].DOB), 'YYYY-MM-DD').format('YYYY-MM-DD');
@@ -213,7 +268,7 @@ router.get('/detail/subscriber/:id', restricted, isAdmin, (req, res) => {
     })
 });
 
-router.get('/update/subscriber/:id', restricted, isAdmin, (req, res, next) => {
+router.get('/update/subscriber/:id',  (req, res, next) => {
     var id = req.params.id;
     var date = new Date();
     subscriberModel.single(id).then(rows => {
@@ -221,19 +276,17 @@ router.get('/update/subscriber/:id', restricted, isAdmin, (req, res, next) => {
             if (rows[0].ExpiredOn == null) {
                 rows[0].BoughtOn.setDate(rows[0].BoughtOn.getDate() + 7)
                 var entity = {
-                    SubscriberID: rows[0].SubscriberID,
                     ExpiredOn: rows[0].BoughtOn
                 }
-                subscriberModel.update(entity).then(n => {
+                subscriberModel.update(rows[0].SubscriberID,entity).then(n => {
                     res.redirect(`/admin/user/detail/subscriber/${id}`)
                 })
             } else if (rows[0].ExpiredOn <= date) {
                 date.setDate(date.getDate() + 7)
                 var entity = {
-                    SubscriberID: rows[0].SubscriberID,
                     ExpiredOn: date
                 }
-                subscriberModel.update(entity).then(n => {
+                subscriberModel.update(rows[0].SubscriberID,entity).then(n => {
                     res.redirect(`/admin/user/detail/subscriber/${id}`)
                 })
             } else if (rows[0].ExpiredOn > date) {
@@ -243,31 +296,29 @@ router.get('/update/subscriber/:id', restricted, isAdmin, (req, res, next) => {
     }).catch(next);
 })
 
-router.get('/detail/editor/:id', restricted, isAdmin, (req, res) => {
+router.get('/detail/editor/:id',  (req, res) => {
     var id = req.params.id;
     editorModel.single(id).then(rows => {
         rows[0].DOB = moment(new Date(rows[0].DOB), 'YYYY-MM-DD').format('YYYY-MM-DD');
-        for (var c of res.locals.lcCategory) {
-            if (c.CatID === +rows[0].CatID)
-                c.active = true;
-            else c.active = false;
-        }
-        res.render('user/detail_editor', {
-            editor: rows[0],
-            layout: false
-        });
+            res.render('user/detail_editor', {
+                editor: rows[0],
+                layout: false
+            });
     })
 })
 router.post('/update/editor', (req, res, next) => {
-    var entity = req.body;
-    var id = entity.EditorID;
-    delete entity.EditorID;
-    editorModel.update(id, entity).then(n => {
-        res.redirect('/admin/user');
+    var entity=req.body;
+    var catEntity={CatID:entity.CatID,EditorID:entity.EditorID};
+    delete entity.CatID;
+     Promise.all([
+        editorModel.update(entity),
+        categoryModel.update(catEntity)
+    ]).then(([nE])=>{
+        res.redirect('/admin/user')
     }).catch(next);
 })
 
-router.get('/detail/writer/:id', restricted, isAdmin, (req, res, next) => {
+router.get('/detail/writer/:id',  (req, res, next) => {
     var id = req.params.id;
     writerModel.single(id).then(rows => {
         rows[0].DOB = moment(new Date(rows[0].DOB), 'YYYY-MM-DD').format('YYYY-MM-DD');
@@ -279,14 +330,52 @@ router.get('/detail/writer/:id', restricted, isAdmin, (req, res, next) => {
 })
 router.post('/update/writer', (req, res, next) => {
     var entity = req.body;
+    var id=req.body.WriterID;
     delete entity.WriterID;
-    writerModel.update(req.body.WriterID, entity).then(n => {
+    writerModel.update(id, entity).then(n => {
         res.redirect('/admin/User');
     }).catch(next);
 })
 
-router.get('/delete/subscriber/:id', restricted, isAdmin, (req, res, next) => {
-    var id = req.params.id;
+router.get('/editor/:id/category',(req,res,next)=>{
+    var EditorID=req.params.id;
+    Promise.all([
+        categoryModel.allByEditor(EditorID),
+        categoryModel.allByEditorIsNull()
+    ]).then(([rows1,rows2])=>{
+        res.render('user/editor_category',{
+            layout:false,
+            categoryEditor:rows1,
+            category:rows2,
+            EditorID
+        })
+    })
+})
+
+router.post('/editor/category/update',(req,res,next)=>{
+    var EditorID=req.body.EditorID;
+    var CatID=req.body.CatID;
+    var entity={
+        CatID:CatID,
+        EditorID:EditorID
+    }
+    categoryModel.update(entity).then(n=>{
+        res.redirect(`/admin/user/editor/${EditorID}/category`);
+    })
+})
+
+router.post('/editor/category/delete',(req,res,next)=>{
+    var EditorID=req.body.EditorID;
+    var id=req.body.CatID;
+    entity={CatID:id,
+        EditorID:null
+    };
+    categoryModel.update(entity).then(n=>{
+        res.redirect(`/admin/user/editor/${EditorID}/category`);
+    })
+})
+router.get('/delete/subscriber',  (req, res, next) => {
+    var id = req.query.SubscriberID;
     subscriberModel.single(id).then(rows => {
         if (rows.length > 0)
             accountModel.delete(rows[0].AccID).then(n => {
@@ -294,8 +383,8 @@ router.get('/delete/subscriber/:id', restricted, isAdmin, (req, res, next) => {
             })
     }).catch(next);
 });
-router.get('/delete/writer/:id', restricted, isAdmin, (req, res, next) => {
-    var id = req.params.id;
+router.get('/delete/writer',  (req, res, next) => {
+    var id = req.query.WriterID;
     writerModel.single(id).then(rows => {
         if (rows.length > 0)
             accountModel.delete(rows[0].AccID).then(n => {
@@ -303,8 +392,22 @@ router.get('/delete/writer/:id', restricted, isAdmin, (req, res, next) => {
             })
     }).catch(next);
 });
-router.get('/delete/editor/:id', restricted, isAdmin, (req, res, next) => {
-    var id = req.params.id;
+router.get('/delete/editor',  (req, res, next) => {
+    var id = req.query.EditorID;
+    categoryModel.allByEditor(id).then(rows=>{
+        if(rows.length>0)
+        {
+            for(var i=0;i<rows.length;i++)
+            {
+                entity={CatID:rows[i].CatID,
+                    EditorID:null
+                };
+                categoryModel.update(entity).then(n=>{
+                })
+            }
+        }
+    }).catch(next);
+
     editorModel.single(id).then(rows => {
         if (rows.length > 0)
             accountModel.delete(rows[0].AccID).then(n => {

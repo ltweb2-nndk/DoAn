@@ -9,7 +9,9 @@
 </head>
 <body>
     <h3>Cập nhật tài khoản</h3>
-    <form action="/Admin/Account/Update" method="POST" style="width:300px;margin:0 auto;">
+    <form action="/admin/account/update" method="POST" style="width:300px;margin:0 auto;">
+        <input type="hidden" name="UserID" value="{{UserID}}"></input>
+        <input type="hidden" name="UserName" value="{{UserName}}"></input>
         <input type="hidden" value="{{this.account.AccID}}" name="AccID"></input>
         <div>
             <label>TRẠNG THÁI TÀI KHOẢN</label>

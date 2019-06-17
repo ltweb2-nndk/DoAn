@@ -14,11 +14,12 @@
 <body>
   <h2><b>Danh mục</b></h2>
   <p>Điền thông tin vào bên dưới để tìm kiếm danh mục mà bạn muốn</p> 
-<form  method="GET"> 
+  <form action="/admin/category/search" method="GET"> 
 <input name="timkiem" type="text" placeholder="Search.."/>
-<button class="btn btn-dark" name="btnTimKiem" formaction="/admin/category/search">Tìm kiếm</button>
+<button class="btn btn-dark" name="btnTimKiem">Tìm kiếm</button>
 <br><br>
 <a href="/admin/category/add" class="btn btn-success" style="float: left;margin-bottom:5px;">Thêm Danh Mục</a>
+</form>
 <table class="table table-bordred table-striped">
  <thead>
 <th>Mã danh mục</th>
@@ -30,15 +31,15 @@
 </thead>
 <tbody></tbody>
     {{#each this.category}}
-    <form  method="GET">
+    <form method="GET">
     <tr style="height:20px">
-        <th><input type="hidden" name="CatID" value="{{CatID}}"/>{{CatID}}</th>
+        <th id="CatID">{{CatID}}</th>
         <th>{{CatName}}</td>
-        <th>{{#ifeq CatIsActive 1}} Hoạt động  {{/ifeq}}
+       <th>{{#ifeq CatIsActive 1}} Hoạt động  {{/ifeq}}
         {{#ifeq CatIsActive 0}} Không hoạt động  {{/ifeq}} </th>
-        <th><a href="/admin/category/detail/{{CatID}}?CatName={{CatName}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
+        <th><a href="/admin/category/detail/{{CatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
         <th><a href="/admin/category/edit/{{CatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
-        <th><button formaction="/admin/category/delete" type="submit" class="btn btn-danger btn-lg active" ><i class="fa fa-trash"></i></button></th>
+        <th><button  formaction="/admin/category/delete" class="btn btn-danger btn-lg active"><i class="fa fa-trash"></i></a>
     </tr>
     </form>
     {{/each}}
@@ -50,11 +51,11 @@
     {{#each this.page_number}}
     {{#if active}}
     <li class="page-item active" aria-current="page">
-      <a class="page-link" href="?page={{value}}">{{value}} <span class="sr-only">(current)</span></a>
+      <a class="page-link" href="?timkiem={{../timkiem}}&page={{value}}">{{value}} <span class="sr-only">(current)</span></a>
     </li>
     {{else}}
     <li class="page-item " aria-current="page">
-      <a class="page-link" href="?page={{value}}">{{value}}</a>
+      <a class="page-link" href="?timkiem={{../timkiem}}&page={{value}}">{{value}}</a>
     </li>
     {{/if}}
     {{/each}}

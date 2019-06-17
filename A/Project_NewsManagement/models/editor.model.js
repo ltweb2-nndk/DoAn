@@ -1,4 +1,6 @@
 var db = require('../utils/db');
+var config = require('../config/default.json')
+
 module.exports = {
     all:()=>{
         return db.load('select * from editor');
@@ -27,5 +29,12 @@ module.exports = {
         return db.load(`select * from editor e join account c join role r 
                 on e.AccID = c.AccID and r.RoleID = c.RoleID 
 				where e.AccID=${id}`)
-    }
+    },
+    count:()=>{
+        return db.load('select count(*) as total from editor');
+    },
+    pageByEdi:(start_offset)=>{
+        var limit=config.paginate.default;
+        return db.load(`select * from editor limit ${limit} offset ${start_offset}`);
+    },
 }

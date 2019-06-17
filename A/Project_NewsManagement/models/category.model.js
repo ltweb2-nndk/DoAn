@@ -53,5 +53,18 @@ module.exports = {
     pageByCat:(start_offset)=>{
         var limit=config.paginate.default;
         return db.load(`select * from category limit ${limit} offset ${start_offset}`);
+    },
+    countByKeyword:(keyword)=>{
+        return db.load(`select count(*) as total from category ct where ct.CatID like '${keyword}' or ct.CatName like N'%${keyword}%'`);
+    },
+    pageByKeyword:(keyword,start_offset)=>{
+        var limit=config.paginate.default;
+        return db.load(`select * from category ct where ct.CatID like '${keyword}' or ct.CatName like N'%${keyword}%' limit ${limit} offset ${start_offset}`);   
+    },
+    allByEditor:(EditorID)=>{
+        return db.load(`select * from category where EditorID=${EditorID}`);
+    },
+    allByEditorIsNull:()=>{
+        return db.load(`select * from category where EditorID is null`);
     }
 };

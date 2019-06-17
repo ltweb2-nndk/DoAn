@@ -5,21 +5,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Chỉnh sủa bài viết</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="/js/Article.Check.js"></script>
+  <title>Chỉnh sủa bài viết</title> 
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.css"> -->
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css"> 
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker-standalone.css"> 
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"></script>   
 </head>
 
 <body>
   <legend><b>Chỉnh sửa bài viết</b></legend>
-  <form action="/admin/article/update" method="POST" name="frmBaiviet" style="width:300px;margin:0 auto;">
+  <form action="/admin/article/update" method="POST" name="frmBaiviet" style="width:500px;margin:0 auto;">
     {{#each article}}
     <input class="form-control" type="hidden" value="{{ArtID}}" name="ArtID">
-    <div>
-      <label>TRẠNG THÁI BÀI VIẾT</label>
-      <select class="form-control" name="StatusID">
+     <div class="form-group">
+                <label >Ngày đăng</label>
+                    <div class="input-group date" id="datetimepicker1">
+                        <input type="text" id="ArtPostedOn" name="ArtPostedOn" value="{{ArtPostedOn}}" class="form-control"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                   </div>
+    </div>
+    <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                    format : "DD/MM/YYYY HH:mm:ss"
+                });
+            });
+    </script>
+    <label>TRẠNG THÁI BÀI VIẾT</label>
+    <select class="form-control" name="StatusID" style="height:40px;">
         {{#each ../statuses}}
         <option {{#ifeq StatusID ../StatusID}}selected{{/ifeq}} value="{{StatusID}}">{{StatusName}}</option>
         {{/each}}
@@ -27,8 +47,7 @@
     </div>
     <div>
       {{/each}}
-      <button type="submit" class="btn btn-primary loginFormElement" style="width:100%;margin-top:20px;">CẬP
-        NHẬT</button>
+      <button type="submit" class="btn btn-primary loginFormElement" style="width:100%;margin-top:30px;">CẬP  NHẬT</button>
     </div>
   </form>
 </body>

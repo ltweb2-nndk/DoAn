@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-  <h2>Chuyên đề</h2>
-  <a href="/admin/subCategory/add/{{CatID}}" class="btn btn-success" style="float: left;margin-bottom:5px;margin-top:10px;">Thêm Chuyên Đề</a>
+  <h2>{{CatName}}</h2>
+  <a href="/admin/category/detail/{{CatID}}/add" class="btn btn-success" style="float: left;margin-bottom:5px;margin-top:10px;">Thêm Chuyên Đề</a>
     <table class="table">
     <thead>
       <tr>
@@ -22,13 +22,18 @@
     </thead>
     <tbody>
     {{#each this.subcategories}}
+    <form  action="/admin/subCategory/delete" method="POST">
       <tr>
-        <th>{{SubCatID}}</th>
+        <input type="hidden" name="CatID" value="{{CatID}}">
+        <input type="hidden" name="CatName" value="{{../CatName}}">
+
+        <th><input type="hidden" name="SubCatID" value="{{SubCatID}}"></input>{{SubCatID}}</th>
         <th>{{SubCatName}}</th>
-        <th>{{SubCatIsActive}}</th>
-        <th><a href="/admin/subCategory/edit/{{SubCatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a></th>
-        <th><a href="/admin/subCategory/delete/{{SubCatID}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a></th>
+        <th>{{#ifeq SubCatIsActive 1}} Hoạt động {{/ifeq}} {{#ifeq SubCatIsActive 0}} Không hoạt động  {{/ifeq}} </th>
+        <th><a href="/admin/subCategory/edit/{{SubCatID}}?CatName={{../CatName}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a></th>
+        <th><button   type="submit" class="btn btn-danger btn-lg active"><i class="fa fa-trash"></i></button></th>
       </tr>
+      </form>
       {{/each}}
     </tbody>
   </table>

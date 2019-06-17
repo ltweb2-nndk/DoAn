@@ -5,7 +5,7 @@ var router = express.Router();
 var restricted = require('../../middlewares/restricted');
 var isAdmin = require('../../middlewares/isAdmin');
 
-router.get('/', restricted, isAdmin, (req, res, next) => {
+router.get('/',restricted ,isAdmin,  (req, res, next) => {
     var limit = config.paginate.default;
     var page = req.query.page || 1;
     var start_offset = (page - 1) * limit;
@@ -34,15 +34,15 @@ router.get('/', restricted, isAdmin, (req, res, next) => {
     }).catch(next);
 });
 
-router.post('/', (req, res, next) => {
-    var entity = req.body;
+router.get('/search', (req, res, next) => {
+    var timkiem=req.query.timkiem;
     var limit = config.paginate.default;
     var page = req.query.page || 1;
     var start_offset = (page - 1) * limit;
     if (page < 1) page = 1;
     Promise.all([
-        tagModel.count(),
-        tagModel.search(entity.timkiem)
+        tagModel.countByKeyword(timkiem),
+        tagModel.pageByKeyword(timkiem,start_offset)
     ]).then(([nRows, rows]) => {
         var total = nRows[0].total;
         var nPage = Math.floor(total / limit);
@@ -56,14 +56,15 @@ router.post('/', (req, res, next) => {
                 active: i === +page
             })
         }
-        res.render('tag/index', {
+        res.render('tag/search', {
+            timkiem,
             tag: rows,
             page_number,
             layout: false
         })
     }).catch(next);
 });
-router.get('/add', restricted, isAdmin, (req, res) => {
+router.get('/add',  (req, res) => {
     res.render('tag/add', {
         layout: false
     });
@@ -82,7 +83,7 @@ router.get('/is-available', (req, res, next) => {
         else res.json(true);
     })
 })
-router.get('/edit/:id', restricted, isAdmin, (req, res, next) => {
+router.get('/edit/:id',  (req, res, next) => {
     var id = req.params.id;
     tagModel.single(id).then(rows => {
         if (rows.length > 0) {
@@ -105,8 +106,8 @@ router.post('/update', (req, res, next) => {
         res.redirect('/admin/tag')
     }).catch(next);
 });
-router.get('/delete/:id', restricted, isAdmin, (req, res, next) => {
-    var id = req.params.id;
+router.get('/delete',  (req, res, next) => {
+    var id = req.query.TagID;
     tagModel.delete(id).then(n => {
         res.redirect('/admin/tag')
     }).catch(next);

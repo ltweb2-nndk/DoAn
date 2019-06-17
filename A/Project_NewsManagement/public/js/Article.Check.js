@@ -19,3 +19,13 @@ function CheckValueSubCategories()
 	}
 	return true;
 }
+function CheckValueStatus()
+{
+	frm=document.frmBaiviet;
+	if(frm.StatusID.value=="Chọn tình trạng")
+	{
+		alert('Vui lòng chọn tình trạng!');
+		return false;
+	}
+	return true;
+}

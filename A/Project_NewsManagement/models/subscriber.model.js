@@ -1,4 +1,5 @@
 var db = require('../utils/db');
+var config = require('../config/default.json')
 
 module.exports = {
     add: entity => {
@@ -27,34 +28,12 @@ module.exports = {
      }, 
     search:(value)=>{
         return db.load(`select * from subscriber where FullName like N'%${value}%'`);
-    }
-
-    // all: () => {
-    //     return db.load('select * from subscriber');
-    // },
-    
-    // single: (id) => {
-    //     return db.load(`select * from subscriber where SubscriberID='${id}'`);
-    // },
-
-    // insert: (entity) => {
-    //     entity.BoughtOn = date.getDateTimeNow();
-    //     return db.add('subscriber', entity);
-    // },
-
-    // delete: id => {
-    //     return db.delete('subscriber', 'SubscriberID', id);
-    // },
-
-    // updateDate1: (id) => {
-    //     return db.load(`update subscriber set ExpiredOn=DATE_ADD(BoughtOn,INTERVAL 7 DAY) where SubscriberID=${id}`);
-    // },
-
-    // updateDate2: (id) => {
-    //     return db.load(`update subscriber set ExpiredOn=DATE_ADD(NOW(),INTERVAL 7 DAY) where SubscriberID=${id}`);
-    // },
-
-    // search: (value) => {
-    //     return db.load(`select * from subscriber where FullName like N'%${value}%'`);
-    // }
+    },
+    count:()=>{
+        return db.load('select count(*) as total from subscriber');
+    },
+    pageBySub:(start_offset)=>{
+        var limit=config.paginate.default;
+        return db.load(`select * from subscriber limit ${limit} offset ${start_offset}`);
+    },
 };

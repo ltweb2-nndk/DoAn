@@ -89,14 +89,16 @@ module.exports = {
         return db.delete('article', 'ArtID', id);
     },
 
-    search: (value) => {
-        return db.load(`select * from article ar where ar.ArtID like '${value}' or ar.ArtTitle like N'%${value}%'`);
+    search: (keyword) => {
+        return db.load(`select * from article ar where ar.ArtID like '${keyword}' or ar.ArtTitle like N'%${keyword}%'`);
     },
 
-    searchfollowsubct: (value) => {
-        return db.load(`select * from article ar where ar.SubCatID=${value}`);
+    searchByCat: (keyword) => {
+        return db.load(`select * from article ar where ar.CatID=${keyword}`);
     },
-
+    searchByStatus:(StatusID)=>{
+        return db.load(`select * from article ar where ar.StatusID=${StatusID}`);
+    },
     count: () => {
         return db.load('select count(*) as total from article ')
     },
@@ -104,6 +106,20 @@ module.exports = {
     pageByArt: (start_offset) => {
         var limit = config.paginate.default;
         return db.load(`select * from article limit ${limit} offset ${start_offset}`);
+    },
+    searchCountByKeyWord:(keyword)=>{
+        return db.load(`select count(*) as total  from article ar where ar.ArtID like '${keyword}' or ar.ArtTitle like N'%${keyword}%'`);
+    },
+    searchPageByKeyword:(keyword,start_offset)=>{
+        var limit = config.paginate.default;
+        return db.load(`select * from article ar where  ar.ArtID like  '${keyword}' or ar.ArtTitle like N'%${keyword}%' limit ${limit} offset ${start_offset}`);
+    },
+    searchByCatCount:(CatID,keyword)=>{
+        return db.load(`select count(*) as total  from article ar where ar.CatID=${CatID} and (ar.ArtID like '${keyword}' or ar.ArtTitle like N'%${keyword}%')`);
+    },
+    searchPageByCat:(CatID,keyword,start_offset)=>{
+        var limit = config.paginate.default;
+        return db.load(`select * from article ar where ar.CatID=${CatID} and (ar.ArtID like '${keyword}' or ar.ArtTitle like N'%${keyword}%') limit ${limit} offset ${start_offset}`);
     },
 
     getByStatus: statusID => {

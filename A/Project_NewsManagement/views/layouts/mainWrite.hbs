@@ -129,7 +129,7 @@
           <ul>
             {{#with user}}
             {{#ifeq RoleID 2}}
-            <li class="sidebar-dropdown">
+            <li >
               <a href="/writer/add">
                 {{!-- <i class="fa fa-tachometer-alt"></i> --}}
                 <i class="fas fa-edit"></i>
@@ -193,6 +193,15 @@
                 </ul>
               </div>
             </li>
+            <li>
+              <a href="/editor/Edited_Articles">
+                <i class="fas fa-newspaper "></i>
+                <span>Danh sách bài đã xử lý
+                  <span class="badge badge-pill badge-danger float-right">{{../../nEdited}}</span>
+                </span>
+              </a>
+            </li>
+
             {{/ifeq}}
             {{/with}}
           </ul>

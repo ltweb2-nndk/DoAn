@@ -5,8 +5,8 @@ var date = require('../public/js/custom');
 module.exports = {
     
     getByArtID: id => {
-        return db.load(`select * from article a join category c join subcategories s join writer w 
-        where a.ArtID = ${id} and a.CatID = c.CatID and a.SubCatID = s.SubCatID and a.WriterID = w.WriterID and c.CatIsActive = 1 and s.SubCatIsActive = 1`);
+        return db.load(`select * from article a join category c join writer w 
+        where a.ArtID = ${id} and a.CatID = c.CatID and a.WriterID = w.WriterID and c.CatIsActive = 1`);
     },
 
     getSomeByID: artID => {
@@ -168,5 +168,11 @@ module.exports = {
     countArtOfWriter: writerID=>{
         return db.load(`select s.* , count(a.ArtID) as total from status s left join article a on s.StatusID = a.StatusID where a.WriterID = ${writerID} group by s.StatusID`)
     },
-    
+    countArtEdited: EditorID=>{
+        return db.load(`select count(*) as nArt from article where EditorID = ${EditorID}`);
+    },
+    pageArtEdited:(editID,start_offset)=>{
+        var lim = config.paginate.default;
+        return db.load(`select* from article where EditorID = ${editID} limit ${lim} offset ${start_offset}`);
+    }
 };  

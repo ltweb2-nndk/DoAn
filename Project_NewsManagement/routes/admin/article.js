@@ -54,7 +54,8 @@ router.get('/search', (req, res, next) => {
     Promise.all([
         articleModel.searchByCatCount(CatID,timkiem),
         articleModel.searchPageByCat(CatID,timkiem,start_offset),
-        ]).then(([nRows, rows,rowsSub]) => {
+        statusModel.all()
+        ]).then(([nRows, rows,statuses]) => {
         var total = nRows[0].total;
         var nPage = Math.floor(total / limit);
 
@@ -71,8 +72,8 @@ router.get('/search', (req, res, next) => {
             timkiem,
             article: rows,
             page_number,
-            subcategories:rowsSub,
-            layout: false
+            layout: false,
+            statuses
         })
     }).catch(next);
  }
@@ -80,8 +81,9 @@ router.get('/search', (req, res, next) => {
  {
     Promise.all([
         articleModel.searchCountByKeyWord(timkiem),
-        articleModel.searchPageByKeyword(timkiem,start_offset)
-    ]).then(([nRows, rows,rowsSub]) => {
+        articleModel.searchPageByKeyword(timkiem,start_offset),
+        statusModel.all()
+    ]).then(([nRows, rows,statuses]) => {
         var total = nRows[0].total;
         var nPage = Math.floor(total / limit);
 
@@ -98,7 +100,7 @@ router.get('/search', (req, res, next) => {
             timkiem,
             article: rows,
             page_number,
-            subcategories:rowsSub,
+            statuses,
             layout: false
         })
     }).catch(next);
@@ -106,14 +108,17 @@ router.get('/search', (req, res, next) => {
 });
 router.get('/category', (req, res, next) => {
     var entity = req.query.CatID;
-
-    articleModel.searchByCat(entity).then(rows => {
+    Promise.all([
+        statusModel.all(),
+        articleModel.searchByCat(entity)
+    ]).then(([statuses,rows])=>{
         for (var c of res.locals.lcCategory) {
             if (c.CatID === +entity)
                 c.active = true;
             else c.active = false;
         }
         res.render('article/index', {
+            statuses,
             article: rows,
             layout: false
         });

@@ -18,7 +18,7 @@
   <img id="ArtAvatar" src="{{this.article.ArtAvatar}}"></img>
   <div id="Content">{{{this.article.Content}}}</div>
   <p id="WriterArt">Bài báo được viết bởi phóng viên <b id="WriterName">{{this.writer.FullName}}</b> 
-  vào lúc {{this.article.ArtCreatedOn}} và {{this.status.StatusName}}</p>
+  vào lúc {{formatDateTime this.article.ArtCreatedOn}} và {{this.status.StatusName}}</p>
   <p id="RankViews">Xếp hạng: <b id="RankName">{{this.rank.RankName}}</b> Số lượt xem: <b id="Views">{{this.article.Views}}</b></p>
 </div>
 </body>

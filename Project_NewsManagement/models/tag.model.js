@@ -39,7 +39,13 @@ module.exports = {
         var limit = config.paginate.default;
         return db.load(`select * from tag limit ${limit} offset ${start_offset}`);
     },
-
+    countByKeyword:(keyword)=>{
+        return db.load(`select count(*) as total from tag tg where tg.TagID like '${keyword}' or tg.TagName like N'%${keyword}%'`);
+    },
+    pageByKeyword:(keyword,start_offset)=>{
+        var limit = config.paginate.default;
+        return db.load(`select * from tag tg where tg.TagID like '${keyword}' or tg.TagName like N'%${keyword}%' limit ${limit} offset ${start_offset}`);
+    },
     add: (tagname) => {
         var entity = {
             "TagName": tagname

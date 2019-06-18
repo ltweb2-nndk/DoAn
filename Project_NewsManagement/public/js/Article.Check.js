@@ -22,7 +22,7 @@ function CheckValueSubCategories()
 function CheckValueStatus()
 {
 	frm=document.frmBaiviet;
-	if(frm.StatusID.value=="Chọn tình trạng")
+	if(frm.StatusID.value=="Tình trạng")
 	{
 		alert('Vui lòng chọn tình trạng!');
 		return false;

@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Nhãn</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 </head>
 <body>
   <h2><b>Nhãn</b></h2>
@@ -30,8 +29,8 @@
     <tr style="height:20px">
         <th><input name="TagID" value="{{TagID}}" type="hidden"></input>{{TagID}}</th>
         <th>{{TagName}}</td>
-        <th><a href="/admin/tag/edit/{{TagID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
-        <th><button formaction="/admin/tag/delete" class="btn btn-danger btn-lg active"><i class="fa fa-trash"></i></button>
+        <th><a href="/admin/tag/edit/{{TagID}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></th>
+        <th><button formaction="/admin/tag/delete" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button></th>
     </tr>
     </form>
     {{/each}}

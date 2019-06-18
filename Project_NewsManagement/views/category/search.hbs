@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Danh mục</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -29,19 +29,19 @@
 <th>Cập nhật</th>
 <th>Xóa</th>
 </thead>
-<tbody></tbody>
+<tbody>
     {{#each this.category}}
     <form method="GET">
-    <tr style="height:20px">
-        <th id="CatID">{{CatID}}</th>
-        <th>{{CatName}}</td>
-       <th>{{#ifeq CatIsActive 1}} Hoạt động  {{/ifeq}}
+    <tr >
+        <th><input type="hidden" name="CatID" value="{{CatID}}"/>{{CatID}}</th>
+        <th>{{CatName}}</th>
+        <th>{{#ifeq CatIsActive 1}} Hoạt động  {{/ifeq}}
         {{#ifeq CatIsActive 0}} Không hoạt động  {{/ifeq}} </th>
-        <th><a href="/admin/category/detail/{{CatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
-        <th><a href="/admin/category/edit/{{CatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
-        <th><button  formaction="/admin/category/delete" class="btn btn-danger btn-lg active"><i class="fa fa-trash"></i></a>
-    </tr>
-    </form>
+        <th><a href="/admin/category/detail/{{CatID}}?CatName={{CatName}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-info-sign"></span></a></th>
+        <th><a href="/admin/category/edit/{{CatID}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></th>
+        <td><button formaction="/admin/category/delete" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button></p></th>
+   </tr>
+  </form>
     {{/each}}
 </tbody>
 </table>

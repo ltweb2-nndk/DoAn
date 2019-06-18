@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tài khoản</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="/js/User.Check.js"></script>
+ <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> <script src="/js/User.Check.js"></script>
 </head>
   <body>
   <h2><b>Người dùng</b></h2>
@@ -19,7 +17,7 @@
 <div style="margin-bottom:50px;margin-left:5px;"> 
  <div style="float:left;">
     <div style="float:left;width:175px;">
-    <select name="TypeAccount" class="browser-default custom-select" class="browser-default custom-select">
+    <select name="TypeAccount" class="form-control">
     <option>Người dùng</option>
      {{#each role}}
       <option  value="{{RoleID}}">{{RoleName}}</option>
@@ -30,7 +28,7 @@
   </div>
  <div style="float:right;">
     <div style="float:left;">
-    <select name="RoleID" class="browser-default custom-select" class="browser-default custom-select">
+    <select name="RoleID" class="form-control">
     <option>Người dùng</option>
     <option>All</option>
      {{#each lcRole}}
@@ -38,7 +36,7 @@
      {{/each}}
     </select>
     </div>
-    <button class="btn btn-dark" name="TKTRole" style="margin-left:5px;" formaction="/admin/user/role" onclick="return CheckValueRoles();">Xem</button>
+    <button class="btn btn-dark" name="TKTRole" style="margin-left:5px;" formaction="/admin/user/role" onclick="return CheckValueRoles();">Danh sách</button>
   </div>
 </div>
 </form>
@@ -54,8 +52,8 @@
     <tr style="height:20px">
         <input type="hidden"  name="SubscriberID" value={{SubscriberID}}></input>
         <th>{{FullName}}</th>
-        <th><a href="/admin/user/detail/subscriber/{{SubscriberID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
-        <th><button formaction="/admin/user/delete/subscriber" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+        <th><a href="/admin/user/detail/subscriber/{{SubscriberID}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></th>
+        <th><button formaction="/admin/user/delete/subscriber" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button></th>
     </tr>
     </form>
 
@@ -66,8 +64,8 @@
     <tr style="height:20px">
         <input type="hidden"  name="EditorID" value={{EditorID}}></input>
         <th>{{FullName}}</th>
-        <th><a href="/admin/user/detail/editor/{{EditorID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
-        <th><button formaction="/admin/user/delete/editor" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+        <th><a href="/admin/user/detail/editor/{{EditorID}}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></th>
+        <th><button formaction="/admin/user/delete/editor" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button></th>
    </tr>
     </form>
     {{/each}}
@@ -77,8 +75,8 @@
     <tr style="height:20px">
         <input type="hidden"  name="WriterID" value={{WriterID}}></input>
         <th>{{FullName}}</th>
-        <th><a href="/admin/user/detail/writer/{{WriterID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
-        <th><button formaction="/admin/user/delete/writer" class="btn btn-danger btn-lg active" role="button" aria-pressed="true"><i class="fa fa-trash"></i></a>
+        <th><a href="/admin/user/detail/writer/{{WriterID}}" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></th>
+        <th><button formaction="/admin/user/delete/writer" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button></th>
     </tr>
     </form>
     {{/each}}

@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Danh mục</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> <script src="/js/User.Check.js"></script>
+ <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 </head>
@@ -17,7 +16,7 @@
   <form method="POST" action="/admin/user/editor/category/update">
   <input name="EditorID" value="{{this.EditorID}}" type="hidden"></input>
   <div style="float:left;">
-    <select name="CatID" class="browser-default custom-select" class="browser-default custom-select">
+    <select name="CatID" class="form-control">
     <option>Chọn danh muc </option>
     </option>
      {{#each category}}
@@ -33,7 +32,6 @@
  <thead>
 <th>Mã danh mục</th>
 <th>Tên danh mục</th>
-<th>Chi tiết</th>
 <th>Xóa</th>
 </thead>
 <tbody></tbody>
@@ -43,8 +41,7 @@
         <input type="hidden" name="EditorID" value="{{../EditorID}}"></input>
         <th><input type="hidden" name="CatID" value="{{this.CatID}}"/>{{CatID}}</th>
         <th>{{CatName}}</td>
-        <th><a href="/admin/category/detail/{{CatID}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><i class="fa fa-info-circle"></i></a>
-        <th><button formaction="/admin/user/editor/category/delete" class="btn btn-danger btn-lg active"><i class="fa fa-trash"></i></a>
+        <th><button formaction="/admin/user/editor/category/delete" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button></a>
     </tr>
     </form>
     {{/each}}

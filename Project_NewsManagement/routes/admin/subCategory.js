@@ -30,7 +30,6 @@ router.post('/delete',  (req, res, next) => {
         SubCatID: req.body.SubCatID,
         SubCatIsActive: 0
     };
-    console.log(req.body.CatName);
     subcategoryModel.update(entity).then(n => {
         res.redirect(`/admin/category/detail/${req.body.CatID}?CatName=${req.body.CatName}`)
     }).catch(next);

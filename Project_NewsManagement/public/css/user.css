@@ -121,8 +121,8 @@
 .section-user-change-avatar .user-avatar {
     width: 300px;
     height: 300px;
-    margin: 0 auto;
-    margin-bottom: 5px;
+    margin: 0 auto !important;
+    margin-bottom: 5px !important;
     border-radius: 50%;
     display: block;
 }

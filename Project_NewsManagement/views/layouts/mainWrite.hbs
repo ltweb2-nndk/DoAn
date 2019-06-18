@@ -129,7 +129,7 @@
           <ul>
             {{#with user}}
             {{#ifeq RoleID 2}}
-            <li class="sidebar-dropdown">
+            <li >
               <a href="/writer/add">
                 {{!-- <i class="fa fa-tachometer-alt"></i> --}}
                 <i class="fas fa-edit"></i>
@@ -147,9 +147,13 @@
                   {{#each ../../lcStatus}}
                   <li>
                     <a href="/writer/articlesByStatus/{{StatusID}}">{{StatusName}}
-                      {{#if num_of_art}}
-                      <span class="badge badge-pill badge-danger float-right">{{num_of_art}}</span>
-                      {{/if}}
+                      {{#each ../../../ArtOfWriter}}
+                      {{#ifeq ../StatusID StatusID}}
+                        {{#if ../total}}
+                          <span class="badge badge-pill badge-danger float-right">{{../total}}</span>
+                        {{/if}}
+                      {{/ifeq}}
+                      {{/each}}
                     </a>
                   </li>
 
@@ -166,18 +170,38 @@
               </a>
               <div class="sidebar-submenu">
                 <ul>
+                      <li>
+                        <a href="/editor/articles">Tat ca
+                          <span class="badge badge-pill badge-danger float-right">{{../../totalAll}}</span>
+                        </a>
+                      </li>
                   {{#each ../../CatOfEditor}}
-                  <li>
-                    <a href="/editor/articlesByCat/{{CatID}}">{{CatName}}
-                      {{#if num_of_arts}}
-                      <span class="badge badge-pill badge-danger float-right">{{num_of_arts}}</span>
-                      {{/if}}
-                    </a>
-                  </li>
+                    
+                      <li>
+                        <a href="/editor/articlesByCat/{{CatID}}">{{CatName}}
+                        {{#each ../../../artOfEditor}}
+                        {{#ifeq ../CatID CatID}}
+                          {{#if ../num_of_arts}}
+                          <span class="badge badge-pill badge-danger float-right">{{../num_of_arts}}</span>
+                          {{/if}}
+                        {{/ifeq}}
+                        {{/each}}
+                        </a>
+                      </li>
+                      
                   {{/each}}
                 </ul>
               </div>
             </li>
+            <li>
+              <a href="/editor/Edited_Articles">
+                <i class="fas fa-newspaper "></i>
+                <span>Danh sách bài đã xử lý
+                  <span class="badge badge-pill badge-danger float-right">{{../../nEdited}}</span>
+                </span>
+              </a>
+            </li>
+
             {{/ifeq}}
             {{/with}}
           </ul>

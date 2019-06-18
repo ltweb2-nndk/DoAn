@@ -33,7 +33,7 @@ router.get('/search', (req, res, next) => {
         nRows, articles,
     ]) => {
         var total = nRows[0].total;
-        var pages = (total % lim == 0) ? (total / lim) : (total / lim + 1);
+        var pages = (total % lim == 0) ? (total / lim) : parseInt(total / lim + 1);
         var totalPages = [];
         for (i = 1; i <= pages; i++) {
             totalPages.push({
@@ -60,8 +60,7 @@ router.get('/premium', restricted, verify, (req, res, next) => {
         x.active = false;
     });
 
-    //var lim = config.paginate.default;
-    var lim = 5;
+    var lim = config.paginate.default;
     var page = req.query.page || 1;
     if (page < 0 || isNaN(page)) page = 1;
     var start_offset = (page - 1) * lim;
@@ -73,7 +72,7 @@ router.get('/premium', restricted, verify, (req, res, next) => {
         nRows, articles
     ]) => {
         var total = nRows[0].total;
-        var pages = (total % lim == 0) ? (total / lim) : (total / lim + 1);
+        var pages = (total % lim == 0) ? (total / lim) : parseInt(total / lim + 1);
         var totalPages = [];
         for (i = 1; i <= pages; i++) {
             totalPages.push({
@@ -216,7 +215,7 @@ router.get('/category/:id', (req, res, next) => {
                 });
 
                 var total = nRows[0].total;
-                var pages = (total % lim == 0) ? (total / lim) : (total / lim + 1);
+                var pages = (total % lim == 0) ? (total / lim) : parseInt(total / lim + 1);
                 var totalPages = [];
                 for (i = 1; i <= pages; i++) {
                     totalPages.push({
@@ -277,7 +276,7 @@ router.get('/subcategory/:id', (req, res, next) => {
                 });
 
                 var total = nRows[0].total;
-                var pages = (total % lim == 0) ? (total / lim) : (total / lim + 1);
+                var pages = (total % lim == 0) ? (total / lim) : parseInt(total / lim + 1);
                 var totalPages = [];
                 for (i = 1; i <= pages; i++) {
                     totalPages.push({

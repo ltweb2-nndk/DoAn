@@ -18,7 +18,7 @@
                             <p class="Summary">{{Summary}}</p>
                         </div>
                     </td>
-                    
+                    {{#ifeq StatusID 1}}
                     <td class="text-right">
                         <div class="box-list-item-text ">
                         <a  class="btn btn-success btn-sm" href="/editor/accept/{{ArtID}}" role="button" title="Edit">
@@ -35,6 +35,23 @@
                         </a>
                         </div>
                     </td>
+                    {{else}}
+                    <td class="text-right">
+                        <div class="box-list-item-text ">
+                            {{#ifeq ../StatusID 2}}
+                                <button class="btn btn-success btn-sm">
+                                    Chờ xuất bản
+                                </button>
+                            {{/ifeq}}
+                            {{#ifeq ../StatusID 4}}
+                                <button class="btn btn-danger btn-sm">
+                                    Bị từ chối
+                                </button>
+                            {{/ifeq}}
+                        </a>
+                        </div>
+                    </td>
+                    {{/ifeq}}
                 </tr>
             {{/each}}
         </tbody>

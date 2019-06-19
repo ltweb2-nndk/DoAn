@@ -170,7 +170,7 @@ module.exports = {
         var lim = config.paginate.default;
         return db.load(`select a.ArtID,a.ArtAvatar,a.ArtTitle,a.Summary,a.StatusID,s.StatusName 
         from article a join status s on a.StatusID = s.StatusID
-        where a.StatusID = ${stusID} and WriterID=${writerID} limit 6 offset ${start_offset}`);
+        where a.StatusID = ${stusID} and WriterID=${writerID} limit ${lim} offset ${start_offset}`);
     },
 
     pageByCat: (catID, start_offset) => {

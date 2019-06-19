@@ -37,8 +37,10 @@ router.post('/delete',  (req, res, next) => {
 
 router.post('/add', (req, res, next) => {
     var entity = req.body;
+    var CatName=req.body.CatName;
+    delete entity.CatName;
     subcategoryModel.insert(entity).then(id => {
-        res.redirect(`/admin/category/detail/${entity.CatID}`);
+        res.redirect(`/admin/category/detail/${entity.CatID}?CatName=${CatName}`);
     }).catch(next);
 })
 

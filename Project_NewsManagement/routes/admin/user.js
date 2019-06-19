@@ -6,6 +6,7 @@ var roleModel = require('../../models/role.model')
 var accountModel = require('../../models/account.model')
 var categoryModel = require('../../models/category.model')
 var accountModel = require('../../models/account.model')
+var articelModel=require('../../models/article.model')
 var bcrypt = require('bcrypt')
 var moment = require('moment')
 var helpersFunc = require('../../public/js/custom');
@@ -273,7 +274,11 @@ router.get('/update/subscriber/:id',  (req, res, next) => {
     var date = new Date();
     subscriberModel.single(id).then(rows => {
         if (rows.length > 0) {
-            if (rows[0].ExpiredOn == null) {
+            if(rows[0].BoughtOn==null)
+            {
+                res.redirect(`/admin/user/detail/subscriber/${id}`);
+            }
+            else if (rows[0].ExpiredOn == null) {
                 rows[0].BoughtOn.setDate(rows[0].BoughtOn.getDate() + 7)
                 var entity = {
                     ExpiredOn: rows[0].BoughtOn
@@ -281,7 +286,7 @@ router.get('/update/subscriber/:id',  (req, res, next) => {
                 subscriberModel.update(rows[0].SubscriberID,entity).then(n => {
                     res.redirect(`/admin/user/detail/subscriber/${id}`)
                 })
-            } else if (rows[0].ExpiredOn <= date) {
+            } else if (rows[0].ExpiredOn < date) {
                 date.setDate(date.getDate() + 7)
                 var entity = {
                     ExpiredOn: date
@@ -289,7 +294,7 @@ router.get('/update/subscriber/:id',  (req, res, next) => {
                 subscriberModel.update(rows[0].SubscriberID,entity).then(n => {
                     res.redirect(`/admin/user/detail/subscriber/${id}`)
                 })
-            } else if (rows[0].ExpiredOn > date) {
+            } else  {
                 res.redirect(`/admin/user/detail/subscriber/${id}`);
             }
         }
@@ -385,36 +390,63 @@ router.get('/delete/subscriber',  (req, res, next) => {
 });
 router.get('/delete/writer',  (req, res, next) => {
     var id = req.query.WriterID;
-    writerModel.single(id).then(rows => {
-        if (rows.length > 0)
-            accountModel.delete(rows[0].AccID).then(n => {
-                res.redirect('/admin/user')
-            })
+    Promise.all([
+        articelModel.getByWriter(id),
+        writerModel.single(id)
+    ]).then(([rowsArticle,rowsWriter])=>{
+        if(rowsArticle.length>0)
+        {
+            for(var i=0;i<rowsArticle.length;i++)
+            {
+                var ArtID=rowsArticle[i].ArtID;
+                entity={
+                    WriterID:null
+                };
+                articelModel.update(ArtID,entity).then(n=>{
+                })
+            }
+        }
+        if (rowsWriter.length > 0)
+        accountModel.delete(rowsWriter[0].AccID).then(n => {
+            res.redirect('/admin/user')
+        });
     }).catch(next);
 });
 router.get('/delete/editor',  (req, res, next) => {
     var id = req.query.EditorID;
-    categoryModel.allByEditor(id).then(rows=>{
-        if(rows.length>0)
+    Promise.all([
+        categoryModel.allByEditor(id),
+        articelModel.getByEditor(id),
+        editorModel.single(id)
+    ]).then(([rowsCategory,rowsArticle,rowsEditor])=>{
+        if(rowsCategory.length>0)
         {
-            for(var i=0;i<rows.length;i++)
+            for(var i=0;i<rowsCategory.length;i++)
             {
-                entity={CatID:rows[i].CatID,
+                entity={CatID:rowsCategory[i].CatID,
                     EditorID:null
                 };
                 categoryModel.update(entity).then(n=>{
                 })
             }
         }
+        if(rowsArticle.length>0)
+        {
+            for(var i=0;i<rowsArticle.length;i++)
+            {
+                var ArtID=rowsArticle[i].ArtID;
+                entity={
+                    EditorID:null
+                };
+                articelModel.update(ArtID,entity).then(n=>{
+                })
+            }
+        }
+        if (rowsEditor.length > 0)
+        accountModel.delete(rowsEditor[0].AccID).then(n => {
+            res.redirect('/admin/user')
+        })
     }).catch(next);
-
-    editorModel.single(id).then(rows => {
-        if (rows.length > 0)
-            accountModel.delete(rows[0].AccID).then(n => {
-                res.redirect('/admin/user')
-            })
-        res.redirect('/admin/user')
-    }).catch(next);
-});
+})
 
 module.exports = router;

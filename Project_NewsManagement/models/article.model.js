@@ -122,6 +122,14 @@ module.exports = {
         return db.load(`select * from article ar where ar.CatID=${CatID} and (ar.ArtID like '${keyword}' or ar.ArtTitle like N'%${keyword}%') limit ${limit} offset ${start_offset}`);
     },
 
+    getByEditor:(EditorID)=>{
+        return db.load(`select * from article ar where ar.EditorID=${EditorID}`);
+    },
+    
+    getByWriter:(WriterID)=>{
+        return db.load(`select * from article ar where ar.WriterID=${WriterID}`);
+    },
+    
     getByStatus: statusID => {
         return db.load(`select ArtID,ArtTitle,Summary,ArtCreatedOn,ArtPostedOn,StatusID from article where StatusID = ${statusID}`);
     },

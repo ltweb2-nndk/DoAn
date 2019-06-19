@@ -37,7 +37,7 @@ router.post('/update', (req, res, next) => {
     accountModel.update(id, entity).then(n => {
         if(UserName=='Editor')
         res.redirect(`/admin/user/detail/editor/${UserID}`);
-        else if(UserName=="Subscriber")
+        else if(UserName=='Subscriber')
         res.redirect(`/admin/user/detail/subscriber/${UserID}`);
         else if(UserName=='Writer')
         res.redirect(`/admin/user/detail/writer/${UserID}`);

@@ -12,7 +12,7 @@ function CheckValueArticle()
 function CheckValueSubCategories()
 {
 	frm=document.frmBaiviet;
-	if(frm.SubCatID.value=="Chọn chuyên mục")
+	if(frm.CatID.value=="Chọn chuyên mục")
 	{
 		alert('Vui lòng chọn chuyên mục!');
 		return false;

@@ -167,9 +167,11 @@ router.get('/detail/:id',  (req, res, next) => {
 })
 router.get('/detail/:id/add',(req,res,next)=>{
     var entity = req.params.id;
+    var CatName=req.query.CatName;
     res.render('subCategory/add', {
         CatID: entity,
-        layout: false
+        layout: false,
+        CatName
     });
 })
 
